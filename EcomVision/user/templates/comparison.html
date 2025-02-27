@@ -1,0 +1,194 @@
+{% extends "user_template.html" %}
+
+{% block title %}
+EcomVision | Comparison
+{% endblock %}
+
+{% block content %}
+
+<section class="comparison-hero-section flex items-center justify-center text-center text-white relative">
+    <h1 class="text-6xl font-bold text-white-50 uppercase">
+        Product
+        <span class="comparison-hero-title-span">Comparison</span>
+    </h1>
+</section>
+
+<div class="comaprison-container m-[3rem] mt-[2rem] px-4 py-8 w-[95%]">
+    <div class="comparison-subcontainer p-4 rounded-lg mt-8">
+        <div class="overflow-x-auto">
+            <table class="min-w-full min-h-[70vh] bg-white border border-gray-200" id="comparison-table">
+                <thead>
+                    <tr>
+                        <th
+                            class="py-2 px-4 bg-gray-100 text-center text-sm font-semibold text-gray-700">
+                        </th>
+                        <th
+                            class="py-2 px-4 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                            <div class="flex flex-col items-center">
+                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
+                                    placeholder="Search Product" type="text" />
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                    onclick="searchProduct(this)">
+                                    Search
+                                </button>
+                            </div>
+                        </th>
+                        <th
+                            class="py-2 px-4 border border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                            <div class="flex flex-col items-center">
+                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
+                                    placeholder="Search Product" type="text" />
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                    onclick="searchProduct(this)">
+                                    Search
+                                </button>
+                            </div>
+                        </th>
+                        <th
+                            class="py-2 px-4 border border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                            <div class="flex flex-col items-center">
+                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
+                                    placeholder="Search Product" type="text" />
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                    onclick="searchProduct(this)">
+                                    Search
+                                </button>
+                            </div>
+                        </th>
+                        <th
+                            class="py-2 px-4 border border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                            <div class="flex flex-col items-center">
+                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
+                                    placeholder="Search Product" type="text" />
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                    onclick="searchProduct(this)">
+                                    Search
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700 h-[50vh]">
+                            Image
+                        </th>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700">
+                            <div class="flex justify-center">
+                                <img alt="Image of Product 1" class="product-image rounded-lg" height="200"
+                                src="https://storage.googleapis.com/a1aa/image/ErG_iML3uuC_NIcLwmGSvsU4y-tyVJTrwE8lYgOg3UE.jpg"
+                                width="200" />
+                            </div>
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700">
+                            <div class="flex justify-center">
+                                <img alt="Image of Product 2" class="product-image rounded-lg" height="200"
+                                src="https://storage.googleapis.com/a1aa/image/oLznHlQiTsvXI6P5fkdue35aM2jw6Jszl40XDD6Nba0.jpg"
+                                width="200" />
+                            </div>  
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                            Price
+                        </th>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-price">
+                            $999.99
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-price">
+                            $899.99
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-price">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-price">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                            Rating
+                        </th>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-rating">
+                            4.5/5
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-rating">
+                            4.3/5
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-rating">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-rating">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                            Screen Size
+                        </th>
+                        <td
+                            class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-screen-size">
+                            6.7 inches
+                        </td>
+                        <td
+                            class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-screen-size">
+                            6.5 inches
+                        </td>
+                        <td
+                            class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-screen-size">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-screen-size">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                            Processor
+                        </th>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-processor">
+                            Snapdragon 888
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-processor">
+                            Snapdragon 870
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-processor">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-processor">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                            RAM
+                        </th>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-ram">
+                            12GB
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-ram">
+                            8GB
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-ram">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-ram">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
+                            Storage
+                        </th>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-storage">
+                            256GB
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-storage">
+                            128GB
+                        </td>
+                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-storage">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-storage">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
