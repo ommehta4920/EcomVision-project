@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUp</title>
+</head>
+<body>
+    <form action="/signup/" method="post">
+        {% csrf_token %}
+            <div align="center">
+
+                <label>Name:</label>
+                <input type="text" name="user_name" placeholder="Firstname Surname" required autofocus>
+                <br>
+                <br>
+                <label>Email:</label>
+                <input type="email" name="user_email" placeholder="example@gmail.com" required>
+                <br>
+                <br>
+                <label>Password:</label>
+                <input type="password" name="user_passwd" placeholder="Password" required>
+
+                <br>
+                <br>
+
+                <button type="submit">SignUp</button>
+            </div>
+            <br>
+
+            {% if error %}
+            <div align="center" style="color:red;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+    </form>
+</body>
+</html>

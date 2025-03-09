@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forgot Password</title>
+</head>
+<body onload="visible_form()">
+
+    <form action="/send_otp/" method="post" id="sendOTP_form">
+        {% csrf_token %}
+            <div align="center">
+                <label>Email:</label>
+                <input type="email" name="user_email" id="email" placeholder="example@gmail.com" required autofocus>
+
+                &emsp;
+
+                <button type="submit">Send OTP</button>
+
+                <br>
+
+            </div>
+    </form>
+
+    <br>
+
+    <form action="/forgot/" method="post" id="login_form">
+        {% csrf_token %}
+            <div align="center">
+
+                <label>OTP:</label>
+                <input type="text" name="user_otp" placeholder="Enter OTP" maxlength="4" required>
+                <br>
+                <br>
+                <label>Password:</label>
+                <input type="password" name="user_passwd" placeholder="Password" required>
+
+                <br>
+                <br>
+
+                <button type="submit">Reset New Password</button>
+
+            </div>
+            <br>
+    </form>
+
+            {% for data in messages %}
+            <div align="center" style="color:red;">
+                {{ data }}
+            </div>
+            {% endfor %}
+
+
+    <script type="text/javascript">
+
+        function visible_form() {
+            // alert("Go Ahead..");
+            const S_Form = document.getElementById('sendOTP_form');
+            const L_Form = document.getElementById('login_form');
+
+            {% if visibility %}
+                L_Form.style.display = 'block';
+                S_Form.style.display = 'none';
+            {% else %}
+                S_Form.style.display = 'block';
+                L_Form.style.display = 'none';
+            {% endif %}
+        }
+
+    </script>
+
+</body>
+</html>

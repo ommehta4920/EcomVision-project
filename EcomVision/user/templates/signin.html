@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignIn</title>
+</head>
+<body>
+
+    <form action="/signin/" method="post">
+        {% csrf_token %}
+
+        {% for success in messages %}
+        <div align="center" style="color:green;">
+            {{ success }}
+        </div>
+        {% endfor %}
+
+        <div align="center">
+
+                <label>Email:</label>
+                <input type="email" name="user_email" placeholder="example@gmail.com" required autofocus>
+                <br>
+                <br>
+                <label>Password:</label>
+                <input type="password" name="user_passwd" placeholder="Password" required>
+
+                <br>
+                <br>
+
+                <button type="submit">Login</button>
+
+                <br>
+                <hr>
+                <br>
+
+                <a href="/forgot/">Forgot Password</a>
+                <br>
+                <a href="/signup/">Create Your Account</a>
+            </div>
+    </form>
+
+            {% if error %}
+            <div align="center" style="color:red;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+
+</body>
+</html>
