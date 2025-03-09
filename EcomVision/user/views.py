@@ -2,7 +2,7 @@ import sys
 
 from django.shortcuts import render, redirect
 from django.views import View
-# from .models import user_details
+
 from EcomVision import settings
 from django.contrib import messages
 from django.utils import timezone
