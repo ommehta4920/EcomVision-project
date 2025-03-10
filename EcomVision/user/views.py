@@ -30,11 +30,11 @@ class SignUpPage(View):
 
         print(f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd} \n created_at : {created_at}")
 
-        if Users.objects.filter(user_email=user_email).exists():
+        if user_details.objects.filter(user_email=user_email).exists():
             messages.error(request, "Email already registered!")
             return render(request, "signup.html", {})
 
-        user = Users(user_name=user_name, user_email=user_email, user_passwd=user_passwd, created_at=created_at)
+        user = user_details(user_name=user_name, user_email=user_email, user_passwd=user_passwd, created_at=created_at)
 
         try:
             user.save()
@@ -56,10 +56,10 @@ class ForgotPage(View):
 
         print("**********", user_otp, "\n-*-*-*-", user_passwd, "\n-*-*-*-", user_email)
 
-        if Users.objects.filter(user_email=user_email, user_otp=user_otp).exists():
+        if user_details.objects.filter(user_email=user_email, user_otp=user_otp).exists():
 
             try:
-                user = Users.objects.filter(user_email=user_email, user_otp=user_otp)
+                user = user_details.objects.filter(user_email=user_email, user_otp=user_otp)
                 user.update(user_passwd=user_passwd)
 
                 return redirect("/signin")
@@ -90,10 +90,10 @@ class Send_otpPage(View):
         #
         # print("Session temail :", request.session['temail'])
 
-        if Users.objects.filter(user_email=user_email).exists():
+        if user_details.objects.filter(user_email=user_email).exists():
 
             try:
-                user = Users.objects.filter(user_email=user_email)
+                user = user_details.objects.filter(user_email=user_email)
                 user.update(user_otp=str(otp))
 
                 subject = "Your EcomVision Portal OTP"
