@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import psycopg2
+from django.conf import settings
 import django.core.mail.backends.smtp
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -82,11 +83,34 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ecom_vision',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        # 'PASSWORD': '865625',
         'HOST': 'localhost',
         'PORT': '5432'
     }
 }
+
+PASSWORDS = ['865625', 'admin']
+SUCCESS = False
+
+for password in PASSWORDS:
+    try:
+        conn = psycopg2.connect(
+            dbname=settings.DATABASES['default']['NAME'],
+            user=settings.DATABASES['default']['USER'],
+            password=password,
+            host=settings.DATABASES['default']['HOST'],
+            port=settings.DATABASES['default']['PORT'],
+        )
+        print("Connected successfully!")
+        settings.DATABASES['default']['PASSWORD'] = password  # Set working password
+        SUCCESS = True
+        break
+    except psycopg2.OperationalError:
+        print(f"Failed with password: {password}")
+
+if not SUCCESS:
+    raise Exception("Could not connect with any provided passwords")
+
 
 
 # Password validation
