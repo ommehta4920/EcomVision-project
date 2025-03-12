@@ -271,3 +271,125 @@ body {
 .comparison-subcontainer table tbody tr td {
     font-size: 18px;
 }
+
+/* SIGN IN PAGE */
+
+.body-container {
+    width: 35vw;
+    display: flex;
+    flex-direction: column;
+    /* opacity: 0.2; */
+    background-color: rgba(89, 131, 83, 0.2);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1em;
+}
+
+.signin-top-container h2 {
+    color: white;
+    padding: 0;
+    margin: 0;
+}
+
+.form-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-div form {
+    width: 95%;
+}
+
+form input {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    padding: 0 10px;
+    border-radius: 9999px;
+    flex: 1;
+    margin-bottom: 4px;
+}
+
+form button {
+    background: transparent;
+    width: 45%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    padding: 0 10px;
+    border-radius: 9999px;
+    align-self: center;
+    justify-self: center;
+}
+
+.signin-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+}
+
+/* SIGN UP PAGE */
+
+.body-container {
+    width: 35vw;
+    display: flex;
+    flex-direction: column;
+    /* opacity: 0.2; */
+    background-color: rgba(89, 131, 83, 0.2);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1em;
+}
+
+.signup-top-container h2 {
+    color: white;
+    padding: 0;
+    margin: 0;
+}
+
+.form-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-div form {
+    width: 95%;
+}
+
+form input {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    padding: 0 10px;
+    border-radius: 9999px;
+    flex: 1;
+    margin-bottom: 4px;
+}
+
+form button {
+    background: transparent;
+    width: 45%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    padding: 0 10px;
+    border-radius: 9999px;
+    align-self: center;
+    justify-self: center;
+}
+
+.signup-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+}
