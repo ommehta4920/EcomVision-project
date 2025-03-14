@@ -25,16 +25,16 @@ class SignUpPage(View):
     def post(self, request):
         user_name = request.POST["user_name"]
         user_email = request.POST["user_email"]
-        user_passwd = request.POST["user_passwd"]
-        created_at = timezone.now()
+        user_passwd = request.POST["user_c_passwd"]
+        # created_at = timezone.now()
 
-        print(f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd} \n created_at : {created_at}")
+        print(f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd}")
 
         if user_details.objects.filter(user_email=user_email).exists():
             messages.error(request, "Email already registered!")
             return render(request, "signup.html", {})
 
-        user = user_details(user_name=user_name, user_email=user_email, user_passwd=user_passwd, created_at=created_at)
+        user = user_details(user_name=user_name, user_email=user_email, user_passwd=user_passwd)
 
         try:
             user.save()
