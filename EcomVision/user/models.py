@@ -7,10 +7,9 @@ class user_details(models.Model):
     user_passwd = models.CharField(null=False, max_length=20)
     user_name = models.CharField(null=False, max_length=50)
     user_otp = models.CharField(null=True, max_length=10)
-    created_at = models.DateTimeField(null=False)
 
-    def __str__(self):
-        return f"{self.user_email} - {self.user_name}"
+    # def __str__(self):
+    #     return f"{self.user_email} - {self.user_name}"
 
 
 # Stores website details which are going to be scraped
@@ -42,6 +41,7 @@ class products(models.Model):
     is_available = models.BooleanField(default=True)
     product_url = models.URLField(null=False)
     product_image_url = models.JSONField(null=True, default=dict)
+    product_details = models.JSONField(null=True)
     scraped_at = models.DateTimeField(auto_now_add=True)
     website_id = models.ForeignKey(website_details, on_delete=models.CASCADE)
     category_id = models.ForeignKey(categories, on_delete=models.CASCADE)

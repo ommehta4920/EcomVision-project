@@ -18,6 +18,33 @@ class SignInPage(View):
     def get(self, request):
         return render(request, "signin.html")
 
+    def post(self, request):
+        user_email = request.POST["user_email"]
+        user_passwd = request.POST["user_passwd"]
+
+        print("**********", user_email, "\n-*-*-*-", user_passwd)
+
+        if user_details.objects.filter(user_email=user_email, user_passwd=user_passwd).exists():
+
+            try:
+                user = user_details.objects.filter(user_email=user_email).first()
+                print("User Details :- ", user)
+
+                messages.success(request, "Welcome "+str(user.user_name))
+
+                return redirect("/", {"user_name": user.user_name})
+
+            except:
+                print("--------", sys.exc_info())
+
+        else:
+            print("---------->>> Your Email or Password is incorrect!")
+            messages.error(request, "Your Email isn't registered or Password is incorrect!")
+            messages.info(request, "Please try again..")
+            return render(request, "signin.html", {"user_email": user_email})
+
+
+
 class SignUpPage(View):
     def get(self, request):
         return render(request, "signup.html")
@@ -25,14 +52,20 @@ class SignUpPage(View):
     def post(self, request):
         user_name = request.POST["user_name"]
         user_email = request.POST["user_email"]
-        user_passwd = request.POST["user_c_passwd"]
+        user_passwd = request.POST["user_passwd"]
+        user_c_passwd = request.POST["user_c_passwd"]
         # created_at = timezone.now()
 
-        print(f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd}")
+        print(f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd} \n user_c_passwd : {user_c_passwd}")
 
         if user_details.objects.filter(user_email=user_email).exists():
             messages.error(request, "Email already registered!")
-            return render(request, "signup.html", {})
+            return render(request, "signup.html", {"user_name": user_name, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
+
+        if user_passwd != user_c_passwd:
+            print("-------- Both password must be same..! --------")
+            messages.info(request, "Both password must be same..!")
+            return render(request, "signup.html", {"user_name": user_name, "user_email": user_email})
 
         user = user_details(user_name=user_name, user_email=user_email, user_passwd=user_passwd)
 
@@ -51,16 +84,26 @@ class ForgotPage(View):
     def post(self, request):
         user_otp = request.POST["user_otp"]
         user_passwd = request.POST["user_passwd"]
+        user_c_passwd = request.POST["user_c_passwd"]
 
         user_email = 'pshubham8734@gmail.com'
 
-        print("**********", user_otp, "\n-*-*-*-", user_passwd, "\n-*-*-*-", user_email)
+        print("**********", user_otp, "\n-*-*-*-", user_passwd, "\n-*-*-*-", user_c_passwd, "\n-*-*-*-", user_email)
 
         if user_details.objects.filter(user_email=user_email, user_otp=user_otp).exists():
+
+            if user_passwd != user_c_passwd:
+                print("-------- Both password must be same..! --------")
+                messages.info(request, "Both password must be same..!")
+
+                return render(request, "forgot.html", {"visibility": True, "user_otp": user_otp})
 
             try:
                 user = user_details.objects.filter(user_email=user_email, user_otp=user_otp)
                 user.update(user_passwd=user_passwd)
+
+                print("<<--------- Password has been successfully reset... ---------->>")
+                messages.success(request, "Password has been successfully reset...")
 
                 return redirect("/signin")
 
@@ -71,7 +114,7 @@ class ForgotPage(View):
             print("-------- OTP is incorrect! --------")
             messages.error(request, "OTP is incorrect!")
 
-        return render(request, "forgot.html", {"visibility": True})
+        return render(request, "forgot.html", {"visibility": True, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
 
 
 import random
@@ -104,6 +147,8 @@ class Send_otpPage(View):
                 send_mail(subject, message, email_from, recipient_list)
 
                 print("**********", subject, "\n-*-*-*-", message, "\n-*-*-*-", email_from, "\n-*-*-*-", recipient_list)
+
+                messages.info(request, "OTP has been sent to your registered email..!")
 
                 return render(request, "forgot.html", {"visibility": True})
 
