@@ -102,6 +102,60 @@
             </div>
         </div>
     </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+      // Reset error messages
+      nameError.textContent = '';
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      confirmPasswordError.textContent = '';
+
+      // Validate Full Name
+      if (fullName === '') {
+        nameError.textContent = 'Full name is required';
+        return;
+      }
+
+      // Validate Email
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        emailError.textContent = 'Invalid email format';
+        return;
+      }
+
+      // Validate Password
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!passwordPattern.test(password)) {
+        passwordError.textContent = 'Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character.';
+        return;
+      }
+
+      // Validate Confirm Password
+      if (password !== confirmPassword) {
+        confirmPasswordError.textContent = 'Passwords do not match';
+        return;
+      }
+
+      // If all validations pass
+      alert('Form submitted successfully!');
+    });
+  </script>
+
 </body>
 
 </html>
