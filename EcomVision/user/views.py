@@ -1,12 +1,14 @@
 import sys
-
-from django.shortcuts import render, redirect
-from django.views import View
-
 from EcomVision import settings
 from django.contrib import messages
 from django.utils import timezone
 from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
+from .models import *
+from django.contrib import messages
+import subprocess
+import os
 
 from user.models import *
 
@@ -176,3 +178,28 @@ class ProductDetailsPage(View):
 class ProductComparisonPage(View):
     def get(self, request):
         return render(request, "comparison.html")
+
+class ScraperPage(View):
+    def get(self,request):
+        return render(request, "scraper.html")
+    
+    def post(self, request):
+        query = request.POST.get("query", "").strip()
+        
+        if not query:
+            messages.error(request, "Please Provide Input")
+            return redirect("/scraper")
+        
+        project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
+
+        # Set environment variables for Django
+        env = os.environ.copy()
+        env["DJANGO_SETTINGS_MODULE"] = "EcomVision.settings"
+        env["PYTHONPATH"] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        
+        try:
+            subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env, check=True)
+            messages.success(request, f"Scraping started for: {query}")
+        except subprocess.CalledProcessError as e:
+            messages.error(request, f"Scrapy encountered an error: {e}")
+        return redirect("/scraper")
