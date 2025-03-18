@@ -54,8 +54,11 @@
                     <label class="block text-gray-300 font-medium ml-2 mb-1" for="password">
                         Password
                     </label>
-                    <input class="w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white" id="password" name="user_passwd"
-                        placeholder="Enter your password" type="password" required />
+                    <input class="w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white" id="password"
+                           name="user_passwd" placeholder="Enter your password" type="password"
+                           pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}"
+                           title="Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character."
+                           required />
                 </div>
                 <div class="flex items-center justify-between mb-4 mt-[-10px] pl-2 pr-2">
                     <a class="text-white hover:underline" href="/forgot/">
