@@ -12,10 +12,11 @@
 </head>
 <body>
     <h1>Web Scraper</h1>
-    <form method="post">
+    <form action="/scraper/" method="post">
         {% csrf_token %}
         <input type="text" name="query" id="searchQuery" placeholder="Enter search query">
-        <button onclick="runScraper()">Search</button>
+        <button type="submit">Search</button>
+<!--        <button type="submit" onclick="runScraper()">Search</button>-->
     </form>
 
     {% if messages %}
