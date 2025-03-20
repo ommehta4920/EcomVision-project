@@ -183,11 +183,13 @@ class ScraperPage(View):
         return render(request, "scraper.html")
     
     def post(self, request):
-        query = request.POST.get("query", "").strip()
+        query = request.POST["query"]
+
+        print("\n ********* query :-"+query+"\n")
         
-        if not query:
-            messages.error(request, "Please Provide Input")
-            return redirect("/scraper")
+        # if not query:
+        #     messages.error(request, "Please Provide Input")
+        #     return redirect("/scraper")
         
         project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
 
@@ -198,7 +200,7 @@ class ScraperPage(View):
         
         try:
             subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env, check=True)
-            messages.success(request, f"Scraping started for: {query}")
+            messages.success(request, f"Scraping completed for: {query}")
         except subprocess.CalledProcessError as e:
             messages.error(request, f"Scrapy encountered an error: {e}")
-        return redirect("/scraper")
+        return redirect("/")

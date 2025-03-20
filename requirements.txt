@@ -4,3 +4,4 @@ scrapy
 scrapy-selenium
 scrapy-user-agents
 scrapy-rotating-proxies
+webdriver_manager

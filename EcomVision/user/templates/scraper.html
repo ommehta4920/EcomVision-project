@@ -14,7 +14,7 @@
     <h1>Web Scraper</h1>
     <form action="/scraper/" method="post">
         {% csrf_token %}
-        <input type="text" name="query" id="searchQuery" placeholder="Enter search query">
+        <input type="text" name="query" id="searchQuery" placeholder="Enter product name for comparison" pattern="\S.*" title="Please enter a product name" autofocus required>
         <button type="submit">Search</button>
 <!--        <button type="submit" onclick="runScraper()">Search</button>-->
     </form>

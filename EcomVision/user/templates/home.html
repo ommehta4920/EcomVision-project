@@ -5,22 +5,23 @@ EcomVision
 {% endblock %}
 
 {% block content %}
-    <style>
+<style>
         .alert {padding: 5px 30px 5px 30px; margin: 5px 15px 25px 15px; border: 3.5px solid transparent; border-radius: 25px; width: max-content; justify-self: center;}
         .alert-info {background-color: #00d9fbe6; border-color: #d1ecf1; text-align: center; font-weight: 600;}
         .alert-success {background-color: #90ee90e3; border-color: #d9ffe1; text-align: center; font-weight: 600;}
         .alert-error {background-color: #ffa0a9e3; border-color: #ffd7d7; text-align: center; font-weight: 600;}
-    </style>
+
+</style>
 
 <!-- Hero Section -->
 <section class="hero-section flex items-center justify-center text-center text-white relative">
     <div class="flex flex-col items-center">
         {% if messages %}
-            {% for data in messages %}
-            <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
-                {{ data }}
-            </div>
-            {% endfor %}
+        {% for data in messages %}
+        <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
+            {{ data }}
+        </div>
+        {% endfor %}
         {% endif %}
         <h1 class="text-6xl font-bold mb-4 uppercase">
             Compare
@@ -29,15 +30,18 @@ EcomVision
         <p class="text-xl mb-8">
             Find the best product or service for your needs
         </p>
-        <div class="search-section">
-            <div class="search-bar flex justify-evenly">
-                <input placeholder="Search for a comparison..." type="text" />
+
+        <form action="/scraper/" method="post" style="width:65%;">
+            {% csrf_token %}
+            <div class="search-section">
+                <div class="search-bar flex justify-evenly" style="width:87%; padding-top: 1%; padding-bottom: 1%;">
+                    <input type="text" name="query" placeholder="Search for a comparison..." pattern="\S.*"
+                           title="Please begin with a character..." autofocus required>
+                </div> <!-- First character can't be space  || 2.  Space can't be first!-->
+                <button type="submit" style="width: 15%;">Search</button>
             </div>
-            <button>
-                Search
-            </button>
-        </div>
-    </div>
+        </form>
+
     </div>
     <div class="scroll-down">
         <i class="fas fa-chevron-down text-3xl text-white-50">
@@ -56,8 +60,8 @@ EcomVision
             <div class="column">
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two smartphones" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/N2caYg3AsWKrNHrTDZ0XmLJCyCy1BjM65Z8UxEMqP0M.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/N2caYg3AsWKrNHrTDZ0XmLJCyCy1BjM65Z8UxEMqP0M.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Smartphone A vs Smartphone B
                     </h3>
@@ -67,8 +71,8 @@ EcomVision
                 </div>
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two laptops" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/CVv-k8wA6fSi3ze7JNSVKLoXaf4KWF5NWh6wfbfUvoc.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/CVv-k8wA6fSi3ze7JNSVKLoXaf4KWF5NWh6wfbfUvoc.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Laptop A vs Laptop B
                     </h3>
@@ -80,8 +84,8 @@ EcomVision
             <div class="column">
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two headphones" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/2H_6b7gOMOet6_jQug8Xjg4ZPMly_Rsm77bRoUAcMZ0.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/2H_6b7gOMOet6_jQug8Xjg4ZPMly_Rsm77bRoUAcMZ0.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Headphone A vs Headphone B
                     </h3>
@@ -91,8 +95,8 @@ EcomVision
                 </div>
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two smartwatches" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/KySXYn6_SGDSta8LeCmnRx0YL_ifiTOC-W7zx_8Lvjk.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/KySXYn6_SGDSta8LeCmnRx0YL_ifiTOC-W7zx_8Lvjk.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Smartwatch A vs Smartwatch B
                     </h3>
@@ -104,8 +108,8 @@ EcomVision
             <div class="column">
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two cameras" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/x8T6eax0gOpI8u3wRl-9NtLmmGam9Y03l9zH2_5FwWY.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/x8T6eax0gOpI8u3wRl-9NtLmmGam9Y03l9zH2_5FwWY.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Camera A vs Camera B
                     </h3>
@@ -115,8 +119,8 @@ EcomVision
                 </div>
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two tablets" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/TUcKTz5CzlwqtVF3PfUZo-6uceRo3AGrLcakoYiATbU.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/TUcKTz5CzlwqtVF3PfUZo-6uceRo3AGrLcakoYiATbU.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Tablet A vs Tablet B
                     </h3>
@@ -128,8 +132,8 @@ EcomVision
             <div class="column">
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two headphones" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/2H_6b7gOMOet6_jQug8Xjg4ZPMly_Rsm77bRoUAcMZ0.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/2H_6b7gOMOet6_jQug8Xjg4ZPMly_Rsm77bRoUAcMZ0.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Headphone A vs Headphone B
                     </h3>
@@ -139,8 +143,8 @@ EcomVision
                 </div>
                 <div class="card bg-white p-6 rounded-lg shadow">
                     <img alt="Comparison between two smartwatches" class="w-full h-40 object-cover mb-4" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/KySXYn6_SGDSta8LeCmnRx0YL_ifiTOC-W7zx_8Lvjk.jpg"
-                        width="300" />
+                         src="https://storage.googleapis.com/a1aa/image/KySXYn6_SGDSta8LeCmnRx0YL_ifiTOC-W7zx_8Lvjk.jpg"
+                         width="300"/>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">
                         Smartwatch A vs Smartwatch B
                     </h3>
@@ -155,7 +159,8 @@ EcomVision
 
 <!-- Text Section -->
 <section class="flex flex-col max-w-[60rem] mt-[5rem] mb-[8rem] ml-auto mr-auto relative items-center">
-    <h2 class="text-black-50 text-[3rem] font-bold tracking-tight mb-[-3rem] p-0 text-center whitespace-pre-wrap">Your Ultimate Guide to Making Smarter Choices EcomVision.
+    <h2 class="text-black-50 text-[3rem] font-bold tracking-tight mb-[-3rem] p-0 text-center whitespace-pre-wrap">Your
+        Ultimate Guide to Making Smarter Choices EcomVision.
     </h2>
     <p class="text-black text-[1.1rem] font-stretch-normal non-italic font-normal tracking-normal  text-center w-[90%]">
         We are a passionate team of unbiased experts, dedicated to simplifying your decisions. No fluff, no bias—just
@@ -163,7 +168,7 @@ EcomVision
     </p>
     <div class="text_sec_btns items-center flex flex-row justify-between mt-[2.5rem] text-center">
         <a class="bg-[#531889] rounded-full text-white text-[.875rem] font-semibold pt-[.8rem] pb-[.8rem] pl-[2rem] pr-[2rem] no-underline category"
-            href="/category">See all categories</a>
+           href="/category">See all categories</a>
         <a class="text-[.875rem] font-semibold text-center no-underline pl-[2rem] flex flex-row items-center" href="#">
             How we work
             <span class="pl-1 pb-[0.5]">→</span>
