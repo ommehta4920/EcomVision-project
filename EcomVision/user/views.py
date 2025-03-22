@@ -164,19 +164,43 @@ class Send_otpPage(View):
 
 class CategoryPage(View):
     def get(self, request):
-        return render(request, "category.html")
+        category = categories.objects.all()
+        return render(request, "category.html", {"categories": category})
 
 class ProductListPage(View):
-    def get(self, request):
-        return render(request, "product_list.html")
+    def get(self, request, c_id):
+        category = get_object_or_404(categories, category_id=c_id)
+        products_list = products.objects.filter(category_id_id = category.category_id)
+        return render(request, "product_list.html", {"products": products_list, "category": category})
     
 class ProductDetailsPage(View):
-    def get(self, request):
-        return render(request, "product_details.html")
+    def get(self, request, c_id, p_id):
+        # Fetching Product and Category data
+        category = get_object_or_404(categories, category_id = c_id)
+        c_name = category.category_name[:-1]
+        product_data = get_object_or_404(products, product_id = p_id)
+        
+        # Fetching Latest Price 
+        p_price = product_data.product_price
+        if p_price:
+            last_date = max(p_price.keys())  # Get the last date
+            last_price = p_price[last_date]  # Get the price for the last date
+        else:
+            last_price = "N/A"
+            
+        # Fetching Data to display in the graphs
+        labels = sorted(p_price.keys())
+        values = (p_price[date] for date in labels)     
+        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values], "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
+        return render(request, "product_details.html", context)
        
 class ProductComparisonPage(View):
     def get(self, request):
-        return render(request, "comparison.html")
+        category_data = categories.objects.all()
+        tv_data = products.objects.filter(category_id = 12)
+        laptop_data = products.objects.filter(category_id = 14)
+        mobile_data = products.objects.filter(category_id = 13)
+        return render(request, "comparison.html", {"category_data": category_data, "tv_data": tv_data, "laptop_data": laptop_data, "mobile_data": mobile_data})
 
 class ScraperPage(View):
     def get(self,request):
@@ -204,3 +228,8 @@ class ScraperPage(View):
         except subprocess.CalledProcessError as e:
             messages.error(request, f"Scrapy encountered an error: {e}")
         return redirect("/")
+
+
+class ProfilePage(View):
+    def get(self, request):
+        return (request, 'profile.html')

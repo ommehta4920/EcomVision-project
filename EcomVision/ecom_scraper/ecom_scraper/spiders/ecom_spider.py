@@ -106,7 +106,11 @@ class EcomSpider(scrapy.Spider):
                 
                 # -------------------------------  product category -------------------------------------
                 category_container = response.css("._7dPnhA")
-                item["c_name"] = category_container.xpath('//div[3]/a/text()').get()
+                c_name = category_container.xpath('//div[3]/a/text()').get()
+                if c_name is not None:
+                    item["c_name"] = c_name
+                else:
+                    item["c_name"] = self.query
                 # print(f"Product Category: {category}")
             
                 # -------------------------------  product price -------------------------------------
@@ -121,7 +125,13 @@ class EcomSpider(scrapy.Spider):
                 # print(f"Images: {images}")
                 
                 # -------------------------------  product ratings -------------------------------------
-                item["p_rating"] = response.css('.Y1HWO0>.XQDdHH::text').get()
+                p_rating = response.css('.Y1HWO0>.XQDdHH::text').get()
+                if p_rating:
+                    item["p_rating"] = p_rating
+                elif p_rating is None:
+                    item["p_rating"] = "0"
+                else:
+                    item["p_rating"] = "0"
                 # print(f"Ratings: {ratings}")
                 
                 # -------------------------------  product availability -------------------------------------
@@ -207,11 +217,24 @@ class EcomSpider(scrapy.Spider):
                 item["p_url"] = response.url
             
                 # -------------------------------  product name -------------------------------------
-                item["p_name"] = str(response.css(".product-title-word-break::text").get()).strip()
+                p_name = str(response.css(".product-title-word-break::text").get())
+                if p_name:
+                    item["p_name"] = p_name.strip()
                 # print(f"Product Title: {title}")
                 
                 # -------------------------------  product category -------------------------------------
-                item["c_name"] = response.xpath('//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[7]/span/a/text()').get()
+                if self.query == 'laptop':
+                    c_name = response.xpath('//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[3]/span/a/text()').get()
+                    if c_name == 'laptops' or c_name == 'Laptops':
+                        item['c_name'] = c_name
+                    elif c_name is None or c_name == 'none' or c_name == 'None' or c_name == '':
+                        item['c_name'] = 'laptops'
+                else:
+                    c_name = response.xpath('//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[7]/span/a/text()').get()
+                    if c_name is None or c_name == 'none':
+                        item['c_name'] = self.query
+                    else:
+                        item['c_name'] = c_name
                 # print(f"Product Category: {category}")
             
                 # -------------------------------  product price -------------------------------------
@@ -234,9 +257,14 @@ class EcomSpider(scrapy.Spider):
                 
                 # -------------------------------  product ratings -------------------------------------
                 ratings_main_container = response.xpath("//div[@id='averageCustomerReviews_feature_div']")
-                ratings = ratings_main_container.css(".a-popover-trigger>span::text").get().strip()
+                ratings = str(ratings_main_container.css(".a-popover-trigger>span::text").get())
                 # print(f"Ratings: {ratings}")
-                item["p_rating"] = ratings
+                if ratings is not None:
+                    item["p_rating"] = ratings.strip()
+                elif ratings is None:
+                    item["p_rating"] = "0"
+                else:
+                    item["p_rating"] = "0"
             
                 # -------------------------------  product availability -------------------------------------
                 availability_container = response.xpath("//div[@id='availability']")

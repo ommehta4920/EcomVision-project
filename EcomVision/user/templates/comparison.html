@@ -7,188 +7,158 @@ EcomVision | Comparison
 {% block content %}
 
 <section class="comparison-hero-section flex items-center justify-center text-center text-white relative">
-    <h1 class="text-6xl font-bold text-white-50 uppercase">
+    <h1 class="text-6xl font-bold text-white uppercase">
         Product
         <span class="comparison-hero-title-span">Comparison</span>
     </h1>
 </section>
 
-<div class="comaprison-container m-[3rem] mt-[2rem] px-4 py-8 w-[95%]">
-    <div class="comparison-subcontainer p-4 rounded-lg mt-8">
-        <div class="overflow-x-auto">
-            <table class="min-w-full min-h-[70vh] bg-white border border-gray-200" id="comparison-table">
-                <thead>
-                    <tr>
-                        <th
-                            class="py-2 px-4 bg-gray-100 text-center text-sm font-semibold text-gray-700">
-                        </th>
-                        <th
-                            class="py-2 px-4 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                            <div class="flex flex-col items-center">
-                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
-                                    placeholder="Search Product" type="text" />
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                    onclick="searchProduct(this)">
-                                    Search
-                                </button>
-                            </div>
-                        </th>
-                        <th
-                            class="py-2 px-4 border border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                            <div class="flex flex-col items-center">
-                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
-                                    placeholder="Search Product" type="text" />
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                    onclick="searchProduct(this)">
-                                    Search
-                                </button>
-                            </div>
-                        </th>
-                        <th
-                            class="py-2 px-4 border border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                            <div class="flex flex-col items-center">
-                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
-                                    placeholder="Search Product" type="text" />
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                    onclick="searchProduct(this)">
-                                    Search
-                                </button>
-                            </div>
-                        </th>
-                        <th
-                            class="py-2 px-4 border border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                            <div class="flex flex-col items-center">
-                                <input class="product-search border border-gray-300 rounded-lg px-4 py-2 w-full mb-2"
-                                    placeholder="Search Product" type="text" />
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                    onclick="searchProduct(this)">
-                                    Search
-                                </button>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700 h-[50vh]">
-                            Image
-                        </th>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700">
-                            <div class="flex justify-center">
-                                <img alt="Image of Product 1" class="product-image rounded-lg" height="200"
-                                src="https://storage.googleapis.com/a1aa/image/ErG_iML3uuC_NIcLwmGSvsU4y-tyVJTrwE8lYgOg3UE.jpg"
-                                width="200" />
-                            </div>
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700">
-                            <div class="flex justify-center">
-                                <img alt="Image of Product 2" class="product-image rounded-lg" height="200"
-                                src="https://storage.googleapis.com/a1aa/image/oLznHlQiTsvXI6P5fkdue35aM2jw6Jszl40XDD6Nba0.jpg"
-                                width="200" />
-                            </div>  
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                            Price
-                        </th>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-price">
-                            $999.99
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-price">
-                            $899.99
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-price">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-price">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                            Rating
-                        </th>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-rating">
-                            4.5/5
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-rating">
-                            4.3/5
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-rating">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-rating">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                            Screen Size
-                        </th>
-                        <td
-                            class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-screen-size">
-                            6.7 inches
-                        </td>
-                        <td
-                            class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-screen-size">
-                            6.5 inches
-                        </td>
-                        <td
-                            class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-screen-size">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-screen-size">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                            Processor
-                        </th>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-processor">
-                            Snapdragon 888
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-processor">
-                            Snapdragon 870
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-processor">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-processor">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                            RAM
-                        </th>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-ram">
-                            12GB
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-ram">
-                            8GB
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-ram">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-ram">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="py-2 px-4 border border-gray-200 text-sm text-gray-700">
-                            Storage
-                        </th>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-storage">
-                            256GB
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-storage">
-                            128GB
-                        </td>
-                        <td class="py-2 px-4 border border-r border-gray-200 text-sm text-gray-700 product-storage">
-                        </td>
-                        <td class="py-2 px-4 border border-gray-200 text-sm text-gray-700 product-storage">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="container mx-auto p-4">
+    <!-- Form Section -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+        <form class="md:flex-row md:space-x-4 space-y-4 md:space-y-0 relative w-[100%]"
+            style="display: flex; flex-direction: row;" id="comparisonForm">
+            <div class="w-[25%] relative">
+                <label class="block text-sm font-medium text-gray-700" for="category">
+                    Select Category
+                </label>
+                <select
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    id="category" name="category" onchange="filterProducts()">
+                    <option value="" disabled selected >
+                        Select Category
+                    </option>
+                    {% for category in category_data %}
+                    <option value="{{ category.category_name }}">
+                        {{ category.category_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="w-[25%] relative">
+                <label class="block text-sm font-medium text-gray-700" for="product1">
+                    Select Product 1
+                </label>
+                <select
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    id="product1" name="product1">
+                </select>
+            </div>
+            <div class="w-[25%] relative">
+                <label class="block text-sm font-medium text-gray-700" for="product2">
+                    Select Product 2
+                </label>
+                <select
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    id="product2" name="product2">
+                </select>
+            </div>
+            <div class="w-[25%] mt-3" style="display: flex; justify-content: center; align-items: center;">
+                <button
+                    class="w-80 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onclick="compareProducts()" type="button">
+                    Compare
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Comparison Section -->
+    <div class="hidden bg-white p-6 rounded-lg shadow-lg" id="comparisonResult">
+        <h2 class="text-2xl font-bold text-center mb-6">
+            Comparison Result
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Product 1 -->
+            <div class="border p-4 rounded-lg">
+                <img alt="Image of Product 1" class="w-full h-48 object-cover mb-4"
+                    src="https://placehold.co/300x200" />
+                <h3 class="text-xl font-bold mb-2">
+                    Product 1
+                </h3>
+                <p class="text-gray-700 mb-2">
+                    Description of Product 1
+                </p>
+                <ul class="list-disc list-inside text-gray-700">
+                    <li>
+                        Feature 1
+                    </li>
+                    <li>
+                        Feature 2
+                    </li>
+                    <li>
+                        Feature 3
+                    </li>
+                </ul>
+            </div>
+            <!-- Product 2 -->
+            <div class="border p-4 rounded-lg">
+                <img alt="Image of Product 2" class="w-full h-48 object-cover mb-4"
+                    src="https://placehold.co/300x200" />
+                <h3 class="text-xl font-bold mb-2">
+                    Product 2
+                </h3>
+                <p class="text-gray-700 mb-2">
+                    Description of Product 2
+                </p>
+                <ul class="list-disc list-inside text-gray-700">
+                    <li>
+                        Feature 1
+                    </li>
+                    <li>
+                        Feature 2
+                    </li>
+                    <li>
+                        Feature 3
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    // let laptops = [{% for category in category_data %}
+    //         laptops.push('{{category.category_name|escapejs}}')
+    //     {% endfor %}]
+    const products = {
+        'laptops': [{% for laptop in laptop_data %} '{{laptop.product_name|escapejs|title}}', {% endfor %}],
+        'mobiles': [{% for mobile in mobile_data %} '{{mobile.product_name}}', {% endfor %}],
+        'televisions': [{% for tv in tv_data %} '{{tv.product_name}}', {% endfor %}],
+    };
+
+    function filterProducts() {
+        const category = document.getElementById("category").value;
+        const product1Select = document.getElementById("product1");
+        const product2Select = document.getElementById("product2");
+
+        product1Select.innerHTML = "";
+        product2Select.innerHTML = "";
+
+        products[category].forEach(product => {
+            const option1 = document.createElement("option");
+            option1.value = product;
+            option1.textContent = product;
+            product1Select.appendChild(option1);
+
+            const option2 = document.createElement("option");
+            option2.value = product;
+            option2.textContent = product;
+            product2Select.appendChild(option2);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        filterProducts();
+    });
+
+    function compareProducts() {
+        document.getElementById('comparisonResult').classList.remove('hidden');
+    }
+</script>
+</body>
+
+</html>
+
+
+
 
 {% endblock %}
