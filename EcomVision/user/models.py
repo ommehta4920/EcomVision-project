@@ -8,8 +8,8 @@ class user_details(models.Model):
     user_name = models.CharField(null=False, max_length=50)
     user_otp = models.CharField(null=True, max_length=10)
 
-    # def __str__(self):
-    #     return f"{self.user_email} - {self.user_name}"
+    def __str__(self):
+        return f"{self.user_email} - {self.user_name}"
 
 
 # Stores website details which are going to be scraped

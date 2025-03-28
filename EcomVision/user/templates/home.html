@@ -24,8 +24,11 @@ EcomVision
         {% endfor %}
         {% endif %}
         <h1 class="text-6xl font-bold mb-4 uppercase">
+            {{ user_data.user_name }}
             Compare
-            <span class="underline-text">Electornic Items</span>
+            <span class="underline-text">Electornic Items {{ user_data.user_name }}</span>
+            <br>
+            {{ user_data.user_name }}
         </h1>
         <p class="text-xl mb-8">
             Find the best product or service for your needs

@@ -26,7 +26,6 @@ class Migration(migrations.Migration):
                 ('user_passwd', models.CharField(max_length=20)),
                 ('user_name', models.CharField(max_length=50)),
                 ('user_otp', models.CharField(max_length=10, null=True)),
-                ('created_at', models.DateTimeField()),
             ],
         ),
         migrations.CreateModel(
@@ -48,6 +47,7 @@ class Migration(migrations.Migration):
                 ('is_available', models.BooleanField(default=True)),
                 ('product_url', models.URLField()),
                 ('product_image_url', models.JSONField(default=dict, null=True)),
+                ('product_details', models.JSONField(null=True)),
                 ('scraped_at', models.DateTimeField(auto_now_add=True)),
                 ('category_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.categories')),
                 ('website_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.website_details')),
