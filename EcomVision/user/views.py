@@ -10,6 +10,9 @@ import subprocess
 import os
 import logging
 
+import random
+from django.core.mail import send_mail
+
 from user.models import *
 
 class HomePage(View):
@@ -118,10 +121,6 @@ class ForgotPage(View):
 
         return render(request, "forgot.html", {"visibility": True, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
 
-
-import random
-from django.core.mail import send_mail
-
 class Send_otpPage(View):
 
     def get(self):
@@ -215,7 +214,7 @@ class ProductComparisonPage(View):
                 return JsonResponse({'products_detail': product_list})
             except categories.DoesNotExist:
                 return HttpResponseNotFound(JsonResponse({'error': 'category not found.'}))
-        return render(request, "product_comparison.html", { "category_data": category_data, 'products_detail': []})
+        return render(request, "comparison.html", { "category_data": category_data, 'products_detail': []})
 
 class ProfilePage(View):
     def get(self, request):
