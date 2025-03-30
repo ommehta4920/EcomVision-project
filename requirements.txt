@@ -6,3 +6,7 @@ scrapy-user-agents
 scrapy-rotating-proxies
 webdriver_manager
 pillow
+redis
+celery
+django-celery-results
+django-celery-beat
