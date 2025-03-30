@@ -2,12 +2,13 @@ import sys
 from EcomVision import settings
 from django.contrib import messages
 from django.utils import timezone
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import *
 import subprocess
 import os
+import logging
 
 from user.models import *
 
@@ -43,8 +44,6 @@ class SignInPage(View):
             messages.error(request, "Your Email isn't registered or Password is incorrect!")
             messages.info(request, "Please try again..")
             return render(request, "signin.html", {"user_email": user_email})
-
-
 
 class SignUpPage(View):
     def get(self, request):
@@ -195,41 +194,54 @@ class ProductDetailsPage(View):
         return render(request, "product_details.html", context)
        
 class ProductComparisonPage(View):
-    def get(self, request):
+    def get(self, request, c_id = None):
         category_data = categories.objects.all()
-        tv_data = products.objects.filter(category_id = 12)
-        laptop_data = products.objects.filter(category_id = 14)
-        mobile_data = products.objects.filter(category_id = 13)
-        return render(request, "comparison.html", {"category_data": category_data, "tv_data": tv_data, "laptop_data": laptop_data, "mobile_data": mobile_data})
+        if c_id:
+            logger = logging.getLogger(__name__)
+            logger.debug(f"Category ID received: {c_id}")
+            try:
+                categoryData = categories.objects.get(category_id = c_id)
+                product_data = products.objects.filter(category_id=categoryData.category_id)
+                print(f"Category ID: {c_id}, Products Found: {product_data.count()}")
 
-class ScraperPage(View):
-    def get(self,request):
-        return render(request, "scraper.html")
-    
-    def post(self, request):
-        query = request.POST["query"]
-
-        print("\n ********* query :-"+query+"\n")
-        
-        # if not query:
-        #     messages.error(request, "Please Provide Input")
-        #     return redirect("/scraper")
-        
-        project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
-
-        # Set environment variables for Django
-        env = os.environ.copy()
-        env["DJANGO_SETTINGS_MODULE"] = "EcomVision.settings"
-        env["PYTHONPATH"] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        
-        try:
-            subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env, check=True)
-            messages.success(request, f"Scraping completed for: {query}")
-        except subprocess.CalledProcessError as e:
-            messages.error(request, f"Scrapy encountered an error: {e}")
-        return redirect("/")
-
+                if not product_data.exists():  # Ensure products exist
+                    return JsonResponse({'products_detail': [], 'message': 'No products found'})
+                product_list = [{'product_id': p.product_id, 'product_name': p.product_name, 'product_price': p.product_price, 'product_rating': p.product_ratings, 'product_image': p.product_image_url[0], 'product_details': p.product_details} for p in product_data]
+                # print(product_list)
+                return JsonResponse({'products_detail': product_list})
+            except categories.DoesNotExist:
+                return HttpResponseNotFound(JsonResponse({'error': 'category not found.'}))
+        return render(request, "product_comparison.html", { "category_data": category_data, 'products_detail': []})
 
 class ProfilePage(View):
     def get(self, request):
-        return (request, 'profile.html')
+        userid = request.session.get("user_id")
+        if not userid:
+            return redirect("/signin")
+        else:
+            user_data = user_details.objects.get(user_id = userid)
+        
+        return render(request, 'profile.html', {"user_data": user_data})
+
+    def post(self, request):
+        user_id = request.session.get("user_id")
+
+        if not user_id:
+            return redirect("/signin")
+
+        # Get updated data from form
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+
+        # Update user details in the database
+        user = user_details.objects.get(user_id=user_id)
+        user.user_name = name
+        user.user_email = email
+        user.save()
+
+        # Update session with new data
+        request.session["user_name"] = name
+        request.session["user_email"] = email
+
+        messages.success(request, "Profile updated successfully!")
+        return redirect("/profile")
