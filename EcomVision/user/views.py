@@ -249,3 +249,7 @@ class ProfilePage(View):
 
         messages.success(request, "Profile updated successfully!")
         return redirect("/profile")
+
+def logout_user(request):
+    request.session.flush()
+    return redirect("/")
