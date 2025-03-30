@@ -49,6 +49,7 @@ class Migration(migrations.Migration):
                 ('is_available', models.BooleanField(default=True)),
                 ('product_url', models.URLField(max_length=500)),
                 ('product_image_url', models.JSONField(default=dict, null=True)),
+                ('product_details', models.JSONField(null=True)),
                 ('scraped_at', models.DateTimeField(auto_now_add=True)),
                 ('category_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.categories')),
                 ('website_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.website_details')),

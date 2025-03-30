@@ -29,12 +29,14 @@ class SignInPage(View):
         if user_details.objects.filter(user_email=user_email, user_passwd=user_passwd).exists():
 
             try:
-                user = user_details.objects.filter(user_email=user_email).first()
-                print("User Details :- ", user)
+                # user = user_details.objects.filter(user_email=user_email).first()
 
-                messages.success(request, "Welcome "+str(user.user_name))
+                user_data = get_object_or_404(user_details, user_email=user_email)
+                print("User Details :- ", user_data)
 
-                return redirect("/", {"user_name": user.user_name})
+                messages.success(request, "Welcome "+user_data.user_name)
+
+                return redirect("/", {"user_data": user_data})
 
             except:
                 print("--------", sys.exc_info())
@@ -178,6 +180,8 @@ class ProductDetailsPage(View):
         category = get_object_or_404(categories, category_id = c_id)
         c_name = category.category_name[:-1]
         product_data = get_object_or_404(products, product_id = p_id)
+
+        print("\n **---- Product_data : ", product_data, "\n")
         
         # Fetching Latest Price 
         p_price = product_data.product_price
