@@ -5,6 +5,7 @@ from .models import categories
 
 @shared_task(bind=True)
 def categoryScrapper(self):
+    # print("This is Category Scrapper.")
     categoryNames = categories.objects.values_list('category_name', flat=True)
     project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
     if not categoryNames:
@@ -17,6 +18,7 @@ def categoryScrapper(self):
 
 @shared_task(bind=True)
 def productScrapper(self):
+    # print("This is product Scrapper")
     project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
     subprocess.run(["scrapy", "crawl", "productSpider"], cwd=project_path)
     return "Product-Scrapping Done"

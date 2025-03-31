@@ -19,10 +19,12 @@ app.conf.beat_schedule = {
     'Category-Scrapper': {
         'task': 'user.tasks.categoryScrapper',
         'schedule': crontab(hour="16", minute="08"),
+        # 'schedule': crontab(minute="*"),
     },
     'Product-Scrapper': {
         'task': 'user.tasks.productScrapper',
-        'schedule': crontab(hour="14", minute="27")
+        'schedule': crontab(hour="14", minute="27"),
+        # 'schedule': crontab(minute="*"),
     }
 }
 
