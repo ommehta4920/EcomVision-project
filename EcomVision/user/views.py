@@ -11,6 +11,12 @@ import os
 
 from user.models import *
 
+# Create your views here.
+
+# global variable :-
+email = ""
+
+
 class HomePage(View):
     def get(self, request):
         return render(request, "home.html")
@@ -28,14 +34,14 @@ class SignInPage(View):
         if user_details.objects.filter(user_email=user_email, user_passwd=user_passwd).exists():
 
             try:
-                # user = user_details.objects.filter(user_email=user_email).first()
+                # user_data = user_details.objects.filter(user_email=user_email).first()
 
                 user_data = get_object_or_404(user_details, user_email=user_email)
                 print("User Details :- ", user_data)
 
                 messages.success(request, "Welcome "+user_data.user_name)
 
-                return redirect("/", {"user_data": user_data})
+                return render(request, "home.html", {"user_data": user_data})
 
             except:
                 print("--------", sys.exc_info())
@@ -47,6 +53,43 @@ class SignInPage(View):
             return render(request, "signin.html", {"user_email": user_email})
 
 
+class ProfilePage(View):
+    def get(self, request):
+        userid = request.session.get("user_id")
+        if not userid:
+            return redirect("/signin")
+        else:
+            user_data = user_details.objects.get(user_id=userid)
+
+        return render(request, 'profile.html', {"user_data": user_data})
+
+    def post(self, request):
+        user_id = request.session.get("user_id")
+
+        if not user_id:
+            return redirect("/signin")
+
+        # Get updated data from form
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+
+        # Update user details in the database
+        user = user_details.objects.get(user_id=user_id)
+        user.user_name = name
+        user.user_email = email
+        user.save()
+
+        # Update session with new data
+        request.session["user_name"] = name
+        request.session["user_email"] = email
+
+        messages.success(request, "Profile updated successfully!")
+        return redirect("/profile")
+
+
+def logout_user(request):
+    request.session.flush()
+    return redirect("/")
 
 class SignUpPage(View):
     def get(self, request):
@@ -184,7 +227,7 @@ class ProductDetailsPage(View):
 
         print("\n **---- Product_data : ", product_data, "\n")
         
-        # Fetching Latest Price 
+        # Fetching Latest Price
         p_price = product_data.product_price
         if p_price:
             last_date = max(p_price.keys())  # Get the last date
@@ -236,4 +279,42 @@ class ScraperPage(View):
 
 class ProfilePage(View):
     def get(self, request):
-        return (request, 'profile.html')
+        userid = request.session.get("user_id")
+        if not userid:
+            return redirect("/signin")
+        else:
+            user_data = user_details.objects.get(user_id=userid)
+
+        return render(request, 'profile.html', {"user_data": user_data})
+
+    def post(self, request):
+        user_id = request.session.get("user_id")
+
+        if not user_id:
+            return redirect("/signin")
+
+        # Get updated data from form
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+
+        # Update user details in the database
+        user = user_details.objects.get(user_id=user_id)
+        user.user_name = name
+        user.user_email = email
+        user.save()
+
+        # Update session with new data
+        request.session["user_name"] = name
+        request.session["user_email"] = email
+
+        messages.success(request, "Profile updated successfully!")
+        return redirect("/profile")
+
+
+def logout_user(request):
+    request.session.flush()
+    return redirect("/")
+
+class PriceTrackPage(View):
+
+    pass

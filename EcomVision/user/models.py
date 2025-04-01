@@ -28,7 +28,7 @@ class categories(models.Model):
     category_name = models.CharField(null=False, unique=True, max_length=100)
 
     def __str__(self):
-        return f"{self.category_name}"
+        return f"{self.category_id, self.category_name}"
 
 
 # Stores product details
