@@ -53,43 +53,6 @@ class SignInPage(View):
             return render(request, "signin.html", {"user_email": user_email})
 
 
-class ProfilePage(View):
-    def get(self, request):
-        userid = request.session.get("user_id")
-        if not userid:
-            return redirect("/signin")
-        else:
-            user_data = user_details.objects.get(user_id=userid)
-
-        return render(request, 'profile.html', {"user_data": user_data})
-
-    def post(self, request):
-        user_id = request.session.get("user_id")
-
-        if not user_id:
-            return redirect("/signin")
-
-        # Get updated data from form
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-
-        # Update user details in the database
-        user = user_details.objects.get(user_id=user_id)
-        user.user_name = name
-        user.user_email = email
-        user.save()
-
-        # Update session with new data
-        request.session["user_name"] = name
-        request.session["user_email"] = email
-
-        messages.success(request, "Profile updated successfully!")
-        return redirect("/profile")
-
-
-def logout_user(request):
-    request.session.flush()
-    return redirect("/")
 
 class SignUpPage(View):
     def get(self, request):
@@ -217,7 +180,7 @@ class ProductListPage(View):
         category = get_object_or_404(categories, category_id=c_id)
         products_list = products.objects.filter(category_id_id = category.category_id)
         return render(request, "product_list.html", {"products": products_list, "category": category})
-    
+
 class ProductDetailsPage(View):
     def get(self, request, c_id, p_id):
         # Fetching Product and Category data
@@ -226,7 +189,7 @@ class ProductDetailsPage(View):
         product_data = get_object_or_404(products, product_id = p_id)
 
         print("\n **---- Product_data : ", product_data, "\n")
-        
+
         # Fetching Latest Price
         p_price = product_data.product_price
         if p_price:
@@ -234,13 +197,13 @@ class ProductDetailsPage(View):
             last_price = p_price[last_date]  # Get the price for the last date
         else:
             last_price = "N/A"
-            
+
         # Fetching Data to display in the graphs
         labels = sorted(p_price.keys())
-        values = (p_price[date] for date in labels)     
+        values = (p_price[date] for date in labels)
         context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values], "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
         return render(request, "product_details.html", context)
-       
+
 class ProductComparisonPage(View):
     def get(self, request):
         category_data = categories.objects.all()
@@ -252,23 +215,23 @@ class ProductComparisonPage(View):
 class ScraperPage(View):
     def get(self,request):
         return render(request, "scraper.html")
-    
+
     def post(self, request):
         query = request.POST["query"]
 
         print("\n ********* query :-"+query+"\n")
-        
+
         # if not query:
         #     messages.error(request, "Please Provide Input")
         #     return redirect("/scraper")
-        
+
         project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
 
         # Set environment variables for Django
         env = os.environ.copy()
         env["DJANGO_SETTINGS_MODULE"] = "EcomVision.settings"
         env["PYTHONPATH"] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        
+
         try:
             subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env, check=True)
             messages.success(request, f"Scraping completed for: {query}")
