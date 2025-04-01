@@ -10,12 +10,13 @@ urlpatterns = [
     path('category/<int:c_id>/', ProductListPage.as_view(), name='products-list-page'),
     path('category/<int:c_id>/<str:p_id>/', ProductDetailsPage.as_view(), name='product-detail-page'),
     path('comparison/', ProductComparisonPage.as_view(), name='product-comparison-page'),
-    path('comparison/<int:c_id>', ProductComparisonPage.as_view(), name='product-comparison-page-with-id'),
-    path('comparison/<int:c_id>/<str:p_id>/', ProductComparisonPage.as_view(), name='product-comparison-page'),
+    # path('comparison/category/', CategoryPage.as_view(), name='product-comparison-page'),
+    # path('comparison/<int:c_id>', ProductComparisonPage.as_view(), name='product-comparison-page-with-id'),
+    # path('comparison/<int:c_id>/<str:p_id>/', ProductComparisonPage.as_view(), name='product-comparison-page-with-id'),
     path('signin/', SignInPage.as_view(), name='signin-page'),
     path('signup/', SignUpPage.as_view(), name='signup-page'),
+    path('scraper/', ScraperPage.as_view(), name='scraper-page'),
     path('profile/', ProfilePage.as_view(), name='profile-page'),
-    path('logout/', views.logout_user, name='logout'),
 ]
 
 if settings.DEBUG:
