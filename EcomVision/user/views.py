@@ -8,13 +8,11 @@ from django.views import View
 from .models import *
 import subprocess
 import os
+import logging
 
 from user.models import *
 
 # Create your views here.
-
-# global variable :-
-email = ""
 
 
 class HomePage(View):
@@ -37,6 +35,7 @@ class SignInPage(View):
                 # user_data = user_details.objects.filter(user_email=user_email).first()
 
                 user_data = get_object_or_404(user_details, user_email=user_email)
+                request.session["user_email"] = user_data.user_email
                 print("User Details :- ", user_data)
 
                 messages.success(request, "Welcome "+user_data.user_name)
@@ -205,12 +204,28 @@ class ProductDetailsPage(View):
         return render(request, "product_details.html", context)
 
 class ProductComparisonPage(View):
-    def get(self, request):
+    def get(self, request, c_id=None):
         category_data = categories.objects.all()
-        tv_data = products.objects.filter(category_id = 12)
-        laptop_data = products.objects.filter(category_id = 14)
-        mobile_data = products.objects.filter(category_id = 13)
-        return render(request, "comparison.html", {"category_data": category_data, "tv_data": tv_data, "laptop_data": laptop_data, "mobile_data": mobile_data})
+        if c_id:
+            logger = logging.getLogger(__name__)
+            logger.debug(f"Category ID received: {c_id}")
+            try:
+                categoryData = categories.objects.get(category_id=c_id)
+                product_data = products.objects.filter(category_id=categoryData.category_id)
+                print(f"Category ID: {c_id}, Products Found: {product_data.count()}")
+
+                if not product_data.exists():  # Ensure products exist
+                    return JsonResponse({'products_detail': [], 'message': 'No products found'})
+                product_list = [
+                    {'product_id': p.product_id, 'product_name': p.product_name, 'product_price': p.product_price,
+                     'product_rating': p.product_ratings, 'product_image': p.product_image_url[0],
+                     'product_details': p.product_details} for p in product_data]
+                # print(product_list)
+                return JsonResponse({'products_detail': product_list})
+            except categories.DoesNotExist:
+                messages.error(request, "category not found.")
+                return render(request, "product_comparison.html")
+        return render(request, "product_comparison.html", {"category_data": category_data, 'products_detail': []})
 
 class ScraperPage(View):
     def get(self,request):
@@ -242,18 +257,18 @@ class ScraperPage(View):
 
 class ProfilePage(View):
     def get(self, request):
-        userid = request.session.get("user_id")
-        if not userid:
+        useremail = request.session.get("user_email")
+        if not useremail:
             return redirect("/signin")
         else:
-            user_data = user_details.objects.get(user_id=userid)
+            user_data = user_details.objects.get(user_email=useremail)
 
         return render(request, 'profile.html', {"user_data": user_data})
 
     def post(self, request):
-        user_id = request.session.get("user_id")
+        user_email = request.session.get("user_email")
 
-        if not user_id:
+        if not user_email:
             return redirect("/signin")
 
         # Get updated data from form
@@ -261,7 +276,7 @@ class ProfilePage(View):
         email = request.POST.get("email")
 
         # Update user details in the database
-        user = user_details.objects.get(user_id=user_id)
+        user = user_details.objects.get(user_email=user_email)
         user.user_name = name
         user.user_email = email
         user.save()

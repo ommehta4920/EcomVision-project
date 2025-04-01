@@ -26,6 +26,7 @@ class website_details(models.Model):
 class categories(models.Model):
     category_id = models.AutoField(primary_key=True)
     category_name = models.CharField(null=False, unique=True, max_length=100)
+    category_image = models.ImageField(upload_to='category_images/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.category_id, self.category_name}"
