@@ -17,6 +17,8 @@ urlpatterns = [
     path('signup/', SignUpPage.as_view(), name='signup-page'),
     path('scraper/', ScraperPage.as_view(), name='scraper-page'),
     path('profile/', ProfilePage.as_view(), name='profile-page'),
+    path('forgot/', ForgotPage.as_view(), name='forgot-page'),
+    path('send_otp/', Send_otpPage.as_view(), name='send_otp-page'),
 ]
 
 if settings.DEBUG:
