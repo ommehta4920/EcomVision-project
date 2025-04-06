@@ -170,6 +170,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'pshubham8734@gmail.com'
 EMAIL_HOST_PASSWORD = 'msjf itfs jimk tmcq'
 
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_AGE = 1800  # 30 minutes (in seconds)
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # CELERY SETTINGS
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'

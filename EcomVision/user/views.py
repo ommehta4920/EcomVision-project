@@ -381,8 +381,14 @@ class ProfilePage(View):
         return redirect("/profile")
 
 
-def logout_user(request):
-    logout(request)
-    response = HttpResponseRedirect('/signin')
-    response.delete_cookie('sessionid')
-    return response
+class logout_user(View):
+    def get(self, request):
+        logout(request)
+        response = HttpResponseRedirect('/signin')
+        response.delete_cookie('sessionid')
+        return response
+
+
+class AboutUs(View):
+    def get(self, request):
+        return render(request, "aboutus.html")
