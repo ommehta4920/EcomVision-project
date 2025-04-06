@@ -6,11 +6,23 @@ EcomVision | Product Details
 
 {% block content %}
 
-<section class="productdetail-hero-section flex items-center justify-center text-center text-white relative">
+<section class="productdetail-hero-section flex-col flex items-center justify-center text-center text-white relative">
+    <br/>
+    <br/>
     <h1 class="text-6xl font-bold text-white uppercase">
         {{ c_name| title }}
         <span class="productdetail-hero-title-span">Details</span>
     </h1>
+    <br/>
+    <br/>
+    <br/>
+    {% if messages %}
+        {% for data in messages %}
+        <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
+            {{ data }}
+        </div>
+        {% endfor %}
+    {% endif %}
 </section>
 
 <div class="flex flex-col items-center">

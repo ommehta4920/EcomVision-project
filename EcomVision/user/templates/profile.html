@@ -8,10 +8,22 @@ EcomVision | Category
 
 {% load static %}
 
-<section class="category-hero-section flex items-center justify-center text-center text-white relative">
+<section class="category-hero-section flex-col flex items-center justify-center text-center text-white relative">
+    <br/>
+    <br/>
     <h1 class="text-6xl font-bold uppercase" style="color: white;">
         Profile
     </h1>
+    <br/>
+    <br/>
+    <br/>
+    {% if messages %}
+    {% for data in messages %}
+    <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
+        {{ data }}
+    </div>
+    {% endfor %}
+    {% endif %}
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -33,19 +45,19 @@ EcomVision | Category
                     <div style="display: flex; flex-direction: column;">
                         <h1 style="text-align: center; font-size: 22px;"><strong>Welcome, {{ user_data.user_name }}!</strong></h1>
                         <div class="card-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                            <form id="user-form" method="POST" action="{% url 'profile' %}" style="width: 80%;">
+                            <form id="user-form" method="POST" action="/profile/" style="width: 80%;">
                                 {% csrf_token %}
                                 <div class="form-group row w-100">
                                     <label for="inputName" class="col-sm-2 col-form-label" style="width: 10%;">Name</label>
                                     <div class="col-sm-10" style="width: 90%;">
-                                        <input class="form-control" id="inputName" name="name" placeholder="Name" type="text" value="{{ user_data.user_name }}" readonly>
+                                        <input class="form-control" id="inputName" name="name" placeholder="Name" type="text" value="{{ user_data.user_name }}" readonly required>
                                     </div>
                                 </div>
 
                                 <div class="form-group row w-100">
                                     <label for="inputEmail" class="col-sm-2 col-form-label" style="width: 10%;">Email</label>
                                     <div class="col-sm-10" style="width: 90%;">
-                                        <input class="form-control" id="inputEmail" name="email" placeholder="Email" type="email" value="{{ user_data.user_email }}" readonly>
+                                        <input class="form-control" id="inputEmail" name="email" placeholder="Email" type="email" value="{{ user_data.user_email }}" readonly required>
                                     </div>
                                 </div>
 
@@ -77,41 +89,6 @@ EcomVision | Category
                     <p>Your history content goes here.</p>
                 </div>
 
-                <!-- <div class="tab-pane" id="edit">
-                    <form method="POST" action="{% url 'profile' %}">
-                        {% csrf_token %}
-                        <div class="form-group row">
-                            <label for="currentPassword" class="col-sm-2 col-form-label">Current Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="currentPassword" name="current_password" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="newPassword" class="col-sm-2 col-form-label">New Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="newPassword" name="new_password" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="offset-sm-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">UPDATE</button>
-                            </div>
-                        </div>
-                    </form> -->
-
-                    <!-- Display Django Messages -->
-                    <!-- {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                </div> -->
 
             <!-- jQuery -->
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -127,32 +104,9 @@ EcomVision | Category
 </div>
 </div>
 
-{% if messages %}
-<div id="message-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
-    {% for message in messages %}
-    <div class="alert
-                {% if 'success' in message.tags %}alert-success
-                {% elif 'error' in message.tags %}alert-danger
-                {% elif 'warning' in message.tags %}alert-warning
-                {% elif 'info' in message.tags %}alert-info
-                {% else %}alert-secondary{% endif %} 
-                alert-dismissible fade show " role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+
 
 <script>
-    setTimeout(function () {
-        var alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function (alert) {
-            var bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        });
-    }, 3000);
-
     function toggleEdit() {
         document.getElementById("inputName").removeAttribute("readonly");
         document.getElementById("inputEmail").removeAttribute("readonly");

@@ -23,15 +23,14 @@
         .alert-info {background-color: #00d9fbe6; border-color: #d1ecf1; text-align: center; font-weight: 600;}
         .alert-success {background-color: #90ee90e3; border-color: #d9ffe1; text-align: center; font-weight: 600;}
         .alert-error {background-color: #ffa0a9e3; border-color: #ffd7d7; text-align: center; font-weight: 600;}
-
     </style>
-    <style>
-        .error {
-            color: red;
-            font-size: 12px;
-        }
+<!--    <style>-->
+<!--        .error {-->
+<!--            color: red;-->
+<!--            font-size: 12px;-->
+<!--        }-->
 
-    </style>
+<!--    </style>-->
 </head>
 
 <body class="flex items-center justify-center min-h-screen">
@@ -123,77 +122,14 @@
         </div>
     </div>
 </div>
-
-<!--  <script>-->
-<!--    // const form = document.getElementById();-->
-
-<!--    document.addEventListener('submit', function () {-->
-
-<!--      const fullName = document.getElementById('fullname').value.trim();-->
-<!--      const email = document.getElementById('email').value.trim();-->
-<!--      const password = document.getElementById('password').value;-->
-<!--      const confirmPassword = document.getElementById('confirm-password').value;-->
-
-<!--      const nameError = document.getElementById('nameError');-->
-<!--      const emailError = document.getElementById('emailError');-->
-<!--      const passwordError = document.getElementById('passwordError');-->
-<!--      const confirmPasswordError = document.getElementById('confirmPasswordError');-->
-
-<!--      alert("fullName : "+ fullName + "email : "+ email + "password : "+ password + "confirmPassword : "+ confirmPassword)-->
-
-<!--      // Validate Full Name-->
-<!--      if (fullName === '') {-->
-<!--        nameError.textContent = 'Full name is required';-->
-<!--      }-->
-<!--      else {-->
-<!--        nameError.textContent = '';-->
-<!--      }-->
-
-<!--      // Validate Email-->
-<!--      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;-->
-<!--      if (email === '') {-->
-<!--        emailError.textContent = 'Email is required';-->
-<!--      }-->
-<!--      else if (!emailPattern.test(email)) {-->
-<!--        emailError.textContent = 'Invalid email format';-->
-<!--      }-->
-<!--      else {-->
-<!--        emailError.textContent = '';-->
-<!--      }-->
-
-<!--      // Validate Password-->
-<!--      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#+$!%*?&]{8,}$/;-->
-<!--      if (password === '') {-->
-<!--        passwordError.textContent = 'Password is required';-->
-<!--      }-->
-<!--      else if (!passwordPattern.test(password)) {-->
-<!--        alert("Go Ahead...")-->
-<!--        passwordError.textContent = 'Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character.';-->
-<!--      }-->
-<!--      else {-->
-<!--        passwordError.textContent = '';-->
-<!--      }-->
-
-<!--      // Validate Confirm Password-->
-<!--      if (confirmPassword === '') {-->
-<!--        confirmPasswordError.textContent = 'Confirm password is required';-->
-<!--      }-->
-<!--      else if (password !== confirmPassword) {-->
-<!--        alert("Go Ahead!!");-->
-<!--        confirmPasswordError.textContent = 'Passwords do not match';-->
-<!--      }-->
-<!--      else{-->
-<!--        confirmPasswordError.textContent = '';-->
-<!--      }-->
-
-<!--      // If all validations pass-->
-<!--      alert('Form submitted successfully!');-->
-
-<!--    });-->
-<!--  </script>-->
-
-
-<!--<script src="{% static 'js/validation.js' %}"></script>-->
+<script>
+    setTimeout(function () {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert) {
+           alert.style.display = "none";
+        });
+    }, 6500);
+</script>
 
 </body>
 

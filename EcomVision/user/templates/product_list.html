@@ -6,19 +6,25 @@ EcomVision | Products
 
 {% block content %}
 
-<section class="product-hero-section flex items-center justify-center text-center text-white relative">
+<section class="product-hero-section flex-col flex items-center justify-center text-center text-white relative">
+    <br/>
+    <br/>
     <h1 class="text-6xl font-bold text-white uppercase">
         <span class="product-hero-title-span">{{ category.category_name }}</span>
     </h1>
     <br/>
     <br/>
-    <div class="search-section">
+    <br/>
+    <div class="search-section" style="width: 65%;">
         <div class="search-bar flex justify-evenly">
-            <input placeholder="Search for a comparison..." type="text" />
+            <!--            🔍-->
+            <span>&nbsp; &#128269</span>
+            <input type="text" id="productSearch" placeholder="Search a particular product here..."
+                   onkeyup="filterProducts()"/>
         </div>
-        <button>
-            Search
-        </button>
+<!--        <button>-->
+<!--            Search-->
+<!--        </button>-->
     </div>
 </section>
 
@@ -89,10 +95,11 @@ EcomVision | Products
 </section> -->
 <section class="product-card-container grid grid-cols-4 gap-10">
     {% for product in products %}
-    <a href="{% url 'product-detail-page' category.category_id product.product_id %}" class="text-decoration-none">
+    <a href="{% url 'product-detail-page' category.category_id product.product_id %}"
+       class="text-decoration-none product-link" data-name="{{ product.product_name|lower }}">
         <div class="product-card bg-white shadow-lg rounded-lg overflow-hidden">
             <img alt="{{ product.product_name }}" class="w-full h-48 object-cover "
-                src="{{ product.product_image_url.0 }}" />
+                 src="{{ product.product_image_url.0 }}"/>
             <div class="p-6">
                 <h2 class="text-2xl h-25 font-bold text-gray-800 mb-2">
                     {{ product.product_name|truncatechars:50 | title }}
@@ -102,5 +109,22 @@ EcomVision | Products
     </a>
     {% endfor %}
 </section>
+
+<script>
+function filterProducts() {
+    let input = document.getElementById("productSearch").value.toLowerCase();
+    let products = document.getElementsByClassName("product-link");
+
+    Array.from(products).forEach(product => {
+        const productName = product.getAttribute("data-name");
+        if (productName.includes(input)) {
+            product.style.display = "";
+        } else {
+            product.style.display = "none";
+        }
+    });
+}
+
+</script>
 
 {% endblock %}

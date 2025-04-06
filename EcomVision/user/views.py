@@ -38,7 +38,7 @@ class SignInPage(View):
                 request.session["user_id"] = user_data.user_id
                 print("User Details :- ", user_data)
 
-                messages.success(request, "Login Successful, Welcome " + user_data.user_name)
+                messages.success(request, "👋 Login Successful, Welcome " + user_data.user_name + "! 😊")
                 return redirect("/profile")
                 # return render(request, "home.html", {"user_data": user_data})
 
@@ -47,8 +47,8 @@ class SignInPage(View):
 
         else:
             print("---------->>> Your Email or Password is incorrect!")
-            messages.error(request, "Your Email isn't registered or Password is incorrect!")
-            messages.info(request, "Please try again..")
+            messages.error(request, "❌ Your Email isn't registered or Password is incorrect!")
+            messages.info(request, "ℹ Please try again..")
             return render(request, "signin.html", {"user_email": user_email})
 
 
@@ -67,20 +67,20 @@ class SignUpPage(View):
             f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd} \n user_c_passwd : {user_c_passwd}")
 
         if user_details.objects.filter(user_email=user_email).exists():
-            messages.error(request, "Email already registered!")
+            messages.error(request, "❌ Email already registered!")
             return render(request, "signup.html",
                           {"user_name": user_name, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
 
         if user_passwd != user_c_passwd:
             print("-------- Both password must be same..! --------")
-            messages.info(request, "Both password must be same..!")
+            messages.info(request, "ℹ Both password must be same..!")
             return render(request, "signup.html", {"user_name": user_name, "user_email": user_email})
 
         user = user_details(user_name=user_name, user_email=user_email, user_passwd=user_passwd)
 
         try:
             user.save()
-            messages.success(request, "You are successfully registered...")
+            messages.success(request, "✔ You are successfully registered...")
             return render(request, "signin.html", {})
 
         except:
@@ -95,7 +95,7 @@ class ForgotPage(View):
         user_otp = request.POST["user_otp"]
         user_passwd = request.POST["user_passwd"]
         user_c_passwd = request.POST["user_c_passwd"]
-        user_email = request.POST["user_email"]
+        user_email = request.session["t_email"]
 
         print("**********", user_otp, "\n-*-*-*-", user_passwd, "\n-*-*-*-", user_c_passwd, "\n-*-*-*-", user_email)
 
@@ -103,7 +103,7 @@ class ForgotPage(View):
 
             if user_passwd != user_c_passwd:
                 print("-------- Both password must be same..! --------")
-                messages.info(request, "Both password must be same..!")
+                messages.info(request, "ℹ Both password must be same..!")
 
                 return render(request, "forgot.html", {"visibility": True, "user_otp": user_otp})
 
@@ -112,7 +112,7 @@ class ForgotPage(View):
                 user.update(user_passwd=user_passwd)
 
                 print("<<--------- Password has been successfully reset... ---------->>")
-                messages.success(request, "Password has been successfully reset...")
+                messages.success(request, "✔ Password has been successfully reset...")
 
                 return redirect("/signin")
 
@@ -121,7 +121,7 @@ class ForgotPage(View):
 
         else:
             print("-------- OTP is incorrect! --------")
-            messages.error(request, "OTP is incorrect!")
+            messages.error(request, "❌ OTP is incorrect!")
 
         return render(request, "forgot.html",
                       {"visibility": True, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
@@ -140,7 +140,7 @@ class Send_otpPage(View):
         otp = random.randint(1000, 9999)
         user_email = request.POST["user_email"]
 
-
+        request.session["t_email"] = user_email
 
         if user_details.objects.filter(user_email=user_email).exists():
 
@@ -158,16 +158,16 @@ class Send_otpPage(View):
 
                 print("**********", subject, "\n-*-*-*-", message, "\n-*-*-*-", email_from, "\n-*-*-*-", recipient_list)
 
-                messages.info(request, "OTP has been sent to your registered email..!")
+                messages.info(request, "ℹ OTP has been sent to your registered email..!")
 
-                return render(request, "forgot.html", {"visibility": True, "LF_email": user_email})
+                return render(request, "forgot.html", {"visibility": True})
 
             except:
                 print("---------", sys.exc_info())
                 return render(request, "forgot.html", {})
 
         else:
-            messages.error(request, "Email is not registered!")
+            messages.error(request, "❌ Email is not registered!")
             return render(request, "forgot.html", {})
 
 
@@ -217,10 +217,10 @@ class ProductDetailsPage(View):
         # <----- Not required because of session condition on button ----->
         userId = request.session.get("user_id")
         if not userId:
-            return JsonResponse({"error": "User not authenticated"}, status=403)
+            return JsonResponse({"error": "❌ User not authenticated"}, status=403)
         # <----- Not required ----->
 
-        # user = get_object_or_404(user_details, user_id=userId)
+        user = get_object_or_404(user_details, user_id=userId)
 
         # Fetching Latest Price
         p_price = product_data.product_price
@@ -235,13 +235,13 @@ class ProductDetailsPage(View):
 
         # <----- Not required because of HTML required Field ----->
         if not desired_price:
-            return JsonResponse({"error": "Desired price is required"}, status=400)
+            return JsonResponse({"error": "❌ Desired price is required"}, status=400)
         # <---- Not required ----->
 
         exist_data, create_data = price_track.objects.update_or_create(
-            user_id=userId,
-            product_id=p_id,
-            category_id=c_id,
+            user_id=user,
+            product_id=product_data,
+            category_id=category,
             defaults={
                 'desired_price': desired_price,
                 'last_price': last_price,
@@ -250,9 +250,9 @@ class ProductDetailsPage(View):
         )
 
         if create_data:
-            messages.success(request, 'Price tracking has been successfully created!')
+            messages.success(request, '✔ Price tracking has been successfully created! 🛠️')
         else:
-            messages.success(request, 'Price tracking has been successfully updated!')
+            messages.success(request, '✔ Price tracking has been successfully updated! 🔄')
 
         labels = sorted(p_price.keys())
         values = (p_price[date] for date in labels)
@@ -282,8 +282,8 @@ class ProductComparisonPage(View):
                 print(product_list)
                 return JsonResponse({'products_detail': product_list})
             except categories.DoesNotExist:
-                messages.error(request, "category not found.")
-                return HttpResponseNotFound(JsonResponse({'error': 'category not found.'}))
+                messages.error(request, "❌ Sorry category not found.")
+                return HttpResponseNotFound(JsonResponse({'error': '❌ Sorry category not found.'}))
                 # return render(request, "comparison.html")
         return render(request, "comparison.html", {"category_data": category_data, 'products_detail': []})
 
@@ -325,6 +325,8 @@ class ProfilePage(View):
 
         user_data = user_details.objects.get(user_id=userid)
 
+        print("user_data :", user_data)
+
         response = render(request, 'profile.html', {"user_data": user_data})
         response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
         response['Pragma'] = 'no-cache'
@@ -339,33 +341,6 @@ class ProfilePage(View):
 
         user = user_details.objects.get(user_id=user_id)
 
-        # Check if password change request
-        if "current_password" in request.POST:
-            current_password = request.POST.get("current_password")
-            new_password = request.POST.get("new_password")
-            confirm_password = request.POST.get("confirm_password")
-
-            # Check if the current password is correct
-            if current_password != user.user_passwd:
-                messages.error(request, "Current password is incorrect.")
-                return redirect("/profile")
-
-            # Ensure new passwords match
-            if new_password != confirm_password:
-                messages.error(request, "New password and Confirm password do not match.")
-                return redirect("/profile")
-
-            # Hash and update the new password
-            user.user_passwd = new_password
-            user.save()
-
-            # Ensure user stays logged in after password change
-            update_session_auth_hash(request, user)
-
-            messages.success(request, "Your password has been successfully updated.")
-            return redirect("/profile")
-
-        # Otherwise, update profile details
         name = request.POST.get("name")
         email = request.POST.get("email")
 
@@ -377,7 +352,7 @@ class ProfilePage(View):
         request.session["user_name"] = name
         request.session["user_email"] = email
 
-        messages.success(request, "Profile updated successfully!")
+        messages.success(request, "✔ Profile updated successfully!")
         return redirect("/profile")
 
 
