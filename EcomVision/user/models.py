@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 
 class user_details(models.Model):
-    user_email = models.EmailField(primary_key=True, max_length=100)
+    user_id = models.AutoField(primary_key=True)
+    user_email = models.EmailField(max_length=100, unique=True)
     user_passwd = models.CharField(null=False, max_length=20)
     user_name = models.CharField(null=False, max_length=50)
     user_otp = models.CharField(null=True, max_length=10)
@@ -16,7 +17,7 @@ class user_details(models.Model):
 class website_details(models.Model):
     website_id = models.AutoField(primary_key=True)
     website_name = models.CharField(null=False, max_length=100)
-    base_url = models.URLField(null=False, unique=True, max_length=100)
+    base_url = models.URLField(null=False, unique=True)
 
     def __str__(self):
         return f"{self.website_name} - {self.base_url}"
@@ -34,15 +35,15 @@ class categories(models.Model):
 
 # Stores product details
 class products(models.Model):
-    product_id = models.CharField(primary_key=True, max_length=50)
-    product_name = models.CharField(null=False, max_length=255)
-    product_price = models.JSONField(null=False, default=dict)
-    product_ratings = models.JSONField(null=False, default=dict)
+    product_id = models.CharField(primary_key=True, max_length=550)
+    product_name = models.CharField(null=False, max_length=500)
+    product_price = models.JSONField(null=False)
+    product_ratings = models.FloatField(null=False, default=dict)
     currency = models.CharField(null=False, max_length=10)
-    is_available = models.BooleanField(default=True)
-    product_url = models.URLField(null=False)
-    product_image_url = models.JSONField(null=True, default=dict)
     product_details = models.JSONField(null=True)
+    is_available = models.BooleanField(default=True)
+    product_url = models.URLField(null=False, max_length=800)
+    product_image_url = models.JSONField(null=True, default=dict)
     scraped_at = models.DateTimeField(auto_now_add=True)
     website_id = models.ForeignKey(website_details, on_delete=models.CASCADE)
     category_id = models.ForeignKey(categories, on_delete=models.CASCADE)
@@ -78,13 +79,11 @@ class price_track(models.Model):
     status = {
         '1': 'Active',
         '2': 'Completed',
-        '3': 'Cancelled',
     }
     track_id = models.BigAutoField(primary_key=True)
-    desired_price = models.DecimalField(null=False, max_digits=19, decimal_places=2)
-    last_price = models.DecimalField(null=False, max_digits=19, decimal_places=2)
+    desired_price = models.CharField(null=False, max_length=8)
+    last_price = models.CharField(null=False, max_length=8)
     tracking_status = models.CharField(max_length=10, choices=status, default='Active')
-    scraped_at = models.DateTimeField(auto_now_add=True)
     user_id = models.ForeignKey(user_details, on_delete=models.CASCADE)
     product_id = models.ForeignKey(products, on_delete=models.CASCADE)
     category_id = models.ForeignKey(categories, on_delete=models.CASCADE)

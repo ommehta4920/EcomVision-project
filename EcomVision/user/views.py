@@ -1,16 +1,15 @@
 import sys
 from EcomVision import settings
 from django.contrib import messages
-from django.utils import timezone
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import *
-import subprocess
-import os
-import logging
-
 from user.models import *
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseNotFound, JsonResponse, HttpResponseRedirect
+import logging
+from django.contrib.auth import update_session_auth_hash, logout
+
+
+
 
 # Create your views here.
 
@@ -18,6 +17,7 @@ from user.models import *
 class HomePage(View):
     def get(self, request):
         return render(request, "home.html")
+
 
 class SignInPage(View):
     def get(self, request):
@@ -35,12 +35,12 @@ class SignInPage(View):
                 # user_data = user_details.objects.filter(user_email=user_email).first()
 
                 user_data = get_object_or_404(user_details, user_email=user_email)
-                request.session["user_email"] = user_data.user_email
+                request.session["user_id"] = user_data.user_id
                 print("User Details :- ", user_data)
 
-                messages.success(request, "Welcome "+user_data.user_name)
-
-                return render(request, "home.html", {"user_data": user_data})
+                messages.success(request, "Login Successful, Welcome " + user_data.user_name)
+                return redirect("/profile")
+                # return render(request, "home.html", {"user_data": user_data})
 
             except:
                 print("--------", sys.exc_info())
@@ -50,7 +50,6 @@ class SignInPage(View):
             messages.error(request, "Your Email isn't registered or Password is incorrect!")
             messages.info(request, "Please try again..")
             return render(request, "signin.html", {"user_email": user_email})
-
 
 
 class SignUpPage(View):
@@ -64,11 +63,13 @@ class SignUpPage(View):
         user_c_passwd = request.POST["user_c_passwd"]
         # created_at = timezone.now()
 
-        print(f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd} \n user_c_passwd : {user_c_passwd}")
+        print(
+            f" user_name : {user_name} \n user_email : {user_email} \n user_passwd : {user_passwd} \n user_c_passwd : {user_c_passwd}")
 
         if user_details.objects.filter(user_email=user_email).exists():
             messages.error(request, "Email already registered!")
-            return render(request, "signup.html", {"user_name": user_name, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
+            return render(request, "signup.html",
+                          {"user_name": user_name, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
 
         if user_passwd != user_c_passwd:
             print("-------- Both password must be same..! --------")
@@ -85,6 +86,7 @@ class SignUpPage(View):
         except:
             print("---------", sys.exc_info())
 
+
 class ForgotPage(View):
     def get(self, request):
         return render(request, "forgot.html")
@@ -93,8 +95,7 @@ class ForgotPage(View):
         user_otp = request.POST["user_otp"]
         user_passwd = request.POST["user_passwd"]
         user_c_passwd = request.POST["user_c_passwd"]
-
-        user_email = 'pshubham8734@gmail.com'
+        user_email = request.POST["user_email"]
 
         print("**********", user_otp, "\n-*-*-*-", user_passwd, "\n-*-*-*-", user_c_passwd, "\n-*-*-*-", user_email)
 
@@ -122,11 +123,13 @@ class ForgotPage(View):
             print("-------- OTP is incorrect! --------")
             messages.error(request, "OTP is incorrect!")
 
-        return render(request, "forgot.html", {"visibility": True, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
+        return render(request, "forgot.html",
+                      {"visibility": True, "user_passwd": user_passwd, "user_c_passwd": user_c_passwd})
 
 
 import random
 from django.core.mail import send_mail
+
 
 class Send_otpPage(View):
 
@@ -137,9 +140,7 @@ class Send_otpPage(View):
         otp = random.randint(1000, 9999)
         user_email = request.POST["user_email"]
 
-        # request.session['temail'] = user_email
-        #
-        # print("Session temail :", request.session['temail'])
+
 
         if user_details.objects.filter(user_email=user_email).exists():
 
@@ -148,7 +149,8 @@ class Send_otpPage(View):
                 user.update(user_otp=str(otp))
 
                 subject = "Your EcomVision Portal OTP"
-                message = "Dear user, you want to reset your password of your EcomVision account. \n\n Use OTP: " + str(otp) + "\n\nNote: Do not share the OTP with anyone else."
+                message = "Dear user, you want to reset your password of your EcomVision account. \n\n Use OTP: " + str(
+                    otp) + "\n\nNote: Do not share the OTP with anyone else."
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [user_email, ]
 
@@ -158,7 +160,7 @@ class Send_otpPage(View):
 
                 messages.info(request, "OTP has been sent to your registered email..!")
 
-                return render(request, "forgot.html", {"visibility": True})
+                return render(request, "forgot.html", {"visibility": True, "LF_email": user_email})
 
             except:
                 print("---------", sys.exc_info())
@@ -174,18 +176,20 @@ class CategoryPage(View):
         category = categories.objects.all()
         return render(request, "category.html", {"categories": category})
 
+
 class ProductListPage(View):
     def get(self, request, c_id):
         category = get_object_or_404(categories, category_id=c_id)
-        products_list = products.objects.filter(category_id_id = category.category_id)
+        products_list = products.objects.filter(category_id_id=category.category_id)
         return render(request, "product_list.html", {"products": products_list, "category": category})
+
 
 class ProductDetailsPage(View):
     def get(self, request, c_id, p_id):
         # Fetching Product and Category data
-        category = get_object_or_404(categories, category_id = c_id)
+        category = get_object_or_404(categories, category_id=c_id)
         c_name = category.category_name[:-1]
-        product_data = get_object_or_404(products, product_id = p_id)
+        product_data = get_object_or_404(products, product_id=p_id)
 
         print("\n **---- Product_data : ", product_data, "\n")
 
@@ -200,8 +204,63 @@ class ProductDetailsPage(View):
         # Fetching Data to display in the graphs
         labels = sorted(p_price.keys())
         values = (p_price[date] for date in labels)
-        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values], "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
+        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values],
+                   "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
+
         return render(request, "product_details.html", context)
+
+    def post(self, request, c_id, p_id):
+        category = get_object_or_404(categories, category_id=c_id)
+        c_name = category.category_name[:-1]
+        product_data = get_object_or_404(products, product_id=p_id)
+
+        # <----- Not required because of session condition on button ----->
+        userId = request.session.get("user_id")
+        if not userId:
+            return JsonResponse({"error": "User not authenticated"}, status=403)
+        # <----- Not required ----->
+
+        # user = get_object_or_404(user_details, user_id=userId)
+
+        # Fetching Latest Price
+        p_price = product_data.product_price
+        if p_price:
+            last_date = max(p_price.keys())  # Get the last date
+            last_price = p_price[last_date]  # Get the price for the last date
+        else:
+            last_price = "N/A"
+
+        # Get user input for desired price
+        desired_price = request.POST.get("desiredPrice")
+
+        # <----- Not required because of HTML required Field ----->
+        if not desired_price:
+            return JsonResponse({"error": "Desired price is required"}, status=400)
+        # <---- Not required ----->
+
+        exist_data, create_data = price_track.objects.update_or_create(
+            user_id=userId,
+            product_id=p_id,
+            category_id=c_id,
+            defaults={
+                'desired_price': desired_price,
+                'last_price': last_price,
+                'tracking_status': '1'  # Active
+            }
+        )
+
+        if create_data:
+            messages.success(request, 'Price tracking has been successfully created!')
+        else:
+            messages.success(request, 'Price tracking has been successfully updated!')
+
+        labels = sorted(p_price.keys())
+        values = (p_price[date] for date in labels)
+        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values],
+                   "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
+
+        return render(request, "product_details.html", context)
+
 
 class ProductComparisonPage(View):
     def get(self, request, c_id=None):
@@ -220,63 +279,96 @@ class ProductComparisonPage(View):
                     {'product_id': p.product_id, 'product_name': p.product_name, 'product_price': p.product_price,
                      'product_rating': p.product_ratings, 'product_image': p.product_image_url[0],
                      'product_details': p.product_details} for p in product_data]
-                # print(product_list)
+                print(product_list)
                 return JsonResponse({'products_detail': product_list})
             except categories.DoesNotExist:
                 messages.error(request, "category not found.")
-                return render(request, "product_comparison.html")
-        return render(request, "product_comparison.html", {"category_data": category_data, 'products_detail': []})
+                return HttpResponseNotFound(JsonResponse({'error': 'category not found.'}))
+                # return render(request, "comparison.html")
+        return render(request, "comparison.html", {"category_data": category_data, 'products_detail': []})
 
-class ScraperPage(View):
-    def get(self,request):
-        return render(request, "scraper.html")
-
-    def post(self, request):
-        query = request.POST["query"]
-
-        print("\n ********* query :-"+query+"\n")
-
-        # if not query:
-        #     messages.error(request, "Please Provide Input")
-        #     return redirect("/scraper")
-
-        project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
-
-        # Set environment variables for Django
-        env = os.environ.copy()
-        env["DJANGO_SETTINGS_MODULE"] = "EcomVision.settings"
-        env["PYTHONPATH"] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-        try:
-            subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env, check=True)
-            messages.success(request, f"Scraping completed for: {query}")
-        except subprocess.CalledProcessError as e:
-            messages.error(request, f"Scrapy encountered an error: {e}")
-        return redirect("/")
+#
+# class ScraperPage(View):
+#     def get(self, request):
+#         return render(request, "scraper.html")
+#
+#     def post(self, request):
+#         query = request.POST["query"]
+#
+#         print("\n ********* query :-" + query + "\n")
+#
+#         # if not query:
+#         #     messages.error(request, "Please Provide Input")
+#         #     return redirect("/scraper")
+#
+#         project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
+#
+#         # Set environment variables for Django
+#         env = os.environ.copy()
+#         env["DJANGO_SETTINGS_MODULE"] = "EcomVision.settings"
+#         env["PYTHONPATH"] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#
+#         try:
+#             subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env,
+#                            check=True)
+#             messages.success(request, f"Scraping completed for: {query}")
+#         except subprocess.CalledProcessError as e:
+#             messages.error(request, f"Scrapy encountered an error: {e}")
+#         return redirect("/")
 
 
 class ProfilePage(View):
     def get(self, request):
-        useremail = request.session.get("user_email")
-        if not useremail:
+        userid = request.session.get("user_id")
+        if not userid:
             return redirect("/signin")
-        else:
-            user_data = user_details.objects.get(user_email=useremail)
 
-        return render(request, 'profile.html', {"user_data": user_data})
+        user_data = user_details.objects.get(user_id=userid)
+
+        response = render(request, 'profile.html', {"user_data": user_data})
+        response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+
+        return response
 
     def post(self, request):
-        user_email = request.session.get("user_email")
-
-        if not user_email:
+        user_id = request.session.get("user_id")
+        if not user_id:
             return redirect("/signin")
 
-        # Get updated data from form
+        user = user_details.objects.get(user_id=user_id)
+
+        # Check if password change request
+        if "current_password" in request.POST:
+            current_password = request.POST.get("current_password")
+            new_password = request.POST.get("new_password")
+            confirm_password = request.POST.get("confirm_password")
+
+            # Check if the current password is correct
+            if current_password != user.user_passwd:
+                messages.error(request, "Current password is incorrect.")
+                return redirect("/profile")
+
+            # Ensure new passwords match
+            if new_password != confirm_password:
+                messages.error(request, "New password and Confirm password do not match.")
+                return redirect("/profile")
+
+            # Hash and update the new password
+            user.user_passwd = new_password
+            user.save()
+
+            # Ensure user stays logged in after password change
+            update_session_auth_hash(request, user)
+
+            messages.success(request, "Your password has been successfully updated.")
+            return redirect("/profile")
+
+        # Otherwise, update profile details
         name = request.POST.get("name")
         email = request.POST.get("email")
 
-        # Update user details in the database
-        user = user_details.objects.get(user_email=user_email)
         user.user_name = name
         user.user_email = email
         user.save()
@@ -290,9 +382,7 @@ class ProfilePage(View):
 
 
 def logout_user(request):
-    request.session.flush()
-    return redirect("/")
-
-class PriceTrackPage(View):
-
-    pass
+    logout(request)
+    response = HttpResponseRedirect('/signin')
+    response.delete_cookie('sessionid')
+    return response
