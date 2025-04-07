@@ -18,6 +18,7 @@ urlpatterns = [
     path('signin/', SignInPage.as_view(), name='signin-page'),
     path('signup/', SignUpPage.as_view(), name='signup-page'),
     path('profile/', ProfilePage.as_view(), name='profile-page'),
+    path('contactus/', ContactUs.as_view(), name='contactus'),
     path('logout/', logout_user.as_view(), name='logout'),
 ]
 

@@ -87,3 +87,13 @@ class price_track(models.Model):
     user_id = models.ForeignKey(user_details, on_delete=models.CASCADE)
     product_id = models.ForeignKey(products, on_delete=models.CASCADE)
     category_id = models.ForeignKey(categories, on_delete=models.CASCADE)
+
+
+class contact_us(models.Model):
+    contact_id = models.BigAutoField(primary_key=True)
+    cont_name = models. emp_name = models.CharField(null=False, max_length=50)
+    cont_email = models.EmailField(null=False, max_length=40)
+    message = models.TextField(null=False, max_length=700)
+
+    def __str__(self):
+        return f"{self.cont_name} - {self.cont_email} - {self.message}"

@@ -375,3 +375,45 @@ class logout_user(View):
 class AboutUs(View):
     def get(self, request):
         return render(request, "aboutus.html")
+
+
+class ContactUs(View):
+
+    def get(self, request):
+        if request.session.get("user_id"):
+            userId = request.session.get("user_id")
+            user = get_object_or_404(user_details, user_id=userId)
+            return render(request, "contactus.html", {'user': user})
+
+        return render(request, "contactus.html")
+
+    def post(self, request):
+        name = request.POST['name']
+        email = request.POST['email']
+        message = request.POST['message']
+
+        print("/*--*//*--*//*--*// name |", name, "\n/*--*//*--*//*--*// email |", email,
+              "\n/*--*//*--*//*--*// message |", message, "\n")
+
+        cont_data = contact_us(cont_name=name, cont_email=email, message=message)
+
+        try:
+            cont_data.save()
+
+            subject = 'Contact message from EcomVision'
+            message = f'From {name}\n\nSender Mail ID: {email}\n\nMessage:           {message}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email, ]
+
+            send_mail(subject, message, email_from, recipient_list)
+
+            print("**********", subject, "\n-*-*-*-", message, "\n-*-*-*-", email_from, "\n-*-*-*-", recipient_list)
+
+            messages.success(request, "✔ Your message has been delivered successfully...")
+            print("-*-*-*-**-**-*-**-*-*-*- Email send Successfully using :- ", email)
+            return redirect("/contactus")
+
+        except:
+            print("---------", sys.exc_info())
+
+        return redirect("/contactus")
