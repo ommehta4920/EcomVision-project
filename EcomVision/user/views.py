@@ -358,7 +358,7 @@ class ProfilePage(View):
 
 class logout_user(View):
     def get(self, request):
-        del request.session["t_email"]
+        request.session.pop("t_email", None)
         logout(request)
         response = HttpResponseRedirect('/signin')
         response.delete_cookie('sessionid')
