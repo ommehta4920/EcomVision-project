@@ -238,22 +238,29 @@ class ProductDetailsPage(View):
             return JsonResponse({"error": "❌ Desired price is required"}, status=400)
         # <---- Not required ----->
 
-        exist_data, create_data = price_track.objects.update_or_create(
-            user_id=user,
-            product_id=product_data,
-            category_id=category,
-            defaults={
-                'desired_price': desired_price,
-                'last_price': last_price,
-                'tracking_status': '1'  # Active
-            }
-        )
-
-        if create_data:
-            messages.success(request, '✔ Price tracking has been successfully created! 🛠️')
-        else:
+        existing_tracking = price_track.objects.filter(
+            user_id = user,
+            product_id = product_data,
+            desired_price = desired_price,
+            tracking_status = '1'
+        ).exists()
+        
+        if existing_tracking:
             messages.success(request, '✔ Price tracking has been successfully updated! 🔄')
-
+            # return message
+        else:
+            tracking_entry = price_track.objects.create(
+                user_id= user,  # Retrieved from session
+                product_id=product_data,
+                category_id=category,
+                desired_price=desired_price,
+                last_price=last_price,
+                tracking_status='1'  # Active
+            )
+            
+            tracking_entry.save()
+            messages.success(request, '✔ Price tracking has been successfully created! 🛠️')
+        
         labels = sorted(p_price.keys())
         values = (p_price[date] for date in labels)
         context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values],
