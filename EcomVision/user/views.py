@@ -246,7 +246,7 @@ class ProductDetailsPage(View):
         ).exists()
         
         if existing_tracking:
-            messages.success(request, '✔ Price tracking has been successfully updated! 🔄')
+            messages.info(request, 'ℹ This price tracking is already exists! 🔁')
             # return message
         else:
             tracking_entry = price_track.objects.create(
