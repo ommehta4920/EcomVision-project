@@ -16,11 +16,11 @@ EcomVision | Contact Us
     <br/>
     <br/>
     {% if messages %}
-    {% for data in messages %}
-    <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
-        {{ data }}
-    </div>
-    {% endfor %}
+        {% for data in messages %}
+            <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
+                {{ data }}
+            </div>
+        {% endfor %}
     {% endif %}
 </section>
 

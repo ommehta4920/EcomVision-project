@@ -53,7 +53,7 @@ EcomVision | Product Details
                     </div>
                 </div>
                 <div class=" space-x-4 flex flex-row " style="margin: 25px 0;">
-                    <a href="{% url 'product-comparison-page' category.category_id product_data.product_id %}"
+                    <a href="{% url 'product-comparison-page-with-id' category.category_id %}"
                        class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-blue-500 hover:to-blue-700 transform hover:scale-105 transition-transform duration-300 btn btn-primary"
                        style="border: none;">
                         <i class="fas fa-exchange-alt mr-2">
@@ -103,8 +103,11 @@ EcomVision | Product Details
                         </div>
                     </div>
                     {% endif %}
-                    <a
-                            class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">
+                    <a href="whatsapp://send?text={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">
+<!--                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
+<!--                    <a href="mailto:?subject=Product details from EcomVision&body={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" -->
+<!--                       target="_blank"-->
+<!--                       class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
                         <i class="fas fa-share-alt mr-2">
                         </i>
                         Share

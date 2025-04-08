@@ -6,11 +6,20 @@ EcomVision | Comparison
 
 {% block content %}
 
-<section class="comparison-hero-section flex items-center justify-center text-center text-white relative">
+<section class="comparison-hero-section flex-col flex items-center justify-center text-center text-white relative">
+    <br/>
+    <br/>
     <h1 class="text-6xl font-bold text-white uppercase">
         Product
         <span class="comparison-hero-title-span">Comparison</span>
     </h1>
+    <br/>
+    <br/>
+    <br/>
+    <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}" id="alert_div" style="display: none; color: black;">
+
+    </div>
+
 </section>
 
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;" class="w-100">
@@ -133,8 +142,8 @@ EcomVision | Comparison
         });
 
         // Enable the button if at least 2 unique products are selected
-        const compareBtn = document.getElementById('compare-btn');
-        compareBtn.disabled = selectedProducts.length < 2;
+        // const compareBtn = document.getElementById('compare-btn');
+        // compareBtn.disabled = selectedProducts.length < 2;
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -142,6 +151,7 @@ EcomVision | Comparison
         const categorySelect = document.getElementById("category");
         const compareBtn = document.getElementById("compare-btn");
         const comparisonSection = document.getElementById("comparison-section");
+        const alert_message = document.getElementById("alert_div");
 
         function updateProductSelectors() {
             document.querySelectorAll('.product-selector').forEach((selector, index) => {
@@ -157,11 +167,11 @@ EcomVision | Comparison
                 .then(data => {
                     console.log("Received Data:", data);
                     if (data.error) {
-                        alert(data.error);
+                        console.log(data.error);
                         return;
                     }
                     if (!data.products_detail || data.products_detail.length === 0) {
-                        alert("No Products found for this category.");
+                        console.log("No Products found for this category.");
                         return;
                     }
                     for (let i = 1; i <= 4; i++) {
@@ -187,7 +197,8 @@ EcomVision | Comparison
                 productCount++;
                 updateProductSelectors();
             } else {
-                alert("Maximum 4 products are allowed for the compare.")
+                showAlert("ℹ Maximum 4 products are allowed for the compare.", "info");
+
             }
         });
 
@@ -202,7 +213,7 @@ EcomVision | Comparison
                 delete selectedProductDetails[hiddenInput.id];
                 updateProductSelectors();
             } else {
-                alert("Minimum 2 products are required for the comparision.")
+                showAlert("ℹ Minimum 2 products are required for the comparision.", "info")
             }
         });
 
@@ -262,12 +273,12 @@ EcomVision | Comparison
             });
 
             if (duplicateFound) {
-                alert("Please Select Different Products for Comparison...");
+                showAlert("❌ Please Select Different Products for Comparison...", "error");
                 return;
             }
 
             if (selectedProducts.length < 2) {
-                alert('Please Select at least different products for comparison.');
+                showAlert("❌ Please Select at least 2 different products for comparison.", "error");
                 return;
             }
 
@@ -298,6 +309,20 @@ EcomVision | Comparison
                 }
             });
         });
+
+        function showAlert(message, type = none) {
+            alert_message.innerHTML = message;
+            alert_message.className = `alert alert-${type}`;
+            alert_message.style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => {
+                alert_message.style.display = "none";
+        }, 8000);
+}
+
+
         comparisonSection.style.display = "flex";
         updateProductSelectors();
     });
