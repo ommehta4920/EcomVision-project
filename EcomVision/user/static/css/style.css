@@ -131,6 +131,12 @@ body {
     transition: 0.5s ease-in-out;
 }
 
+.text_sec_btns_hero .category:hover {
+    box-shadow: 4px 4px 15px rgba(255, 255, 255, 0.7);
+    transform: translateY(-1px);
+    transition: 0.5s ease-in-out;
+}
+
 /* CATEGORIES PAGE */
 
 .category-hero-section {
