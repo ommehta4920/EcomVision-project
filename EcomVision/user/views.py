@@ -8,15 +8,30 @@ from django.http import HttpResponseNotFound, JsonResponse, HttpResponseRedirect
 import logging
 from django.contrib.auth import update_session_auth_hash, logout
 
-
-
-
 # Create your views here.
-
 
 class HomePage(View):
     def get(self, request):
-        return render(request, "home.html")
+        raw_products = products.objects.filter(is_available=True).order_by('-scraped_at')[:20]
+        print("Total available products:", raw_products.count())
+        latest_products = []
+        for product in raw_products:
+            price_data = product.product_price  # e.g., {"2025-04-05": "14,520"}
+            if isinstance(price_data, dict) and price_data:
+                latest_date = sorted(price_data.keys())[-1]  # get latest date
+                latest_price = price_data[latest_date]
+            else:
+                latest_price = "N/A"
+        
+            latest_products.append({
+                'name': product.product_name,
+                'price': latest_price,
+                'currency': product.currency,
+                'image_url': product.product_image_url[0],
+                'url': product.product_url,
+            })
+        
+        return render(request, "home.html", {'latest_products': latest_products})
 
 
 class SignInPage(View):
