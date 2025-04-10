@@ -24,7 +24,10 @@ app.conf.beat_schedule = {
     'Product-Scrapper': {
         'task': 'user.tasks.productScrapper',
         'schedule': crontab(hour="14", minute="27"),
-        # 'schedule': crontab(minute="*"),
+    },
+    'Price-Drop-Func': {
+        'task': 'user.tasks.check_price_tracking',
+        'schedule': crontab(hour='19', minute="0"),
     }
 }
 

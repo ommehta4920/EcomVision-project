@@ -1,7 +1,10 @@
 from celery import shared_task
 import subprocess
 import os
-from .models import categories
+from .models import categories, price_track
+from django.core.mail import send_mail
+from django.utils import timezone
+from datetime import timedelta
 
 @shared_task(bind=True)
 def categoryScrapper(self):
@@ -22,3 +25,33 @@ def productScrapper(self):
     project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
     subprocess.run(["scrapy", "crawl", "productSpider"], cwd=project_path)
     return "Product-Scrapping Done"
+
+@shared_task(bind=True)
+def check_price_tracking():
+    now = timezone.now()
+    one_week_ago = now - timedelta(days=7)
+    
+    tracks = price_track.objects.filter(tracking_status='1')
+    
+    for track in tracks:
+        try:
+            current_price = float(track.last_price)
+            desired_price = float(track.desired_price)
+            
+            if current_price <= desired_price:
+                send_mail(
+                    subject='🎉 Price Drop Alert!',
+                    message=f'The product "{track.product_id.product_name}" is now ₹{current_price}, which is at or below your desired price of ₹{desired_price}.',
+                    from_email='pshubham8734@gmail.com',
+                    recipient_list=[track.user_id.user_email],
+                    fail_silently=False,
+                )
+                track.tracking_status = '2'
+                track.save()
+                continue
+            
+            if hasattr(track, 'created_at') and track.created_at < one_week_ago:
+                track.tracking_status = '2'
+                track.save()
+        except Exception as e:
+            print(f"Error Processing track {track.track_id}: {e}")

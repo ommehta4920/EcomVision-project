@@ -87,6 +87,7 @@ class price_track(models.Model):
     user_id = models.ForeignKey(user_details, on_delete=models.CASCADE)
     product_id = models.ForeignKey(products, on_delete=models.CASCADE)
     category_id = models.ForeignKey(categories, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class contact_us(models.Model):
