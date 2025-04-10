@@ -7,63 +7,99 @@ EcomVision | Contact Us
 {% block content %}
 
 <section class="category-hero-section flex-col flex items-center justify-center text-center text-white relative">
-    <br/>
-    <br/>
+    <br />
+    <br />
     <h1 class="text-6xl font-bold uppercase" style="color: white;">
         Contact Us
     </h1>
-    <br/>
-    <br/>
-    <br/>
+    <br />
+    <br />
+    <br />
     {% if messages %}
-        {% for data in messages %}
-            <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
-                {{ data }}
-            </div>
-        {% endfor %}
+    {% for data in messages %}
+    <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}">
+        {{ data }}
+    </div>
+    {% endfor %}
     {% endif %}
 </section>
 
 <div class="col-md-9 w-100"
-     style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding: 2% 0;">
-    <div class="card w-[60%]">
-        <div class="card-header p-2">
+    style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding: 2% 0;">
+    <!-- <div class="card-header p-2">
             <ul class="nav nav-pills"
                 style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                 <h1 style="text-align: center; font-size: 22px;">
                     <strong>Get in touch!</strong>
                 </h1>
             </ul>
-        </div>
-        <div class="card-body">
+        </div> -->
+    <section class="mb-12 w-[80%]">
+        <form class="bg-white p-6 rounded-lg shadow-lg" id="user-form" method="POST" action="/contactus/">
+            <div style="text-align: center; font-size: 42px; margin-bottom: 5px;">
+                <strong>Get In Touch!</strong>
+            </div>
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="name">
+                    Name
+                </label>
+                <input
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 form-control"
+                    id="name" name="name" placeholder="Enter your Name" type="text" value="{{ user.user_name }}" required autofocus/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="email">
+                    Email
+                </label>
+                <input
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 form-control"
+                    id="email" name="email" placeholder="Enter your Email" type="email" value="{{ user.user_email }}" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="message">
+                    Message
+                </label>
+                <textarea
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 form-control"
+                    id="message" name="message" placeholder="Type your message here..." required rows="4"
+                    style="resize: none;"></textarea>
+            </div>
+            <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600" type="submit">
+                Send Message
+            </button>
+        </form> 
+    </section>
+    <!-- <div class="card-body">
             <div class="tab-content">
                 <div class="active tab-pane" id="profile">
                     <div style="display: flex; flex-direction: column;">
                         <div class="card-body"
-                             style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
                             <form id="user-form" method="POST" action="/contactus/" style="width: 80%;">
                                 {% csrf_token %}
 
                                 <div class="input-group mb-3">
                                     <label class="input-group-text">Name</label>
                                     <input type="text" class="form-control" placeholder="Enter your name" name="name"
-                                           value="{{ user.user_name }}" required autofocus>
+                                        value="{{ user.user_name }}" required autofocus>
                                 </div>
 
                                 <div class="input-group mb-3">
                                     <label class="input-group-text">Email</label>
                                     <input type="email" class="form-control" placeholder="Enter your email" name="email"
-                                           value="{{ user.user_email }}" required>
+                                        value="{{ user.user_email }}" required>
                                 </div>
 
                                 <div class="input-group mb-4">
                                     <label class="input-group-text">Message</label>
                                     <textarea class="form-control" name="message" rows="3"
-                                              placeholder="Type your message here..." required></textarea>
+                                        placeholder="Type your message here..." required></textarea>
                                 </div>
 
                                 <div class="form-group"
-                                     style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; margin-top: 15px;">
+                                    style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; margin-top: 15px;">
                                     <button type="submit" class="btn btn-primary">
                                         Send Message
                                     </button>
@@ -74,8 +110,7 @@ EcomVision | Contact Us
                 </div>
 
             </div>
-        </div>
-    </div>
+        </div> -->
 </div>
 </div>
 

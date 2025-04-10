@@ -359,7 +359,6 @@ class AboutUs(View):
 
 
 class ContactUs(View):
-
     def get(self, request):
         if request.session.get("user_id"):
             userId = request.session.get("user_id")
