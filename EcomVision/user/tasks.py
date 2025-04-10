@@ -42,7 +42,7 @@ def check_price_tracking():
             
             if current_price <= desired_price:
                 send_mail(
-                    subject='🎉 Price Drop Alert!',
+                    subject='🎉 Price Drop Alert From EcomVision!',
                     message=f'The product "{track.product_id.product_name}" is now ₹{current_price}, which is at or below your desired price of ₹{desired_price}.',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[track.user_id.user_email],

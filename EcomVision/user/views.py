@@ -247,7 +247,7 @@ class ProductDetailsPage(View):
         
         if existing_tracking:
             messages.info(request, 'ℹ This price tracking is already exists! 🔁')
-            # return message
+            return redirect("/profile")
         else:
             tracking_entry = price_track.objects.create(
                 user_id= user,  # Retrieved from session
@@ -260,6 +260,8 @@ class ProductDetailsPage(View):
             
             tracking_entry.save()
             messages.success(request, '✔ Price tracking has been successfully created! 🛠️')
+            return redirect("/profile")
+
         
         labels = sorted(p_price.keys())
         values = (p_price[date] for date in labels)
