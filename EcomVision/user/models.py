@@ -76,14 +76,14 @@ class request_result(models.Model):
 
 # Stores the price tracking requests
 class price_track(models.Model):
-    status = {
-        '1': 'Active',
-        '2': 'Completed',
-    }
+    status = [
+        ('1', 'Active'),
+        ('2', 'Completed'),
+    ]
     track_id = models.BigAutoField(primary_key=True)
     desired_price = models.CharField(null=False, max_length=8)
     last_price = models.CharField(null=False, max_length=8)
-    tracking_status = models.CharField(max_length=10, choices=status, default=1)
+    tracking_status = models.CharField(max_length=10, choices=status, default='1')
     user_id = models.ForeignKey(user_details, on_delete=models.CASCADE)
     product_id = models.ForeignKey(products, on_delete=models.CASCADE)
     category_id = models.ForeignKey(categories, on_delete=models.CASCADE)
