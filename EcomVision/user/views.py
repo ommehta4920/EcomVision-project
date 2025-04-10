@@ -242,7 +242,7 @@ class ProductDetailsPage(View):
             user_id = user,
             product_id = product_data,
             desired_price = desired_price,
-            tracking_status = '1'
+            tracking_status = 1
         ).exists()
         
         if existing_tracking:
@@ -294,35 +294,6 @@ class ProductComparisonPage(View):
                 # return render(request, "comparison.html")
         return render(request, "comparison.html", {"category_data": category_data, 'products_detail': []})
 
-#
-# class ScraperPage(View):
-#     def get(self, request):
-#         return render(request, "scraper.html")
-#
-#     def post(self, request):
-#         query = request.POST["query"]
-#
-#         print("\n ********* query :-" + query + "\n")
-#
-#         # if not query:
-#         #     messages.error(request, "Please Provide Input")
-#         #     return redirect("/scraper")
-#
-#         project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ecom_scraper")
-#
-#         # Set environment variables for Django
-#         env = os.environ.copy()
-#         env["DJANGO_SETTINGS_MODULE"] = "EcomVision.settings"
-#         env["PYTHONPATH"] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#
-#         try:
-#             subprocess.run(["scrapy", "crawl", "ecom_spider", "-a", f"query={query}"], cwd=project_path, env=env,
-#                            check=True)
-#             messages.success(request, f"Scraping completed for: {query}")
-#         except subprocess.CalledProcessError as e:
-#             messages.error(request, f"Scrapy encountered an error: {e}")
-#         return redirect("/")
-
 
 class ProfilePage(View):
     def get(self, request):
@@ -331,15 +302,25 @@ class ProfilePage(View):
             return redirect("/signin")
 
         user_data = user_details.objects.get(user_id=userid)
+        try:
+            price_track_details = price_track.objects.select_related('product_id').filter(user_id=userid)
+            print("user_data :", user_data)
 
-        print("user_data :", user_data)
+            response = render(request, 'profile.html', {"user_data": user_data, "price_track_details": price_track_details})
+            response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+            response['Pragma'] = 'no-cache'
+            response['Expires'] = '0'
 
-        response = render(request, 'profile.html', {"user_data": user_data})
-        response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-        response['Pragma'] = 'no-cache'
-        response['Expires'] = '0'
+            return response
+        except price_track.DoesNotExist:
+            price_track_details = None
+            response = render(request, 'profile.html', {"user_data": user_data, "price_track_details": price_track_details})
+            response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+            response['Pragma'] = 'no-cache'
+            response['Expires'] = '0'
 
-        return response
+            return response
+        
 
     def post(self, request):
         user_id = request.session.get("user_id")

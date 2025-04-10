@@ -85,8 +85,50 @@ EcomVision | Category
                     </div>
                 </div>
                 <div class=" tab-pane" id="history">
+                    {% if price_track_details %}
+                    
                     <!-- user history content goes here -->
-                    <p>Your history content goes here.</p>
+                    <table class="min-w-full text-sm text-gray-800">
+                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs text-center">
+                            <tr>
+                                <th class="px-6 py-3 ">Product Name</th>
+                                <th class="px-6 py-3 ">Desired Price</th>
+                                <th class="px-6 py-3 ">Current Price</th>
+                                <th class="px-6 py-3 ">Tracking Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-center">
+                            {% for data in price_track_details %}
+                            <tr>
+                                <td class="px-6 py-4">
+                                    {{ data.product_id.product_name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    ₹{{ data.desired_price }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    ₹{{ data.last_price }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-block px-2 py-1 text-xs font-semibold rounded 
+                                {% if data.tracking_status == '1' %}
+                                  bg-green-100 text-green-800
+                                {% elif data.tracking_status == '2' %}
+                                  bg-blue-100 text-blue-800
+                                {% else %}
+                                  bg-gray-200 text-gray-800
+                                {% endif %}
+                              ">
+                                        {{ data.get_tracking_status_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <p style="text-align: center;">There is no Price Tracking History for your account.</p>
+                    {% endif %}
                 </div>
 
 
