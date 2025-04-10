@@ -1,0 +1,178 @@
+{% extends "user_template.html" %}
+
+{% block title %}
+EcomVision | About Us
+{% endblock %}
+
+{% block content %}
+<style>
+    .hidden{
+        display: none;
+    }
+</style>
+<section class="category-hero-section flex-col flex items-center justify-center text-center text-white relative">
+    <h1 class="text-6xl font-bold uppercase" style="color: white;">
+        About Us
+    </h1>
+</section>
+
+<div style="width: 80%; display: flex; flex-direction: column; justify-content: center; align-items: center; justify-self: center; margin: 3rem 0;"
+    class="aboutus">
+    <div style="width: 100%;">
+        <p style="text-align: center; font-size: 18px;">EcomVision is a global comparison platform, providing
+            unbiased comparisons across various categories: from tech products to cities. By providing accurate
+            information
+            in an easy-to-visualize way, we aim to simplify decision making.</p>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between" style="margin: 3rem 1rem; align-items: start;">
+        <div class="md:w-1/2" style="margin-top: 5px;">
+            <h2 class="text-blue-600 text-2xl font-bold mb-2">
+                The problem:
+            </h2>
+            <h1 class="text-3xl font-bold mb-4">
+                Information overload
+            </h1>
+            <p class="text-gray-700 mb-4" style="font-size: 16px;">
+                Making the right choice when faced with an ever-growing number of options is challenging. Gathering
+                relevant and accurate data is no easy task: our brains are constantly overloaded with information,
+                offers, and possibilities. With new products and features to keep up with, making the choice that best
+                suits one's needs demands a lot of time — and with possible bias from manufacturers and retailers, there
+                is no guaranteed accuracy in what you'll find in your research.
+            </p>
+        </div>
+        <div class="md:w-1/2 flex justify-center" style="height: 400px; width: 400px; margin-right: 5rem;">
+            <img alt="Illustration of a person sitting on a chair, using a tablet, surrounded by various icons representing information overload"
+                class="w-3/4 md:w-full" src="../static/img/contactus/illustration_1.png" />
+        </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between" style="margin: 3rem 1rem; align-items: start;">
+        <div class="md:w-1/2 flex justify-center" style="height: 400px; width: 400px; margin-left: 5rem;">
+            <img alt="Illustration of a person sitting on a chair, using a tablet, surrounded by various icons representing information overload"
+                class="w-4/4 md:w-full" src="../static/img/contactus/illustration_2.png" />
+        </div>
+        <div class="md:w-1/2" style="margin-top: 5px;">
+            <h2 class="text-blue-600 text-2xl font-bold mb-2">
+                Our solution:
+            </h2>
+            <h1 class="text-3xl font-bold mb-4">
+                Fact-based, objective comparisons
+            </h1>
+            <p class="text-gray-700 mb-4" style="font-size: 16px;">
+                We understand that making objective and well-informed decisions is a challenging task and that our
+                users' time is precious. It's our mission to research, analyze, and present data in a straightforward
+                way. Do you want a smartphone with an ultra-fast processor? Or are you planning a trip to a city with
+                lots of museums? Whatever you’re looking for, all you have to do is to have your priorities in mind —
+                EcomVision does the hard work for you.
+            </p>
+        </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between" style="margin: 3rem 1rem; align-items: start;">
+        <div class="md:w-1/2" style="margin-top: 5px;">
+            <h2 class="text-blue-600 text-2xl font-bold mb-2">
+                Our values:
+            </h2>
+            <h1 class="text-3xl font-bold mb-4">
+                Accuracy, Impartiality, Transparency, Simplicity, Informativeness
+            </h1>
+            <p class="text-gray-700 mb-4" style="font-size: 16px;">
+                Making the right choice when faced with an ever-growing number of options is challenging. Gathering
+                relevant and accurate data is no easy task: our brains are constantly overloaded with information,
+                offers, and possibilities. With new products and features to keep up with, making the choice that best
+                suits one's needs demands a lot of time — and with possible bias from manufacturers and retailers, there
+                is no guaranteed accuracy in what you'll find in your research.
+            </p>
+        </div>
+        <div class="md:w-1/2 flex justify-center" style="height: 400px; width: 400px; margin-right: 5rem;">
+            <img alt="Illustration of a person sitting on a chair, using a tablet, surrounded by various icons representing information overload"
+                class="w-3/4 md:w-full" src="../static/img/contactus/illustration_3.png" />
+        </div>
+    </div>
+    <div class="flex flex-col justify-between" style="margin: 3rem 1rem; align-items: start; width: 100%;">
+        <h2 class="short-h1 text-3xl font-bold mb-4">
+            FAQs
+        </h2>
+        <div style="width: 80%; margin-top: 1rem;">
+            <div class="faq-item mb-4">
+                <h2 class="text-[16px] font-bold mb-2 flex justify-between items-center cursor-pointer">
+                    Which sources do you use for gathering data about items?
+                    <i class="fas fa-chevron-up"></i>
+                </h2>
+                <p class="text-gray-700 hidden">
+                    We use the official websites of manufacturers, product sheets, and product manuals to gather data about products. For apps, we usually do a bit of testing to get a better idea of the functionalities. When it comes to cities and ski resorts, we use official statistics presented by the local authorities. As for universities and faculties, we refer to their official websites and the statistics provided by the institutions. We always focus on the objective aspects and collect data that makes sense for our comparisons.
+                </p>
+            </div>
+            
+            <hr class="border-t mb-4">
+
+            <div class="faq-item mb-4">
+                <h2 class="text-[16px] font-bold mb-2 flex justify-between items-center cursor-pointer">
+                    Which categories are available on your site?
+                    <i class="fas fa-chevron-up"></i>
+                </h2>
+                <p class="text-gray-700 hidden">
+                    As we are a startup, We have just 3 categories on our website those are Televisions, Smartphones and Laptops but we are bringing some new categories soon.
+                </p>
+            </div>
+
+            <hr class="border-t mb-4">
+
+            <div class="faq-item mb-4">
+                <h2 class="text-[16px] font-bold mb-2 flex justify-between items-center cursor-pointer">
+                    What is the use of Price Tracking button on Product page?
+                    <i class="fas fa-chevron-up"></i>
+                </h2>
+                <p class="text-gray-700 hidden">
+                    On EcomVision, the "Track Price" button lets users monitor a product’s price across multiple sellers. Once activated, it alerts you when the price drops or meets your desired target. You can customize notifications via email. This helps you buy at the best time by avoiding overpaying.
+                </p>
+            </div>
+            
+            <hr class="border-t mb-4">
+
+            <div class="faq-item mb-4">
+                <h2 class="text-[16px] font-bold mb-2 flex justify-between items-center cursor-pointer">
+                    Who do I contact for business partnerships and advertising opportunities?
+                    <i class="fas fa-chevron-up"></i>
+                </h2>
+                <p class="text-gray-700 hidden">
+                    You can contact us through our <a class="faq-item-link" href="/contactus" target="_self" style="color: purple; text-decoration: underline;">Contact Us Page</a>
+                </p>
+            </div>
+            
+            <hr class="border-t mb-4">
+
+            <div class="faq-item mb-4">
+                <h2 class="text-[16px] font-bold mb-2 flex justify-between items-center cursor-pointer">
+                    How do you make money?
+                    <i class="fas fa-chevron-up"></i>
+                </h2>
+                <p class="text-gray-700 hidden">
+                    Most of our revenue comes from affiliate marketing: when you buy a product through our links, we may earn a small commission. However, that doesn’t affect the Versus score or the visibility of a product. We also display non-invasive ads on our comparison pages. If you are using an ad-blocker, please consider whitelisting us.
+                </p>
+            </div>
+            
+            <hr class="border-t mb-4">
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.querySelector('h2').addEventListener('click', () => {
+            const icon = item.querySelector('i');
+            const content = item.querySelector('p');
+            const isOpen = !content.classList.contains('hidden');
+            
+            document.querySelectorAll('.faq-item p').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.faq-item i').forEach(i => {
+                i.classList.remove('fa-chevron-up');
+                i.classList.add('fa-chevron-down');
+            });
+ 
+            if (!isOpen) {
+                content.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        });
+    });
+</script>
+{% endblock %}

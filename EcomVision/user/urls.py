@@ -13,12 +13,12 @@ urlpatterns = [
     path('comparison/<int:c_id>', ProductComparisonPage.as_view(), name='product-comparison-page-with-id'),
     path('comparison/<int:c_id>/<str:p_id>/', ProductComparisonPage.as_view(), name='product-comparison-page'),
     path('aboutus/', AboutUs.as_view(), name='aboutus'),
+    path('contactus/', ContactUs.as_view(), name='contactus'),
     path('forgot/', ForgotPage.as_view(), name='forgot-page'),
     path('send_otp/', Send_otpPage.as_view(), name='send_otp-page'),
     path('signin/', SignInPage.as_view(), name='signin-page'),
     path('signup/', SignUpPage.as_view(), name='signup-page'),
     path('profile/', ProfilePage.as_view(), name='profile-page'),
-    path('contactus/', ContactUs.as_view(), name='contactus'),
     path('logout/', logout_user.as_view(), name='logout'),
 ]
 
