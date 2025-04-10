@@ -1,6 +1,8 @@
 from celery import shared_task
 import subprocess
 import os
+
+from EcomVision import settings
 from .models import categories, price_track
 from django.core.mail import send_mail
 from django.utils import timezone
@@ -42,7 +44,7 @@ def check_price_tracking():
                 send_mail(
                     subject='🎉 Price Drop Alert!',
                     message=f'The product "{track.product_id.product_name}" is now ₹{current_price}, which is at or below your desired price of ₹{desired_price}.',
-                    from_email='pshubham8734@gmail.com',
+                    from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[track.user_id.user_email],
                     fail_silently=False,
                 )
