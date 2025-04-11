@@ -308,6 +308,8 @@ EcomVision | Comparison
                     comparisonSection.appendChild(productDiv);
                 }
             });
+
+            document.querySelector('#comparison-section').scrollIntoView({ behavior: 'smooth' });
         });
 
         function showAlert(message, type = none) {
