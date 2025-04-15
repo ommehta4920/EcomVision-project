@@ -148,10 +148,12 @@ EcomVision | Comparison
 
     document.addEventListener('DOMContentLoaded', function () {
         let productCount = 2;
+        let category_ID = null;
         const categorySelect = document.getElementById("category");
         const compareBtn = document.getElementById("compare-btn");
         const comparisonSection = document.getElementById("comparison-section");
         const alert_message = document.getElementById("alert_div");
+
 
         function updateProductSelectors() {
             document.querySelectorAll('.product-selector').forEach((selector, index) => {
@@ -162,6 +164,7 @@ EcomVision | Comparison
         // Selecting Category and Fetching Products
         document.getElementById("category").addEventListener("change", function () {
             const category = this.value;
+            category_ID = category;
             fetch(`/comparison/${category}`)
                 .then(response => response.json())
                 .then(data => {
@@ -303,6 +306,7 @@ EcomVision | Comparison
                         <p class="text-gray-700 p-2"><strong>Display Size:</strong> ${extractedDetails.size}</p>
                         <p class="text-gray-700 p-2"><strong>Display Resolution:</strong> ${extractedDetails.reolution}</p>
                         <p class="text-gray-700 p-2"><strong>Weight:</strong> ${extractedDetails.weight}</p>
+                        <a href="/category/${category_ID}/${productDetails.product_id}">View Details</a>
                     `;
 
                     comparisonSection.appendChild(productDiv);
