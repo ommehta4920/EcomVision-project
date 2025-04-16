@@ -18,6 +18,7 @@ urlpatterns = [
     path('send_otp/', Send_otpPage.as_view(), name='send_otp-page'),
     path('signin/', SignInPage.as_view(), name='signin-page'),
     path('signup/', SignUpPage.as_view(), name='signup-page'),
+    path('set-password/', SetPasswordView.as_view(), name='set-password-page'),
     path('profile/', ProfilePage.as_view(), name='profile-page'),
     path('logout/', logout_user.as_view(), name='logout'),
 ]

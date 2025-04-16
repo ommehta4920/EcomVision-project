@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotFound, JsonResponse, HttpResponseRedirect
 import logging
 from django.contrib.auth import update_session_auth_hash, logout
+import requests
 
 # Create your views here.
 
@@ -311,6 +312,32 @@ class ProductComparisonPage(View):
                 # return render(request, "comparison.html")
         return render(request, "comparison.html", {"category_data": category_data, 'products_detail': []})
 
+class SetPasswordView(View):
+    def get(self, request):
+        return render(request, "set_password.html")
+
+    def post(self, request):
+        user_id = request.session.get("user_id")
+        if not user_id:
+            return redirect("/signin")
+
+        password = request.POST.get("user_passwd")
+        confirm = request.POST.get("user_c_passwd")
+
+        if password != confirm:
+            messages.error(request, "Passwords do not match.")
+            return redirect("/set-password")
+
+        if len(password) < 8:
+            messages.error(request, "Password must be at least 8 characters.")
+            return redirect("/set-password")
+
+        user = user_details.objects.get(user_id=user_id)
+        user.user_passwd = password
+        user.save()
+
+        messages.success(request, "Password set successfully.")
+        return redirect("/profile")
 
 class ProfilePage(View):
     def get(self, request):
@@ -319,6 +346,10 @@ class ProfilePage(View):
             return redirect("/signin")
 
         user_data = user_details.objects.get(user_id=userid)
+        
+        if not user_data.user_passwd:
+            return redirect("/set-password")
+        
         try:
             price_track_details = price_track.objects.select_related('product_id').filter(user_id=userid)
             print("user_data :", user_data)
@@ -368,6 +399,12 @@ class logout_user(View):
         response = HttpResponseRedirect('/signin')
         response.delete_cookie('sessionid')
         return response
+    
+    def revoke_google_token(token):
+        url = 'https://accounts.google.com/o/oauth2/revoke'
+        params = {'token': token}
+        response = requests.get(url, params=params)
+        return response.status_code == 200
 
 
 class AboutUs(View):

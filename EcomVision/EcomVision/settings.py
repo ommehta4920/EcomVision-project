@@ -45,9 +45,16 @@ INSTALLED_APPS = [
     'user',
     'django_celery_results',
     'django_celery_beat',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,6 +64,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '10820569886-kcv3mgohnjinom3kn7r67doip0o2o6gj.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': ['profile', 'email'],  # Must include email!
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'METHOD': 'oauth2',
+        'VERIFIED_EMAIL': True,
+    }
+}
 
 ROOT_URLCONF = 'EcomVision.urls'
 
@@ -74,6 +98,16 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
 ]
 
 WSGI_APPLICATION = 'EcomVision.wsgi.application'
@@ -186,3 +220,9 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # CELERY BEAT
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# GOOGLE LOGIN SETTINGS
+LOGIN_REDIRECT_URL = '/profile'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

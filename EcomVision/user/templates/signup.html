@@ -1,7 +1,7 @@
 {% load static %}
 
 <html>
-
+    {% load socialaccount %}
 <head>
     <title>
         EcomVision - SignUp
@@ -100,11 +100,13 @@
                 <div class="flex items-center justify-center ">
                     <span class="text-gray-300">or</span>
                 </div>
-                <button
-                        class="text-white py-2 hover:bg-[#531889] focus:outline-none focus:ring-2 focus:ring-white flex items-center justify-center"
+                <a href="{% provider_login_url 'google' %}">
+                    <button
+                        class="text-white py-2 hover:bg-[#531889] focus:outline-none focus:ring-2 focus:ring-white flex items-center justify-center w-[100%]"
                         type="button">
-                    <i class="fab fa-google mr-2"></i> Sign Up using Google
-                </button>
+                        <i class="fab fa-google mr-2"></i> Sign Up using Google
+                    </button>
+                </a>
             </div>
         </form>
         <div class="w-[91%] flex flex-row items-center justify-between mt-5">
