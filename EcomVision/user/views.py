@@ -22,7 +22,7 @@ class HomePage(View):
                 latest_price = price_data[latest_date]
             else:
                 latest_price = "N/A"
-        
+
             latest_products.append({
                 'name': product.product_name,
                 'price': latest_price,
@@ -30,7 +30,7 @@ class HomePage(View):
                 'image_url': product.product_image_url[0],
                 'url': product.product_url,
             })
-        
+
         return render(request, "home.html", {'latest_products': latest_products})
 
 
@@ -225,6 +225,7 @@ class ProductDetailsPage(View):
         return render(request, "product_details.html", context)
 
     def post(self, request, c_id, p_id):
+
         category = get_object_or_404(categories, category_id=c_id)
         c_name = category.category_name[:-1]
         product_data = get_object_or_404(products, product_id=p_id)
@@ -259,7 +260,7 @@ class ProductDetailsPage(View):
             desired_price = desired_price,
             tracking_status = 1
         ).exists()
-        
+
         if existing_tracking:
             messages.info(request, 'ℹ This price tracking is already exists! 🔁')
             return redirect("/profile")
@@ -272,12 +273,12 @@ class ProductDetailsPage(View):
                 last_price=last_price,
                 tracking_status='1'  # Active
             )
-            
+
             tracking_entry.save()
             messages.success(request, '✔ Price tracking has been successfully created! 🛠️')
             return redirect("/profile")
 
-        
+
         labels = sorted(p_price.keys())
         values = (p_price[date] for date in labels)
         context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values],
@@ -285,6 +286,55 @@ class ProductDetailsPage(View):
 
         return render(request, "product_details.html", context)
 
+
+class ProductDetailsPageComparison(View):
+    def get(self, request, c_id=None, p_id=None, to_compare=False):
+        # # Fetching Product and Category data
+        # category = get_object_or_404(categories, category_id=c_id)
+        # c_name = category.category_name[:-1]
+        # product_data = get_object_or_404(products, product_id=p_id)
+
+
+        #     category_details = [{
+        #         "category_id": category.category_id,
+        #         "category_name": category.category_name
+        #     }]
+        #
+        #     products_detail = [{
+        #         "product_id": product_data.product_id,
+        #         "product_name": product_data.product_name
+        #     }]
+        #
+        #     # category_ID = None
+        #     # category_Name = None
+        #     # product_ID = None
+        #     # product_Name = None
+        #     return render(request, "comparison.html", {"category_details": category_details, "products_detail": products_detail})
+        #
+        # print("\n **---- Product_data : ", product_data, "\n")
+
+        category_data = categories.objects.all()
+        if c_id:
+            logger = logging.getLogger(__name__)
+            logger.debug(f"Category ID received: {c_id}")
+            try:
+                category_details = categories.objects.get(category_id=c_id)
+                product_data = products.objects.filter(category_id=category_details.category_id)
+                print(f"Category ID: {c_id}, Products Found: {product_data.count()}")
+
+                if not product_data.exists():  # Ensure products exist
+                    return JsonResponse({'products_detail': [], 'message': 'No products found'})
+                product_list = [
+                    {'product_id': p.product_id, 'product_name': p.product_name, 'product_price': p.product_price,
+                     'product_rating': p.product_ratings, 'product_image': p.product_image_url[0],
+                     'product_details': p.product_details} for p in product_data]
+                print(product_list)
+                return render(request, "comparison.html", {"category_details": [category_details], "products_detail": product_list})  # To get products of particular category
+            except categories.DoesNotExist:
+                messages.error(request, "❌ Sorry category not found.")
+                return HttpResponseNotFound(JsonResponse({'error': '❌ Sorry category not found.'}))
+                # return render(request, "comparison.html")
+        return render(request, "comparison.html", {"category_data": category_data, 'products_detail': []})
 
 class ProductComparisonPage(View):
     def get(self, request, c_id=None):
@@ -304,7 +354,7 @@ class ProductComparisonPage(View):
                      'product_rating': p.product_ratings, 'product_image': p.product_image_url[0],
                      'product_details': p.product_details} for p in product_data]
                 print(product_list)
-                return JsonResponse({'products_detail': product_list})
+                return JsonResponse({'products_detail': product_list})  # To get products of particular category
             except categories.DoesNotExist:
                 messages.error(request, "❌ Sorry category not found.")
                 return HttpResponseNotFound(JsonResponse({'error': '❌ Sorry category not found.'}))
@@ -337,7 +387,7 @@ class ProfilePage(View):
             response['Expires'] = '0'
 
             return response
-        
+
 
     def post(self, request):
         user_id = request.session.get("user_id")

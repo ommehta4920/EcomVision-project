@@ -16,7 +16,8 @@ EcomVision | Comparison
     <br/>
     <br/>
     <br/>
-    <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}" id="alert_div" style="display: none; color: black;">
+    <div class="alert alert-{% if data.tags %}{{ data.tags }}{% endif %}" id="alert_div"
+         style="display: none; color: black;">
 
     </div>
 
@@ -27,10 +28,12 @@ EcomVision | Comparison
         <div class="mb-4">
             <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
             <select id="category"
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+
                 <option value="" disabled selected>
                     Select Category
                 </option>
+
                 {% for category in category_data %}
                 <option value="{{ category.category_id }}">
                     {{ category.category_name }}
@@ -43,22 +46,30 @@ EcomVision | Comparison
             <div class="product-selector mb-2 {% if i|add:-1 >= 2 %}hidden{% endif %}">
                 <label for="product{{ i }}" class="block text-sm font-medium text-gray-700">Product {{ i }}</label>
                 <div class="dropdown relative">
-                    <input type="text" placeholder="Search..." id="input{{ i }}" onclick="toggleDropdown('dropdown{{ i }}')"
-                        onkeyup="filterDropdown('input{{ i }}', 'dropdown{{ i }}')" class="w-full px-3 py-2 border rounded">
-                    <div id="dropdown{{ i }}" class="dropdown-content w-full bg-white border rounded shadow hidden"></div>
+                    <input type="text" placeholder="Search..." id="input{{ i }}"
+                           onclick="toggleDropdown('dropdown{{ i }}')"
+                           onkeyup="filterDropdown('input{{ i }}', 'dropdown{{ i }}')"
+                           class="w-full px-3 py-2 border rounded">
+                    <div id="dropdown{{ i }}"
+                         class="dropdown-content w-full bg-white border rounded shadow hidden"></div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div class="flex justify-evenly items-center mb-4 w-100" >
-            <button id="decrease-btn" class="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 w-[10%]"><strong>-</strong></button>
+        <div class="flex justify-evenly items-center mb-4 w-100">
+            <button id="decrease-btn" class="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 w-[10%]">
+                <strong>-</strong></button>
             <button id="compare-btn"
-            class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 w-[70%]"><strong>Compare</strong></button>
-            <button id="increase-btn" class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 w-[10%]"><strong>+</strong></button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 w-[70%]">
+                <strong>Compare</strong></button>
+            <button id="increase-btn"
+                    class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 w-[10%]">
+                <strong>+</strong></button>
         </div>
     </div>
     <div id="comparison-section"
-        class="bg-white p-6 rounded shadow mt-6 gap-4 w-[90%] h-auto" style="margin: 2% 0; min-height: 0; overflow: hidden; display: none;">
+         class="bg-white p-6 rounded shadow mt-6 gap-4 w-[90%] h-auto"
+         style="margin: 2% 0; min-height: 0; overflow: hidden; display: none;">
         <p>Product Comparison Will Display Here...</p>
     </div>
 </div>
@@ -306,7 +317,7 @@ EcomVision | Comparison
                         <p class="text-gray-700 p-2"><strong>Display Size:</strong> ${extractedDetails.size}</p>
                         <p class="text-gray-700 p-2"><strong>Display Resolution:</strong> ${extractedDetails.reolution}</p>
                         <p class="text-gray-700 p-2"><strong>Weight:</strong> ${extractedDetails.weight}</p>
-                        <a href="/category/${category_ID}/${productDetails.product_id}">View Details</a>
+                        <a class="btn btn-primary mt-2 w-50 mx-auto" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
                     `;
 
                     comparisonSection.appendChild(productDiv);
@@ -332,5 +343,6 @@ EcomVision | Comparison
         comparisonSection.style.display = "flex";
         updateProductSelectors();
     });
+
 </script>
 {% endblock %}
