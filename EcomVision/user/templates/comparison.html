@@ -30,13 +30,14 @@ EcomVision | Comparison
             <select id="category"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
 
-                <option value="" disabled selected>
+                <option value="" disabled {% if not selected_category_id %} selected {% endif %}>
                     Select Category
                 </option>
 
                 {% for category in category_data %}
-                <option value="{{ category.category_id }}">
-                    {{ category.category_name }}
+                <option value="{{ category.category_id }}"
+                        {% if category.category_id == selected_category_id %} selected {% endif %}>
+                {{ category.category_name }}
                 </option>
                 {% endfor %}
             </select>
@@ -47,6 +48,7 @@ EcomVision | Comparison
                 <label for="product{{ i }}" class="block text-sm font-medium text-gray-700">Product {{ i }}</label>
                 <div class="dropdown relative">
                     <input type="text" placeholder="Search..." id="input{{ i }}"
+                           value="{% if selected_product and i == '1' %}{{ selected_product.product_name }}{% else %}{% endif %}"
                            onclick="toggleDropdown('dropdown{{ i }}')"
                            onkeyup="filterDropdown('input{{ i }}', 'dropdown{{ i }}')"
                            class="w-full px-3 py-2 border rounded">
@@ -164,6 +166,28 @@ EcomVision | Comparison
         const compareBtn = document.getElementById("compare-btn");
         const comparisonSection = document.getElementById("comparison-section");
         const alert_message = document.getElementById("alert_div");
+
+        // alert(categorySelect.value);
+
+        const category = categorySelect.value;
+        category_ID = category;
+        fetch(`/comparison/${category}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Received Data:", data);
+                if (data.error) {
+                    console.log(data.error);
+                    return;
+                }
+                if (!data.products_detail || data.products_detail.length === 0) {
+                    console.log("No Products found for this category.");
+                    return;
+                }
+                for (let i = 1; i <= 4; i++) {
+                    updateDropdown(`dropdown${i}`, `input${i}`, data.products_detail);
+                }
+            })
+            .catch(error => console.error("Error fetching products:", error));
 
 
         function updateProductSelectors() {
@@ -296,6 +320,31 @@ EcomVision | Comparison
                 return;
             }
 
+            // {% if selected_product %}
+
+            //     alert("selected_product :- "+ selected_product);
+
+            //     const productDiv = document.createElement('div');
+            //     productDiv.classList.add('comparison-card');
+
+            //     productDiv.innerHTML = `
+            //         <h3 class="text-xl font-bold mb-2">${p_name}</h3>
+            //         <img src="${productDetails.product_image}" alt="Image of ${p_name}" class="mb-2 w-100 h-50 object-cover rounded">
+            //         <p class="text-gray-700 p-2"><strong>Price:</strong> ${latestPrice}</p>
+            //         <p class="text-gray-700 p-2"><strong>Rating:</strong> ${productDetails.product_rating}</p>
+            //         <p class="text-gray-700 p-2"><strong>Model:</strong> ${extractedDetails.model}</p>
+            //         <p class="text-gray-700 p-2"><strong>OS:</strong> ${extractedDetails.os}</p>
+            //         <p class="text-gray-700 p-2"><strong>RAM:</strong> ${extractedDetails.ram}</p>
+            //         <p class="text-gray-700 p-2"><strong>Display Size:</strong> ${extractedDetails.size}</p>
+            //         <p class="text-gray-700 p-2"><strong>Display Resolution:</strong> ${extractedDetails.reolution}</p>
+            //         <p class="text-gray-700 p-2"><strong>Weight:</strong> ${extractedDetails.weight}</p>
+            //         <a class="btn btn-primary mt-2 w-50 mx-auto" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
+            //     `;
+
+            //     comparisonSection.appendChild(productDiv);
+
+            // {% endif %}
+
             selectedProducts.forEach(productName => {
                 let productDetails = Object.values(selectedProductDetails).find(p=>p.product_name === productName);
 
@@ -343,6 +392,7 @@ EcomVision | Comparison
         comparisonSection.style.display = "flex";
         updateProductSelectors();
     });
+
 
 </script>
 {% endblock %}
