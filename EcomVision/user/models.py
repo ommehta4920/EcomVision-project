@@ -92,9 +92,18 @@ class price_track(models.Model):
 
 class contact_us(models.Model):
     contact_id = models.BigAutoField(primary_key=True)
-    cont_name = models. emp_name = models.CharField(null=False, max_length=50)
+    cont_name = models.CharField(null=False, max_length=50)
     cont_email = models.EmailField(null=False, max_length=40)
     message = models.TextField(null=False, max_length=700)
 
     def __str__(self):
         return f"{self.cont_name} - {self.cont_email} - {self.message}"
+
+class Socialaccount(models.Model):
+    socailaccount_id = models.BigAutoField(primary_key=True)
+    provider = models.CharField(null=False, max_length=200)
+    uid = models.CharField(null=False, max_length=200)
+    last_login = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    extra_data = models.JSONField(null=False)
+    user_id = models.ForeignKey(user_details, on_delete=models.CASCADE)
