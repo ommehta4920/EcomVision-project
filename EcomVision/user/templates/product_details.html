@@ -29,8 +29,14 @@ EcomVision | Product Details
     <div class="bg-white p-6 rounded-lg shadow-lg m-[3rem] mb-[2rem] w-[90%]">
         <div class="flex flex-col md:flex-row">
             <div class="md:w-1/3 flex flex-row items-top justify-center">
-                <img alt="{{ product_data.product_name }}" class="rounded-lg h-[300px]"
-                     src="{{ product_data.product_image_url.0 }}" width="300"/>
+                <div class="flex flex-col items-center">
+                    <!-- Main Image Display -->
+                    <div class="mb-4">
+                        <img id="mainProductImage" alt="{{ product_data.product_name }}" 
+                             class="h-[400px] w-[400px] object-contain cursor-pointer"
+                             src="{{ product_data.product_image_url.0 }}"/>
+                    </div>
+                </div>
             </div>
             <div class="md:w-2/3 mt-4 md:mt-0"
                  style="display: flex; flex-direction: column; justify-content: top; align-items: left; margin: 20px;">
@@ -104,7 +110,7 @@ EcomVision | Product Details
                     </div>
                     {% endif %}
 <!--                    <a href="whatsapp://send?text={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
-                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">
+                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}%0A%0ALatest Price%20:-%20{{ product_data.currency }} {{ last_price }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">
 <!--                    <a href="mailto:?subject=Product details from EcomVision&body={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" -->
 <!--                       target="_blank"-->
 <!--                       class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
@@ -122,6 +128,33 @@ EcomVision | Product Details
             </div>
         </div>
     </div>
+    <!-- Product Gallery Section -->
+    <div class="bg-white p-6 rounded-lg mt-8 w-[90%]">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Product Gallery</h2>
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Main image on the left -->
+            <div class="md:w-2/3">
+                <img id="galleryMainImage" 
+                     src="{{ product_data.product_image_url.0 }}" 
+                     alt="Main Product Image"
+                     class="w-full h-[500px] object-contain">
+            </div>
+            
+            <!-- Thumbnails grid on the right -->
+            <div class="md:w-1/3">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 h-[500px] overflow-y-auto scrollbar-hide">
+                    {% for image_url in product_data.product_image_url %}
+                    <div class="cursor-pointer group" onclick="changeGalleryImage('{{ image_url }}')">
+                        <img src="{{ image_url }}" 
+                             alt="Thumbnail {{ forloop.counter }}"
+                             class="w-full h-[100px] object-contain border-2 border-transparent group-hover:border-blue-500 transition-all duration-300">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="bg-white p-6 rounded-lg shadow-lg mt-8 flex flex-col w-[90%] items-top justify-evenly flexwrap">
         <div class="w-100" style="width: 100%; height: 40%;">
             <h2 class="text-2xl font-bold text-gray-800">
@@ -143,6 +176,7 @@ EcomVision | Product Details
 
         </div> -->
     </div>
+
     <div class="bg-white p-6 rounded-lg shadow-lg m-[2rem] mb-[4rem] w-[90%]">
         <h2 class="text-2xl font-bold text-gray-800">
             Specifications
@@ -189,6 +223,20 @@ EcomVision | Product Details
     </div>
 </div>
 {% endif %}
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden">
+    <div class="relative w-full h-full flex items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors duration-200">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="relative max-w-6xl w-full h-full flex items-center justify-center">
+            <img id="lightboxImage" src="" alt="Enlarged view" class="max-h-[85vh] max-w-full object-contain">
+        </div>
+    </div>
+</div>
 
 {% block scripts %}
 
@@ -245,8 +293,53 @@ EcomVision | Product Details
     });
 });
 
+// Image viewer functionality
+function changeGalleryImage(imageUrl) {
+    document.getElementById('galleryMainImage').src = imageUrl;
+}
+
+// Lightbox functionality
+function openLightbox(imageUrl) {
+    document.getElementById('lightbox').classList.remove('hidden');
+    document.getElementById('lightboxImage').src = imageUrl;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Close lightbox when clicking outside the image
+document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeLightbox();
+    }
+});
+
+// Close lightbox on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !document.getElementById('lightbox').classList.contains('hidden')) {
+        closeLightbox();
+    }
+});
+
+// Initialize price history graph
+document.addEventListener("DOMContentLoaded", function () {
+    priceHistoryGraph();
+});
 
 </script>
+
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 
 {% endblock scripts %}
 
