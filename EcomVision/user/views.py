@@ -296,7 +296,7 @@ class ProductDetailsPageComparison(View):
                 selected_category = categories.objects.get(category_id=c_id)
                 product_data = products.objects.filter(category_id=c_id)
                 print(
-                    f"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCategory ID: {c_id}, Products Found: {product_data.count()}")
+                    f"Category ID: {c_id}, Products Found: {product_data.count()}")
 
                 # if not product_data.exists():  # Ensure products exist
                 #     return JsonResponse({'products_detail': [], 'message': 'No products found'})

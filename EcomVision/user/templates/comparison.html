@@ -48,7 +48,7 @@ EcomVision | Comparison
                 <label for="product{{ i }}" class="block text-sm font-medium text-gray-700">Product {{ i }}</label>
                 <div class="dropdown relative">
                     <input type="text" placeholder="Search..." id="input{{ i }}"
-                           value="{% if selected_product and i == '1' %}{{ selected_product.product_name }}{% else %}{% endif %}"
+                           value="{% if selected_product and i == '1' %}{{ selected_product.product_name }}{% endif %}"
                            onclick="toggleDropdown('dropdown{{ i }}')"
                            onkeyup="filterDropdown('input{{ i }}', 'dropdown{{ i }}')"
                            class="w-full px-3 py-2 border rounded">
@@ -78,6 +78,7 @@ EcomVision | Comparison
 
 <script>
     let selectedProductDetails = {};
+    let selectedProducts = [];
 
     function toggleDropdown(dropdownId) {
         const dropdown = document.getElementById(dropdownId);
@@ -132,10 +133,15 @@ EcomVision | Comparison
                 event.preventDefault();
                 document.getElementById(inputId).value = product.product_name;
 
+                // Store the selected product details
                 selectedProductDetails[inputId] = product;
+                
+                // Add to selected products array if not already present
+                if (!selectedProducts.includes(product.product_name)) {
+                    selectedProducts.push(product.product_name);
+                }
 
                 updateCompareButtonState();
-
                 dropdown.classList.add("hidden");
                 dropdown.style.display = "none";
             };
@@ -146,17 +152,9 @@ EcomVision | Comparison
     }
 
     function updateCompareButtonState() {
-        const selectedProducts = [];
-
-        document.querySelectorAll('.product-selector input').forEach(input => {
-            if (input.value.trim() !== "") {
-                selectedProducts.push(input.value);
-            }
-        });
-
-        // Enable the button if at least 2 unique products are selected
-        // const compareBtn = document.getElementById('compare-btn');
-        // compareBtn.disabled = selectedProducts.length < 2;
+        const compareBtn = document.getElementById('compare-btn');
+        const uniqueProducts = new Set(selectedProducts);
+        compareBtn.disabled = uniqueProducts.size < 2;
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -166,6 +164,16 @@ EcomVision | Comparison
         const compareBtn = document.getElementById("compare-btn");
         const comparisonSection = document.getElementById("comparison-section");
         const alert_message = document.getElementById("alert_div");
+
+        // Initialize with first product if available
+        {% if selected_product %}
+            const firstProduct = {{ selected_product|safe }};
+            if (firstProduct) {
+                document.getElementById('input1').value = firstProduct.product_name;
+                selectedProductDetails['input1'] = firstProduct;
+                selectedProducts.push(firstProduct.product_name);
+            }
+        {% endif %}
 
         // alert(categorySelect.value);
 
@@ -215,6 +223,7 @@ EcomVision | Comparison
                     for (let i = 1; i <= 4; i++) {
                         updateDropdown(`dropdown${i}`, `input${i}`, data.products_detail);
                     }
+
                 })
                 .catch(error => console.error("Error fetching products:", error));
         });
@@ -293,24 +302,12 @@ EcomVision | Comparison
         compareBtn.addEventListener('click', function () {
             if (this.disabled) return;
 
-            const selectedProducts = [];
             const comparisonSection = document.getElementById('comparison-section');
             comparisonSection.innerHTML = "";
 
-            let duplicateFound = false;
-            let productInputs = document.querySelectorAll('.product-selector input');
-
-            productInputs.forEach(input => {
-                let productName = input.value;
-                if (productName) {
-                    if (selectedProducts.includes(productName)) {
-                        duplicateFound = true;
-                    }
-                    selectedProducts.push(productName);
-                }
-            });
-
-            if (duplicateFound) {
+            // Check for duplicates
+            const uniqueProducts = new Set(selectedProducts);
+            if (uniqueProducts.size !== selectedProducts.length) {
                 showAlert("❌ Please Select Different Products for Comparison...", "error");
                 return;
             }
@@ -320,44 +317,23 @@ EcomVision | Comparison
                 return;
             }
 
-            // {% if selected_product %}
+            // Create a container for comparison cards
+            const comparisonContainer = document.createElement('div');
+            comparisonContainer.className = 'flex flex-wrap justify-center gap-4';
+            comparisonSection.appendChild(comparisonContainer);
 
-            //     alert("selected_product :- "+ selected_product);
-
-            //     const productDiv = document.createElement('div');
-            //     productDiv.classList.add('comparison-card');
-
-            //     productDiv.innerHTML = `
-            //         <h3 class="text-xl font-bold mb-2">${p_name}</h3>
-            //         <img src="${productDetails.product_image}" alt="Image of ${p_name}" class="mb-2 w-100 h-50 object-cover rounded">
-            //         <p class="text-gray-700 p-2"><strong>Price:</strong> ${latestPrice}</p>
-            //         <p class="text-gray-700 p-2"><strong>Rating:</strong> ${productDetails.product_rating}</p>
-            //         <p class="text-gray-700 p-2"><strong>Model:</strong> ${extractedDetails.model}</p>
-            //         <p class="text-gray-700 p-2"><strong>OS:</strong> ${extractedDetails.os}</p>
-            //         <p class="text-gray-700 p-2"><strong>RAM:</strong> ${extractedDetails.ram}</p>
-            //         <p class="text-gray-700 p-2"><strong>Display Size:</strong> ${extractedDetails.size}</p>
-            //         <p class="text-gray-700 p-2"><strong>Display Resolution:</strong> ${extractedDetails.reolution}</p>
-            //         <p class="text-gray-700 p-2"><strong>Weight:</strong> ${extractedDetails.weight}</p>
-            //         <a class="btn btn-primary mt-2 w-50 mx-auto" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
-            //     `;
-
-            //     comparisonSection.appendChild(productDiv);
-
-            // {% endif %}
-
-            selectedProducts.forEach(productName => {
-                let productDetails = Object.values(selectedProductDetails).find(p=>p.product_name === productName);
-
+            // Display all selected products
+            Object.values(selectedProductDetails).forEach(productDetails => {
                 if (productDetails) {
                     const productDiv = document.createElement('div');
-                    productDiv.classList.add('comparison-card');
+                    productDiv.classList.add('comparison-card', 'bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'w-[45%]', 'min-w-[300px]');
 
                     const latestPrice = getLatestPrice(productDetails.product_price)
                     const extractedDetails = extractProductDetails(productDetails.product_details)
                     const p_name = trimProductName(productDetails.product_name);
                     productDiv.innerHTML = `
                         <h3 class="text-xl font-bold mb-2">${p_name}</h3>
-                        <img src="${productDetails.product_image}" alt="Image of ${p_name}" class="mb-2 w-100 h-50 object-cover rounded">
+                        <img src="${productDetails.product_image}" alt="Image of ${p_name}" class="mb-2 w-full h-48 object-cover rounded">
                         <p class="text-gray-700 p-2"><strong>Price:</strong> ${latestPrice}</p>
                         <p class="text-gray-700 p-2"><strong>Rating:</strong> ${productDetails.product_rating}</p>
                         <p class="text-gray-700 p-2"><strong>Model:</strong> ${extractedDetails.model}</p>
@@ -369,10 +345,11 @@ EcomVision | Comparison
                         <a class="btn btn-primary mt-2 w-50 mx-auto" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
                     `;
 
-                    comparisonSection.appendChild(productDiv);
+                    comparisonContainer.appendChild(productDiv);
                 }
             });
 
+            comparisonSection.style.display = "block";
             document.querySelector('#comparison-section').scrollIntoView({ behavior: 'smooth' });
         });
 
@@ -392,7 +369,6 @@ EcomVision | Comparison
         comparisonSection.style.display = "flex";
         updateProductSelectors();
     });
-
-
 </script>
+
 {% endblock %}
