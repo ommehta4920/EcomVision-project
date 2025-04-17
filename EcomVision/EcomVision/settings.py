@@ -67,8 +67,8 @@ MIDDLEWARE = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
+        # For each OAuth based provider, either add a `SocialApp`
+        # (`socialaccount` app) containing the required client
         # credentials, or list them here:
         'APP': {
             'client_id': '', # Add from .txt file
@@ -79,7 +79,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {'access_type': 'online'},
         'METHOD': 'oauth2',
         'VERIFIED_EMAIL': True,
-    }
+ }
 }
 
 ROOT_URLCONF = 'EcomVision.urls'
