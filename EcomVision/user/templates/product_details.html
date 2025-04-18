@@ -108,6 +108,14 @@ EcomVision | Product Details
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <a href="/signin"
+                       class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-yellow-500 hover:to-yellow-700 transform hover:scale-105 transition-transform duration-300 btn btn-primary"
+                       style="border: none;">
+                        <i class="fa-solid fa-bell mr-2">
+                        </i>
+                        Price Alert
+                    </a>
                     {% endif %}
 <!--                    <a href="whatsapp://send?text={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
                     <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}%0A%0ALatest Price%20:-%20{{ product_data.currency }} {{ last_price }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">
