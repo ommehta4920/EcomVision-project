@@ -24,94 +24,120 @@ EcomVision | Contact Us
     {% endif %}
 </section>
 
-<div class="col-md-9 w-100"
-    style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding: 2% 0;">
-    <!-- <div class="card-header p-2">
-            <ul class="nav nav-pills"
-                style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                <h1 style="text-align: center; font-size: 22px;">
-                    <strong>Get in touch!</strong>
-                </h1>
-            </ul>
-        </div> -->
-    <section class="mb-12 w-[65%]">
-        <form class="bg-white p-6 rounded-lg shadow-lg" id="user-form" method="POST" action="/contactus/">
-            <div style="text-align: center; font-size: 42px; margin-bottom: 5px;">
-                <strong>Get In Touch!</strong>
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-center">
+                <h1 class="text-4xl font-bold text-white mb-2">Get In Touch!</h1>
+                <p class="text-indigo-100 text-l">We'd love to hear from you...</p>
             </div>
-            {% csrf_token %}
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="name">
-                    Name
-                </label>
-                <input
-                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 form-control"
-                    id="name" name="name" placeholder="Enter your Name" type="text" value="{{ user.user_name }}" required autofocus/>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="email">
-                    Email
-                </label>
-                <input
-                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 form-control"
-                    id="email" name="email" placeholder="Enter your Email" type="email" value="{{ user.user_email }}" required />
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="message">
-                    Message
-                </label>
-                <textarea
-                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 form-control"
-                    id="message" name="message" placeholder="Type your message here..." required rows="4"
-                    style="resize: none;"></textarea>
-            </div>
-            <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600" type="submit">
-                Send Message
-            </button>
-        </form> 
-    </section>
-    <!-- <div class="card-body">
-            <div class="tab-content">
-                <div class="active tab-pane" id="profile">
-                    <div style="display: flex; flex-direction: column;">
-                        <div class="card-body"
-                            style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-
-                            <form id="user-form" method="POST" action="/contactus/" style="width: 80%;">
-                                {% csrf_token %}
-
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text">Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter your name" name="name"
-                                        value="{{ user.user_name }}" required autofocus>
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text">Email</label>
-                                    <input type="email" class="form-control" placeholder="Enter your email" name="email"
-                                        value="{{ user.user_email }}" required>
-                                </div>
-
-                                <div class="input-group mb-4">
-                                    <label class="input-group-text">Message</label>
-                                    <textarea class="form-control" name="message" rows="3"
-                                        placeholder="Type your message here..." required></textarea>
-                                </div>
-
-                                <div class="form-group"
-                                    style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; margin-top: 15px;">
-                                    <button type="submit" class="btn btn-primary">
-                                        Send Message
-                                    </button>
-                                </div>
-                            </form>
+            
+            <form class="p-8" id="user-form" method="POST" action="/contactus/">
+                {% csrf_token %}
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-indigo-700 font-semibold mb-2 text-sm uppercase tracking-wide" for="name">
+                            Name
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input
+                                class="w-full pl-10 pr-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300 transition-colors duration-200"
+                                id="name" name="name" placeholder="Enter your Name" type="text" value="{{ user.user_name }}" required autofocus/>
                         </div>
                     </div>
-                </div>
 
-            </div>
-        </div> -->
+                    <div>
+                        <label class="block text-indigo-700 font-semibold mb-2 text-sm uppercase tracking-wide" for="email">
+                            Email
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-400">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input
+                                class="w-full pl-10 pr-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300 transition-colors duration-200"
+                                id="email" name="email" placeholder="Enter your Email" type="email" value="{{ user.user_email }}" required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-indigo-700 font-semibold mb-2 text-sm uppercase tracking-wide" for="message">
+                            Message
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3 text-indigo-400 pt-4">
+                                <i class="fas fa-comment-alt"></i>
+                            </span>
+                            <textarea
+                                class="w-full pl-10 pr-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300 transition-colors duration-200"
+                                id="message" name="message" placeholder="Type your message here..." required rows="4"
+                                style="resize: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <button 
+                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center"
+                        type="submit">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-</div>
+
+<style>
+    .alert {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .alert-success {
+        background-color: #d1fae5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+
+    .alert-error {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+
+    .alert-info {
+        background-color: #dbeafe;
+        color: #1e40af;
+        border: 1px solid #bfdbfe;
+    }
+
+    input, textarea {
+        transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    button[type="submit"] {
+        letter-spacing: 0.5px;
+    }
+
+    button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2), 0 2px 4px -1px rgba(99, 102, 241, 0.1);
+    }
+
+    button[type="submit"]:active {
+        transform: translateY(0);
+    }
+</style>
 
 {% endblock %}
