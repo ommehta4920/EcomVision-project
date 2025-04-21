@@ -42,7 +42,7 @@ EcomVision
                 <img src="{{ product.image_url }}" alt="{{ product.name }}" width="150" />
                 <h2>{{ product.name |truncatechars:50 | title }}</h2>
                 <p><strong>Price:</strong> {{ product.currency }} {{ product.price }}</p>
-                <p><a href="{{ product.url }}" target="_blank">View Product</a></p>
+                <p><a href="{% url 'product-detail-page' product.category_id product.product_id %}">View Product</a></p>
               </div>
             {% endfor %}
         </div>

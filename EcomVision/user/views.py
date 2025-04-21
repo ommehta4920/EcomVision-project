@@ -29,11 +29,13 @@ class HomePage(View):
                 latest_price = "N/A"
 
             latest_products.append({
+                'product_id': product.product_id,
                 'name': product.product_name,
                 'price': latest_price,
                 'currency': product.currency,
                 'image_url': product.product_image_url[0],
                 'url': product.product_url,
+                'category_id': product.category_id.category_id
             })
 
         return render(request, "home.html", {'latest_products': latest_products})
