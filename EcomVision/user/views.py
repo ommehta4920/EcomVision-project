@@ -198,7 +198,51 @@ class ProductListPage(View):
     def get(self, request, c_id):
         category = get_object_or_404(categories, category_id=c_id)
         products_list = products.objects.filter(category_id_id=category.category_id)
-        return render(request, "product_list.html", {"products": products_list, "category": category})
+        
+        # Process products to include latest price
+        processed_products = []
+        prices = []
+        
+        for product in products_list:
+            latest_price = None
+            if product.product_price:
+                last_date = max(product.product_price.keys())
+                latest_price = product.product_price[last_date]
+                # Remove commas and convert to float for price ranges
+                price_float = float(latest_price.replace(',', ''))
+                prices.append(price_float)
+            
+            processed_products.append({
+                'product': product,
+                'latest_price': latest_price,
+                'price_float': price_float if latest_price else 0
+            })
+        
+        # Calculate price ranges
+        price_ranges = []
+        if prices:
+            min_price = min(prices)
+            max_price = max(prices)
+            
+            # Create 5 price ranges
+            range_size = (max_price - min_price) / 5
+            for i in range(5):
+                range_min = min_price + (i * range_size)
+                range_max = min_price + ((i + 1) * range_size)
+                # Round to nearest 1000 for cleaner ranges
+                range_min = round(range_min / 1000) * 1000
+                range_max = round(range_max / 1000) * 1000
+                price_ranges.append({
+                    'min': range_min,
+                    'max': range_max
+                })
+        
+        context = {
+            "products": processed_products,
+            "category": category,
+            "price_ranges": price_ranges
+        }
+        return render(request, "product_list.html", context)
 
 
 class ProductDetailsPage(View):
@@ -488,3 +532,48 @@ class ContactUs(View):
             print("---------", sys.exc_info())
 
         return redirect("/contactus")
+
+def calculate_price_ranges(products):
+    if not products:
+        return []
+    
+    # Get all prices
+    prices = [product.last_price for product in products if product.last_price is not None]
+    if not prices:
+        return []
+    
+    min_price = min(prices)
+    max_price = max(prices)
+    
+    # Calculate number of ranges (5 ranges for better distribution)
+    num_ranges = 5
+    range_size = (max_price - min_price) / num_ranges
+    
+    # Create price ranges
+    price_ranges = []
+    for i in range(num_ranges):
+        range_min = min_price + (i * range_size)
+        range_max = min_price + ((i + 1) * range_size)
+        # Round to nearest 1000 for cleaner ranges
+        range_min = round(range_min / 1000) * 1000
+        range_max = round(range_max / 1000) * 1000
+        price_ranges.append({
+            'min': range_min,
+            'max': range_max
+        })
+    
+    return price_ranges
+
+def product_list(request, category_id):
+    category = Category.objects.get(category_id=category_id)
+    products = Product.objects.filter(category_id=category_id)
+    
+    # Calculate dynamic price ranges
+    price_ranges = calculate_price_ranges(products)
+    
+    context = {
+        'category': category,
+        'products': products,
+        'price_ranges': price_ranges
+    }
+    return render(request, 'product_list.html', context)
