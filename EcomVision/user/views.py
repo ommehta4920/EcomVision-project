@@ -8,6 +8,9 @@ from django.http import HttpResponseNotFound, JsonResponse, HttpResponseRedirect
 import logging
 from django.contrib.auth import update_session_auth_hash, logout
 import requests
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -577,3 +580,36 @@ def product_list(request, category_id):
         'price_ranges': price_ranges
     }
     return render(request, 'product_list.html', context)
+
+class GetPriceTracking(View):
+    def get(self, request, id):
+        try:
+            print(f"Fetching price tracking data for ID: {id}")
+            price_track_data = price_track.objects.get(id=id)
+            print(f"Found price tracking data: {price_track_data}")
+            
+            data = {
+                'product_name': price_track_data.product_id.product_name,
+                'desired_price': price_track_data.desired_price,
+                'tracking_status': price_track_data.tracking_status
+            }
+            print(f"Returning data: {data}")
+            return JsonResponse(data)
+        except price_track.DoesNotExist:
+            print(f"Price tracking with ID {id} not found")
+            return JsonResponse({'error': 'Price tracking not found'}, status=404)
+        except Exception as e:
+            print(f"Error fetching price tracking data: {str(e)}")
+            return JsonResponse({'error': str(e)}, status=500)
+
+def delete_price_track(request, pk):
+    print(pk)
+    try:
+        track = price_track.objects.get(track_id = pk)
+    except price_track.DoesNotExist:
+        messages.error(request, "Track not found or you don't have permission.")
+        return redirect('/profile')
+
+    track.delete()
+    messages.success(request, "✔ Record deleted successfully!")
+    return redirect('/profile')

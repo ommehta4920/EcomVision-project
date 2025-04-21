@@ -4,6 +4,10 @@
 EcomVision | Category
 {% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
 {% block content %}
 
 {% load static %}
@@ -30,125 +34,348 @@ EcomVision | Category
 </section>
 
 <div class="col-md-9 w-100" style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding: 2% 0;">
-    <div class="card w-[60%]">
-        <div class="card-header p-2">
-            <ul class="nav nav-pills" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">Profile</a></li>
-                <!-- <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Track Price</a></li> -->
-                <li class="nav-item"><a class="nav-link" href="#history" data-toggle="tab">Tracking History</a></li>
-                <!-- <li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab">Change Password</a></li>     -->
+    <div class="card w-[60%] shadow-xl">
+        <div class="card-header p-4 bg-gradient-to-r from-indigo-600 to-purple-600">
+            <ul class="nav nav-pills flex justify-center space-x-4" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active px-4 py-2 rounded-lg text-white bg-indigo-500 hover:bg-indigo-400 transition-all duration-300 shadow-md" href="#profile" data-toggle="tab" role="tab">
+                        <i class="fas fa-user mr-2"></i>Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-4 py-2 rounded-lg text-white hover:bg-indigo-400 transition-all duration-300" href="#history" data-toggle="tab" role="tab">
+                        <i class="fas fa-history mr-2"></i>Tracking History
+                    </a>
+                </li>
             </ul>
         </div>
-        <div class="card-body">
+        <div class="card-body p-6 bg-gray-50">
             <div class="tab-content">
-                <div class="active tab-pane" id="profile">
-                    <div style="display: flex; flex-direction: column;">
-                        <h1 style="text-align: center; font-size: 22px;"><strong>Welcome, {{ user_data.user_name }}!</strong></h1>
-                        <div class="card-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                            <form id="user-form" method="POST" action="/profile/" style="width: 80%;">
+                <div class="active tab-pane fade show" id="profile" role="tabpanel">
+                    <div class="flex flex-col items-center">
+                        <h1 class="text-3xl font-bold text-indigo-800 mb-6">Welcome, {{ user_data.user_name }}!</h1>
+                        <div class="w-full max-w-md">
+                            <form id="user-form" method="POST" action="/profile/" class="space-y-6">
                                 {% csrf_token %}
-                                <div class="form-group row w-100">
-                                    <label for="inputName" class="col-sm-2 col-form-label" style="width: 10%;">Name</label>
-                                    <div class="col-sm-10" style="width: 90%;">
-                                        <input class="form-control" id="inputName" name="name" placeholder="Name" type="text" value="{{ user_data.user_name }}" readonly required>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="inputName" class="block text-sm font-medium text-indigo-700 mb-1">Name</label>
+                                    <input class="w-full px-4 py-2 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300" 
+                                           id="inputName" name="name" placeholder="Name" type="text" 
+                                           value="{{ user_data.user_name }}" readonly required>
                                 </div>
 
-                                <div class="form-group row w-100">
-                                    <label for="inputEmail" class="col-sm-2 col-form-label" style="width: 10%;">Email</label>
-                                    <div class="col-sm-10" style="width: 90%;">
-                                        <input class="form-control" id="inputEmail" name="email" placeholder="Email" type="email" value="{{ user_data.user_email }}" readonly required>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="inputEmail" class="block text-sm font-medium text-indigo-700 mb-1">Email</label>
+                                    <input class="w-full px-4 py-2 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300" 
+                                           id="inputEmail" name="email" placeholder="Email" type="email" 
+                                           value="{{ user_data.user_email }}" readonly required>
                                 </div>
 
-                                <div class="form-group" style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; margin-top: 15px;">
-                                    <button type="button" class="btn btn-danger" id="editBtn" onclick="toggleEdit()">EDIT</button>
-                                    <button type="submit" class="btn btn-success d-none" id="saveBtn">SAVE</button>
-                                    <button type="button" class="btn btn-secondary d-none" id="cancelBtn" onclick="cancelEdit()">CANCEL</button>
+                                <div class="flex justify-center space-x-4 mt-6">
+                                    <button type="button" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors" 
+                                            id="editBtn" onclick="toggleEdit()">
+                                        <i class="fas fa-edit mr-2"></i>EDIT
+                                    </button>
+                                    <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors d-none" 
+                                            id="saveBtn">
+                                        <i class="fas fa-save mr-2"></i>SAVE
+                                    </button>
+                                    <button type="button" class="px-6 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors d-none" 
+                                            id="cancelBtn" onclick="cancelEdit()">
+                                        <i class="fas fa-times mr-2"></i>CANCEL
+                                    </button>
                                 </div>
                             </form>
                         </div>
-                        <script>
-                        function toggleEdit() {
-                            document.getElementById("inputName").removeAttribute("readonly");
-                            document.getElementById("inputEmail").removeAttribute("readonly");
-
-                            document.getElementById("editBtn").classList.add("d-none");
-                            document.getElementById("saveBtn").classList.remove("d-none");
-                            document.getElementById("cancelBtn").classList.remove("d-none");
-                        }
-
-                        function cancelEdit() {
-                            location.reload();  // Refresh page to discard changes
-                        }
-                        </script>
                     </div>
                 </div>
-                <div class=" tab-pane" id="history">
+                <div class="tab-pane fade" id="history" role="tabpanel">
                     {% if price_track_details %}
+                    <div class="mb-6">
+                        <!-- Search and Filter Section -->
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <!-- Search Bar -->
+                            <div class="flex-1 min-w-[200px]">
+                                <div class="relative">
+                                    <input type="text" id="searchInput" placeholder="Search by product name..." 
+                                           class="w-full px-4 py-2 pl-10 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300 bg-white shadow-sm">
+                                </div>
+                            </div>
+                            
+                            <!-- Filter Buttons -->
+                            <div class="flex gap-2">
+                                <button class="filter-btn px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors border border-indigo-200 hover:border-indigo-300 shadow-sm" 
+                                        data-filter="all">
+                                    <i class="fas fa-list mr-2"></i>All
+                                </button>
+                                <button class="filter-btn px-4 py-2 bg-white text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors border border-emerald-200 hover:border-emerald-300 shadow-sm" 
+                                        data-filter="active">
+                                    <i class="fas fa-play-circle mr-2"></i>Active
+                                </button>
+                                <button class="filter-btn px-4 py-2 bg-white text-violet-600 rounded-lg hover:bg-violet-50 transition-colors border border-violet-200 hover:border-violet-300 shadow-sm" 
+                                        data-filter="complete">
+                                    <i class="fas fa-check-circle mr-2"></i>Complete
+                                </button>
+                            </div>
+
+                            <!-- Sort Button -->
+                            <button id="sortDateBtn" class="px-4 py-2 rounded-lg bg-white text-indigo-600 hover:bg-indigo-50 transition-colors border border-indigo-200 hover:border-indigo-300 shadow-sm flex items-center gap-2">
+                                <i class="fas fa-sort-amount-down"></i>
+                                <span>Sort by Date</span>
+                            </button>
+                        </div>
+                    </div>
                     
-                    <!-- user history content goes here -->
-                    <table class="min-w-full text-sm text-gray-800">
-                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs text-center">
-                            <tr>
-                                <th class="px-6 py-3 ">Product Name</th>
-                                <th class="px-6 py-3 ">Desired Price</th>
-                                <th class="px-6 py-3 ">Current Price</th>
-                                <th class="px-6 py-3 ">Tracking Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200 text-center">
-                            {% for data in price_track_details %}
-                            <tr>
-                                <td class="px-6 py-4">
-                                    {{ data.product_id.product_name }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    ₹{{ data.desired_price }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    ₹{{ data.last_price }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-block px-2 py-1 text-xs font-semibold rounded 
-                                {% if data.tracking_status == '1' %}
-                                  bg-green-100 text-green-800
-                                {% elif data.tracking_status == '2' %}
-                                  bg-blue-100 text-blue-800
-                                {% else %}
-                                  bg-gray-200 text-gray-800
-                                {% endif %}
-                              ">
-                                        {{ data.get_tracking_status_display }}
-                                    </span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <!-- Table Container -->
+                    <div class="rounded-lg shadow-lg overflow-hidden border border-indigo-100">
+                        <table class="w-full divide-y divide-indigo-100" id="historyTable">
+                            <thead class="bg-gradient-to-r from-indigo-600 to-purple-600">
+                                <tr>
+                                    <th scope="col" class="w-1/3 px-6 py-4 text-center text-xs font-medium text-white uppercase tracking-wider">Product Name</th>
+                                    <th scope="col" class="w-1/4 px-6 py-4 text-center text-xs font-medium text-white uppercase tracking-wider">Desired Price</th>
+                                    <th scope="col" class="w-1/4 px-6 py-4 text-center text-xs font-medium text-white uppercase tracking-wider">Current Price</th>
+                                    <th scope="col" class="w-1/6 px-6 py-4 text-center text-xs font-medium text-white uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-4 text-center text-xs font-medium text-white uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-indigo-100">
+                                {% for data in price_track_details %}
+                                <tr class="hover:bg-indigo-50 transition-colors duration-200" data-date="{{ data.created_at|date:'Y-m-d H:i:s' }}">
+                                    <td class="px-6 py-4 text-sm text-gray-900 text-center">
+                                        <div class="line-clamp-2 mx-auto" title="{{ data.product_id.product_name }}">
+                                            {{ data.product_id.product_name }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-indigo-600 font-medium text-center">
+                                        ₹{{ data.desired_price }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-indigo-600 font-medium text-center">
+                                        ₹{{ data.last_price }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                                            {% if data.tracking_status == '1' %}
+                                                bg-emerald-100 text-emerald-800
+                                            {% elif data.tracking_status == '2' %}
+                                                bg-violet-100 text-violet-800
+                                            {% else %}
+                                                bg-slate-100 text-slate-800
+                                            {% endif %}">
+                                            {{ data.get_tracking_status_display }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <form method="POST" action="{% url 'delete_price_track' data.track_id %}" onsubmit="return confirm('Are you sure you want to delete this item?');" class="flex justify-center">
+                                            {% csrf_token %}
+                                            <button type="submit" class="px-3 py-1 bg-white text-red-600 rounded-lg hover:bg-red-50 transition-colors border border-red-200 hover:border-red-300 shadow-sm flex items-center justify-center mt-3">
+                                                <i class="fas fa-trash-alt text-sm"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-center mt-6">
+                        <nav class="pagination-nav flex items-center space-x-2">
+                            <button id="prevPage" class="p-2 rounded-full hover:bg-indigo-50 transition-colors text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            
+                            <div id="paginationNumbers" class="flex items-center space-x-1">
+                                <!-- Page numbers will be inserted here by JavaScript -->
+                            </div>
+                            
+                            <button id="nextPage" class="p-2 rounded-full hover:bg-indigo-50 transition-colors text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </nav>
+                    </div>
                     {% else %}
-                        <p style="text-align: center;">There is no Price Tracking History for your account.</p>
+                        <div class="text-center py-8 bg-indigo-50 rounded-lg border border-indigo-100">
+                            <i class="fas fa-history text-4xl text-indigo-400 mb-4"></i>
+                            <p class="text-indigo-600 text-lg">There is no Price Tracking History for your account.</p>
+                        </div>
                     {% endif %}
                 </div>
-
-
-            <!-- jQuery -->
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <!-- Bootstrap 4 -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-            <!-- AdminLTE App -->
-            <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
-            <!-- AdminLTE for demo purposes -->
-            <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/demo.js"></script>
             </div>
         </div>
     </div>
 </div>
 </div>
 
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
+    .nav-link {
+        transition: all 0.3s ease;
+    }
+
+    .nav-link.active {
+        background-color: #6366f1;
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2), 0 2px 4px -1px rgba(99, 102, 241, 0.1);
+    }
+
+    .nav-link:not(.active):hover {
+        background-color: rgba(99, 102, 241, 0.8);
+        transform: translateY(-1px);
+    }
+
+    .card {
+        border: none;
+        border-radius: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+
+    .filter-btn, #sortDateBtn, .pagination-button, #historyTable tr {
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover, #sortDateBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-btn.active {
+        background-color: #eef2ff;
+        border-color: #6366f1;
+        transform: scale(1.05);
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2), 0 2px 4px -1px rgba(99, 102, 241, 0.1);
+    }
+
+    .pagination-button {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        color: #4b5563;
+        font-weight: 500;
+        margin: 0 0.125rem;
+    }
+
+    .pagination-button:hover {
+        background-color: #f3f4f6;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-color: #d1d5db;
+    }
+
+    .pagination-button.active {
+        background-color: #6366f1;
+        color: white;
+        border-color: #6366f1;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2), 0 2px 4px -1px rgba(99, 102, 241, 0.1);
+    }
+
+    .pagination-ellipsis {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .pagination-nav {
+        background-color: white;
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .pagination-nav button {
+        transition: all 0.2s ease;
+    }
+
+    .pagination-nav button:hover {
+        background-color: #f3f4f6;
+        transform: translateY(-1px);
+    }
+
+    .pagination-nav button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #f9fafb;
+    }
+
+    .pagination-nav button:disabled:hover {
+        transform: none;
+        background-color: #f9fafb;
+    }
+
+    .pagination-nav svg {
+        transition: transform 0.2s ease;
+    }
+
+    .pagination-nav button:hover svg {
+        transform: scale(1.1);
+    }
+
+    #historyTable th {
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    #historyTable td {
+        vertical-align: middle;
+    }
+
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+</style>
+
+<!-- Add Bootstrap and jQuery scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // Initialize Bootstrap tabs
+    $(document).ready(function() {
+        // Enable all tabs
+        $('a[data-toggle="tab"]').on('click', function(e) {
+            e.preventDefault();
+            // Remove active class from all tabs
+            $('.nav-link').removeClass('active bg-indigo-500 shadow-md');
+            // Add active class to clicked tab
+            $(this).addClass('active bg-indigo-500 shadow-md');
+            // Show the corresponding tab content
+            $($(this).attr('href')).addClass('show active').siblings().removeClass('show active');
+        });
+
+        // Show the first tab by default
+        $('a[data-toggle="tab"]:first').tab('show');
+    });
+
     function toggleEdit() {
         document.getElementById("inputName").removeAttribute("readonly");
         document.getElementById("inputEmail").removeAttribute("readonly");
@@ -161,5 +388,146 @@ EcomVision | Category
     function cancelEdit() {
         location.reload();  // Refresh page to discard changes
     }
+
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('historyTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        function performSearch() {
+            const searchText = searchInput.value.toLowerCase().trim();
+            
+            rows.forEach(row => {
+                const productName = row.querySelector('td:first-child').textContent.toLowerCase();
+                const shouldShow = productName.includes(searchText);
+                row.style.display = shouldShow ? '' : 'none';
+            });
+        }
+
+        // Add event listener for search input
+        searchInput.addEventListener('input', performSearch);
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                
+                rows.forEach(row => {
+                    const status = row.querySelector('td:nth-child(4) span').textContent.toLowerCase();
+                    const shouldShow = filter === 'all' || 
+                        (filter === 'active' && status.includes('active')) ||
+                        (filter === 'complete' && status.includes('complete'));
+                    row.style.display = shouldShow ? '' : 'none';
+                });
+            });
+        });
+
+        // Sort functionality
+        document.getElementById('sortDateBtn').addEventListener('click', function() {
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.sort((a, b) => {
+                const dateA = new Date(a.dataset.date);
+                const dateB = new Date(b.dataset.date);
+                return dateB - dateA;
+            });
+            
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    });
+
+    // Pagination functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const itemsPerPage = 5;
+        const table = document.getElementById('historyTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const paginationNumbers = document.getElementById('paginationNumbers');
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+        
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+        function showPage(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? '' : 'none';
+            });
+            
+            currentPage = page;
+            updatePagination();
+        }
+
+        function updatePagination() {
+            paginationNumbers.innerHTML = '';
+            
+            // Previous button state
+            prevButton.disabled = currentPage === 1;
+            
+            // Next button state
+            nextButton.disabled = currentPage === totalPages;
+            
+            // Always show first page
+            if (currentPage > 2) {
+                createPageButton(1);
+                if (currentPage > 3) {
+                    createEllipsis();
+                }
+            }
+            
+            // Show pages around current page
+            for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+                createPageButton(i);
+            }
+            
+            // Always show last page
+            if (currentPage < totalPages - 1) {
+                if (currentPage < totalPages - 2) {
+                    createEllipsis();
+                }
+                createPageButton(totalPages);
+            }
+        }
+
+        function createPageButton(page) {
+            const button = document.createElement('button');
+            button.textContent = page;
+            button.className = `pagination-button ${page === currentPage ? 'active' : ''}`;
+            button.addEventListener('click', () => showPage(page));
+            paginationNumbers.appendChild(button);
+        }
+
+        function createEllipsis() {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            ellipsis.className = 'pagination-ellipsis';
+            paginationNumbers.appendChild(ellipsis);
+        }
+
+        // Event listeners
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+
+        // Initialize
+        showPage(1);
+    });
 </script>
 {% endblock %}
