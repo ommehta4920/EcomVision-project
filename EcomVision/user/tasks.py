@@ -57,3 +57,9 @@ def check_price_tracking():
                 track.save()
         except Exception as e:
             print(f"Error Processing track {track.track_id}: {e}")
+
+
+# @shared_task(bind=True)
+# def temp_scrapper(self):
+#     print("\n\n\n\n\n\n\n\n\n\n This is test function...")
+#     return "Test is Done....."

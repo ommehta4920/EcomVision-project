@@ -28,7 +28,11 @@ app.conf.beat_schedule = {
     'Price-Drop-Func': {
         'task': 'user.tasks.check_price_tracking',
         'schedule': crontab(hour='19', minute="0"),
-    }
+    },
+    # 'test-price_trak': {
+    #     'task': 'user.tasks.temp_scrapper',
+    #     'schedule': crontab(minute='*'),
+    # }
 }
 
 app.autodiscover_tasks()
