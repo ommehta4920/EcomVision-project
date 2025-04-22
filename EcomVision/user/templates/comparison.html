@@ -136,10 +136,14 @@ EcomVision | Comparison
                 // Store the selected product details
                 selectedProductDetails[inputId] = product;
                 
-                // Add to selected products array if not already present
-                if (!selectedProducts.includes(product.product_name)) {
-                    selectedProducts.push(product.product_name);
-                }
+                // Update selected products array
+                selectedProducts = Object.values(selectedProductDetails)
+                    .filter(product => product)
+                    .map(product => product.product_name);
+
+                // Log for debugging
+                console.log('Selected Products:', selectedProducts);
+                console.log('Unique Products:', new Set(selectedProducts));
 
                 updateCompareButtonState();
                 dropdown.classList.add("hidden");
@@ -153,8 +157,8 @@ EcomVision | Comparison
 
     function updateCompareButtonState() {
         const compareBtn = document.getElementById('compare-btn');
-        const uniqueProducts = new Set(selectedProducts);
-        // compareBtn.disabled = uniqueProducts.size < 2;
+        // Only disable if there are fewer than 2 products selected
+        compareBtn.disabled = selectedProducts.length < 2;
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -171,7 +175,7 @@ EcomVision | Comparison
             if (firstProduct) {
                 document.getElementById('input1').value = firstProduct.product_name;
                 selectedProductDetails['input1'] = firstProduct;
-                selectedProducts.push(firstProduct.product_name);
+                selectedProducts = [firstProduct.product_name];
             }
         {% endif %}
 
@@ -305,7 +309,12 @@ EcomVision | Comparison
             const comparisonSection = document.getElementById('comparison-section');
             comparisonSection.innerHTML = "";
 
-            // Check for duplicates
+            // Get current selected products
+            selectedProducts = Object.values(selectedProductDetails)
+                .filter(product => product)
+                .map(product => product.product_name);
+
+            // Check for duplicates first
             const uniqueProducts = new Set(selectedProducts);
             if (uniqueProducts.size !== selectedProducts.length) {
                 showAlert("❌ Please Select Different Products for Comparison...", "error");
