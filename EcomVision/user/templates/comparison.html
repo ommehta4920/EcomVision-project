@@ -28,12 +28,10 @@ EcomVision | Comparison
         <div class="mb-4">
             <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
             <select id="category"
-                    class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out">
                 <option value="" disabled {% if not selected_category_id %} selected {% endif %}>
                     Select Category
                 </option>
-
                 {% for category in category_data %}
                 <option value="{{ category.category_id }}"
                         {% if category.category_id == selected_category_id %} selected {% endif %}>
@@ -44,29 +42,33 @@ EcomVision | Comparison
         </div>
         <div class="mb-4">
             {% for i in "1234" %}
-            <div class="product-selector mb-2 {% if i|add:-1 >= 2 %}hidden{% endif %}">
-                <label for="product{{ i }}" class="block text-sm font-medium text-gray-700">Product {{ i }}</label>
+            <div class="product-selector mb-4 {% if i|add:-1 >= 2 %}hidden{% endif %}">
+                <label for="product{{ i }}" class="block text-sm font-medium text-gray-700 mb-1">Product {{ i }}</label>
                 <div class="dropdown relative">
-                    <input type="text" placeholder="Search..." id="input{{ i }}"
+                    <input type="text" placeholder="Search products..." id="input{{ i }}"
                            value="{% if selected_product and i == '1' %}{{ selected_product.product_name }}{% endif %}"
                            onclick="toggleDropdown('dropdown{{ i }}')"
                            onkeyup="filterDropdown('input{{ i }}', 'dropdown{{ i }}')"
-                           class="w-full px-3 py-2 border rounded">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
                     <div id="dropdown{{ i }}"
-                         class="dropdown-content w-full bg-white border rounded shadow hidden"></div>
+                         class="dropdown-content w-full bg-white border border-gray-200 rounded-md shadow-lg hidden absolute z-10 mt-1 max-h-60 overflow-y-auto">
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div class="flex justify-evenly items-center mb-4 w-100">
-            <button id="decrease-btn" class="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 w-[10%]">
-                <strong>-</strong></button>
+        <div class="flex justify-evenly items-center mb-4 w-100 space-x-4">
+            <button id="decrease-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 w-[10%]">
+                <strong class="text-xl">-</strong>
+            </button>
             <button id="compare-btn"
-                    class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 w-[70%]">
-                <strong>Compare</strong></button>
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 w-[70%] font-medium">
+                <strong>Compare Products</strong>
+            </button>
             <button id="increase-btn"
-                    class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 w-[10%]">
-                <strong>+</strong></button>
+                    class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 w-[10%]">
+                <strong class="text-xl">+</strong>
+            </button>
         </div>
     </div>
     <div id="comparison-section"
@@ -121,7 +123,7 @@ EcomVision | Comparison
         console.log(`Updating dropdown ${dropdownId} with products:`, products_detail);
 
         if (!products_detail || products_detail.length === 0) {
-            dropdown.innerHTML = "<p class='text-gray-500 p-2'>No products available</p>";
+            dropdown.innerHTML = "<p class='text-gray-500 p-3 text-sm'>No products available</p>";
             return;
         }
 
@@ -129,22 +131,16 @@ EcomVision | Comparison
             let productOption = document.createElement("a");
             productOption.href = "#";
             productOption.textContent = product.product_name;
+            productOption.className = "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-150 ease-in-out";
             productOption.onclick = function (event) {
                 event.preventDefault();
                 document.getElementById(inputId).value = product.product_name;
-
-                // Store the selected product details
                 selectedProductDetails[inputId] = product;
-                
-                // Update selected products array
                 selectedProducts = Object.values(selectedProductDetails)
                     .filter(product => product)
                     .map(product => product.product_name);
-
-                // Log for debugging
                 console.log('Selected Products:', selectedProducts);
                 console.log('Unique Products:', new Set(selectedProducts));
-
                 updateCompareButtonState();
                 dropdown.classList.add("hidden");
                 dropdown.style.display = "none";
@@ -351,7 +347,7 @@ EcomVision | Comparison
                         <p class="text-gray-700 p-2"><strong>Display Size:</strong> ${extractedDetails.size}</p>
                         <p class="text-gray-700 p-2"><strong>Display Resolution:</strong> ${extractedDetails.reolution}</p>
                         <p class="text-gray-700 p-2"><strong>Weight:</strong> ${extractedDetails.weight}</p>
-                        <a class="btn btn-primary mt-2 w-50 mx-auto" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
+                        <a class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 mt-2 whitespace-nowrap" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
                     `;
 
                     comparisonContainer.appendChild(productDiv);
