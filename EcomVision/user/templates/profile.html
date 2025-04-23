@@ -179,6 +179,7 @@ EcomVision | Profile
                     </div>
 
                     <!-- Pagination -->
+                    {% if price_track_details|length > 10 %}
                     <div class="flex items-center justify-center mt-6">
                         <nav class="pagination-nav flex items-center space-x-2">
                             <button id="prevPage" class="p-2 rounded-full hover:bg-indigo-50 transition-colors text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -198,6 +199,7 @@ EcomVision | Profile
                             </button>
                         </nav>
                     </div>
+                    {% endif %}
                     {% else %}
                         <div class="text-center py-8 bg-indigo-50 rounded-lg border border-indigo-100">
                             <i class="fas fa-history text-4xl text-indigo-400 mb-4"></i>
@@ -446,12 +448,31 @@ EcomVision | Profile
     document.addEventListener('DOMContentLoaded', function() {
         const itemsPerPage = 5;
         const table = document.getElementById('historyTable');
+        // Add null check for table
+        if (!table) return;
+
         const tbody = table.querySelector('tbody');
+        // Add null check for tbody
+        if (!tbody) return;
+
         const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        // Only initialize pagination if there are more than 10 items
+        if (rows.length <= 10) {
+            // If the Django if condition didn't render the pagination, the elements won't exist.
+            // If it did (e.g., > 10 items initially, then some deleted via JS without page reload),
+            // we might want to hide it explicitly. But the Django condition handles the initial render.
+            // So, just returning here should be sufficient.
+            return;
+        }
+
         const paginationNumbers = document.getElementById('paginationNumbers');
         const prevButton = document.getElementById('prevPage');
         const nextButton = document.getElementById('nextPage');
-        
+
+        // Add null checks for pagination elements as they might not exist if rows <= 10
+        if (!paginationNumbers || !prevButton || !nextButton) return;
+
         let currentPage = 1;
         const totalPages = Math.ceil(rows.length / itemsPerPage);
 

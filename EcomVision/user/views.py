@@ -604,14 +604,15 @@ class GetPriceTracking(View):
             print(f"Error fetching price tracking data: {str(e)}")
             return JsonResponse({'error': str(e)}, status=500)
 
-def delete_price_track(request, pk):
-    print(pk)
-    try:
-        track = price_track.objects.get(track_id = pk)
-    except price_track.DoesNotExist:
-        messages.error(request, "Track not found or you don't have permission.")
-        return redirect('/profile')
+class DeletePriceTrack(View):
+    def post(self, request, pk):
+        print(pk)
+        try:
+            track = price_track.objects.get(track_id = pk)
+        except price_track.DoesNotExist:
+            messages.error(request, "Track not found or you don't have permission.")
+            return redirect('/profile')
 
-    track.delete()
-    messages.success(request, "✔ Record deleted successfully!")
-    return redirect('/profile')
+        track.delete()
+        messages.success(request, "✔ Record deleted successfully!")
+        return redirect('/profile')

@@ -23,7 +23,7 @@ urlpatterns = [
     path('profile/', ProfilePage.as_view(), name='profile-page'),
     path('logout/', logout_user.as_view(), name='logout'),
     path('get-price-tracking/<int:id>/', GetPriceTracking.as_view(), name='get-price-tracking'),
-    path('delete/<int:pk>/', views.delete_price_track, name='delete_price_track'),
+    path('delete/<int:pk>/', DeletePriceTrack.as_view(), name='delete_price_track'),
 ]
 
 if settings.DEBUG:
