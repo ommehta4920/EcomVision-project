@@ -1,6 +1,7 @@
 import scrapy
 from ecom_scraper.items import ProductDetails
 import time
+import re
 from urllib.parse import urlparse, parse_qs
 
 class EcomSpider(scrapy.Spider):
@@ -105,12 +106,7 @@ class EcomSpider(scrapy.Spider):
                 # print(f"Title: {title}")
                 
                 # -------------------------------  product category -------------------------------------
-                category_container = response.css("._7dPnhA")
-                c_name = category_container.xpath('//div[3]/a/text()').get()
-                if c_name is not None:
-                    item["c_name"] = c_name
-                else:
-                    item["c_name"] = self.query
+                item["c_name"] = self.query
                 # print(f"Product Category: {category}")
             
                 # -------------------------------  product price -------------------------------------
@@ -128,7 +124,7 @@ class EcomSpider(scrapy.Spider):
                 p_rating = response.css('.Y1HWO0>.XQDdHH::text').get()
                 if p_rating:
                     item["p_rating"] = p_rating
-                elif p_rating is None:
+                elif p_rating is None or p_rating == "none":
                     item["p_rating"] = "0"
                 else:
                     item["p_rating"] = "0"
@@ -223,18 +219,7 @@ class EcomSpider(scrapy.Spider):
                 # print(f"Product Title: {title}")
                 
                 # -------------------------------  product category -------------------------------------
-                if self.query == 'laptop':
-                    c_name = response.xpath('//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[3]/span/a/text()').get()
-                    if c_name == 'laptops' or c_name == 'Laptops':
-                        item['c_name'] = c_name
-                    elif c_name is None or c_name == 'none' or c_name == 'None' or c_name == '':
-                        item['c_name'] = 'laptops'
-                else:
-                    c_name = response.xpath('//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[7]/span/a/text()').get()
-                    if c_name is None or c_name == 'none':
-                        item['c_name'] = self.query
-                    else:
-                        item['c_name'] = c_name
+                item['c_name'] = self.query
                 # print(f"Product Category: {category}")
             
                 # -------------------------------  product price -------------------------------------
@@ -261,7 +246,7 @@ class EcomSpider(scrapy.Spider):
                 # print(f"Ratings: {ratings}")
                 if ratings is not None:
                     item["p_rating"] = ratings.strip()
-                elif ratings is None:
+                elif ratings is None or ratings == "none":
                     item["p_rating"] = "0"
                 else:
                     item["p_rating"] = "0"

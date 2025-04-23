@@ -5,7 +5,6 @@
 
 
 # useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
 import os
 import sys
 import django
@@ -48,11 +47,11 @@ class DjangoPipeline:
             }
         )
         
-        scraped_category = str(item["c_name"]).lower()
-        print(f"Scraped_Category: {scraped_category}")
-        standardized_category = CATEGORY_MAPPING.get(scraped_category, scraped_category)
+        # scraped_category = 
+        # print(f"Scraped_Category: {scraped_category}")
+        # standardized_category = CATEGORY_MAPPING.get(scraped_category, scraped_category)
         category, created = categories.objects.update_or_create(
-            category_name = standardized_category,
+            category_name = str(item["c_name"]).lower(),
         )
         
         if created:
@@ -64,6 +63,9 @@ class DjangoPipeline:
             
         price = item["p_price"]
         scraped_date = datetime.today().strftime('%Y-%m-%d')
+        
+        if item["p_rating"] is None:
+            item["p_rating"] = 0
         
         try:
             product = products.objects.get(product_id=item['p_id'])
