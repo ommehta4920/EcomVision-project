@@ -62,13 +62,19 @@ def check_price_tracking():
                 )
                 print("Mail Sent....")
                 track.tracking_status = '2'
+                track.last_price = str(current_price)
+                track.save()
+                continue
+            elif hasattr(track, 'created_at') and track.created_at < one_week_ago:
+                print("Status Changed due to old tracking.")
+                track.tracking_status = '2'
+                track.last_price = str(current_price)
+                track.save()
+            else:
+                track.last_price = str(current_price)
                 track.save()
                 continue
             
-            if hasattr(track, 'created_at') and track.created_at < one_week_ago:
-                print("Status Changed due to old tracking.")
-                track.tracking_status = '2'
-                track.save()
 
         except Exception as e:
             print(f"Error Processing track {track.track_id}: {e}")
