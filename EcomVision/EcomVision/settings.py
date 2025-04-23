@@ -203,6 +203,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'pshubham8734@gmail.com'
 EMAIL_HOST_PASSWORD = 'msjf itfs jimk tmcq'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_COOKIE_AGE = 1800  # 30 minutes (in seconds)

@@ -7,6 +7,7 @@ from .models import categories, price_track
 from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta
+from django.core.mail import send_mail
 
 @shared_task(bind=True)
 def categoryScrapper(self):
@@ -28,7 +29,7 @@ def productScrapper(self):
     subprocess.run(["scrapy", "crawl", "productSpider"], cwd=project_path)
     return "Product-Scrapping Done"
 
-@shared_task(bind=True)
+@shared_task()
 def check_price_tracking():
     now = timezone.now()
     one_week_ago = now - timedelta(days=7)
@@ -37,10 +38,21 @@ def check_price_tracking():
     
     for track in tracks:
         try:
-            current_price = float(track.last_price)
-            desired_price = float(track.desired_price)
+            price_data = track.product_id.product_price  # Should be in format {"2024-04-22": "13999", ...}
+            if not price_data:
+                continue
             
+            # Remove commas and convert to float
+            latest_date = sorted(price_data.keys(), reverse=True)[0]
+            current_price = float(price_data[latest_date].replace(',', ''))
+            # current_price = float(track.last_price.replace(',', ''))
+            desired_price = float(track.desired_price.replace(',', ''))
+
+            # Log the prices for debugging
+            print(f"Comparing prices: Current Price = {current_price}, Desired Price = {desired_price}")
+
             if current_price <= desired_price:
+                print("Price Dropped... Sending email")
                 send_mail(
                     subject='🎉 Price Drop Alert From EcomVision!',
                     message=f'The product "{track.product_id.product_name}" is now ₹{current_price}, which is at or below your desired price of ₹{desired_price}.',
@@ -48,13 +60,16 @@ def check_price_tracking():
                     recipient_list=[track.user_id.user_email],
                     fail_silently=False,
                 )
+                print("Mail Sent....")
                 track.tracking_status = '2'
                 track.save()
                 continue
             
             if hasattr(track, 'created_at') and track.created_at < one_week_ago:
+                print("Status Changed due to old tracking.")
                 track.tracking_status = '2'
                 track.save()
+
         except Exception as e:
             print(f"Error Processing track {track.track_id}: {e}")
 
