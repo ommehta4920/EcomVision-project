@@ -60,7 +60,7 @@ EcomVision | Product Details
                 </div>
                 <div class=" space-x-4 flex flex-row " style="margin: 25px 0;">
                     <a href="{% url 'product-detail-page-compare' category.category_id product_data.product_id True %}"
-                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300"
+                       class="px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
                        style="border: none;">
                         <i class="fas fa-exchange-alt mr-2">
                         </i>
@@ -70,7 +70,7 @@ EcomVision | Product Details
                     <a href="#" id="priceAlertButton" data-bs-toggle="modal" data-bs-target="#priceAlertModal"
                        data-product-id="{{ product_data.product_id }}"
                        data-product-name="{{ product_data.product_name }}" data-product-price="{{ last_price }}"
-                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300"
+                       class="px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
                        style="border: none;">
                         <i class="fa-solid fa-bell mr-2">
                         </i>
@@ -100,9 +100,9 @@ EcomVision | Product Details
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        <button type="button" class="btn btn-secondary px-4 py-3 rounded-full" data-bs-dismiss="modal">Close
                                         </button>
-                                        <button type="submit" class="btn btn-primary">Create Alert</button>
+                                        <button type="submit" class="btn btn-primary px-4 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">Create Alert</button>
                                     </div>
                                 </form>
                             </div>
@@ -110,20 +110,20 @@ EcomVision | Product Details
                     </div>
                     {% else %}
                     <a href="/signin"
-                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300"
+                    class="px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
                        style="border: none;">
                         <i class="fa-solid fa-bell mr-2">
                         </i>
                         Price Alert
                     </a>
                     {% endif %}
-                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}%0A%0ALatest Price%20:-%20{{ product_data.currency }} {{ last_price }}" target="_blank" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300">
+                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}%0A%0ALatest Price%20:-%20{{ product_data.currency }} {{ last_price }}" target="_blank" class="px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">
                         <i class="fab fa-whatsapp mr-2" style="font-size: 20px;">
                         </i>
                         Share
                     </a>
                     <a href="{{ product_data.product_url }}" target="_blank"
-                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300">
+                    class="px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">
                         <i class="fas fa-shopping-cart mr-2">
                         </i>
                         Buy

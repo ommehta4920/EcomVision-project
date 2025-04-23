@@ -4,7 +4,7 @@
     {% load socialaccount %}
 <head>
     <title>
-        EcomVision - SignIn
+        EcomVision | SignIn
     </title>
     <script src="https://cdn.tailwindcss.com">
     </script>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="signin-btn-container">
                     <button
-                        class="text-white py-2 hover:bg-[#531889] focus:outline-none focus:ring-2 focus:ring-white flex items-center justify-center"
+                        class="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl mr-2"
                         type="submit">
                         Login
                     </button>
@@ -76,7 +76,7 @@
                     </div>
                     <a href="{% provider_login_url 'google' %}">
                         <button
-                            class="text-white py-2 hover:bg-[#531889] focus:outline-none focus:ring-2 focus:ring-white flex items-center justify-center" style="width: 100%;"
+                            class="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl ml-2" style="width: 100%;"
                             type="button">
                             <i class="fab fa-google mr-2"></i> Sign In using Google
                         </button>
@@ -92,7 +92,7 @@
                 </p>
                 <p class="text-center text-gray-600">
                     <a class="text-white hover:underline" href="/">
-                        Go to Home
+                        Back
                     </a>
                 </p>
             </div>
