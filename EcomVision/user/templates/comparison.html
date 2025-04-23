@@ -26,47 +26,54 @@ EcomVision | Comparison
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;" class="w-100">
     <div class="bg-white p-6 rounded shadow w-75" style="margin: 2% 0;">
         <div class="mb-4">
-            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-            <select id="category"
-                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out">
-                <option value="" disabled {% if not selected_category_id %} selected {% endif %}>
-                    Select Category
-                </option>
-                {% for category in category_data %}
-                <option value="{{ category.category_id }}"
-                        {% if category.category_id == selected_category_id %} selected {% endif %}>
-                {{ category.category_name }}
-                </option>
-                {% endfor %}
-            </select>
+            <label for="category" class="block text-sm font-medium text-indigo-700 mb-1">Category</label>
+            <div class="relative">
+                <select id="category"
+                        class="mt-1 block w-full py-2.5 px-4 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300 bg-white shadow-sm transition duration-150 ease-in-out appearance-none cursor-pointer">
+                    <option value="" disabled {% if not selected_category_id %} selected {% endif %}>
+                        Select Category
+                    </option>
+                    {% for category in category_data %}
+                    <option value="{{ category.category_id }}"
+                            {% if category.category_id == selected_category_id %} selected {% endif %}>
+                    {{ category.category_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
         </div>
         <div class="mb-4">
             {% for i in "1234" %}
             <div class="product-selector mb-4 {% if i|add:-1 >= 2 %}hidden{% endif %}">
-                <label for="product{{ i }}" class="block text-sm font-medium text-gray-700 mb-1">Product {{ i }}</label>
+                <label for="product{{ i }}" class="block text-sm font-medium text-indigo-700 mb-1">Product {{ i }}</label>
                 <div class="dropdown relative">
                     <input type="text" placeholder="Search products..." id="input{{ i }}"
                            value="{% if selected_product and i == '1' %}{{ selected_product.product_name }}{% endif %}"
                            onclick="toggleDropdown('dropdown{{ i }}')"
                            onkeyup="filterDropdown('input{{ i }}', 'dropdown{{ i }}')"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                           class="w-full px-4 py-2 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-indigo-900 placeholder-indigo-300 bg-white shadow-sm transition duration-150 ease-in-out">
                     <div id="dropdown{{ i }}"
-                         class="dropdown-content w-full bg-white border border-gray-200 rounded-md shadow-lg hidden absolute z-10 mt-1 max-h-60 overflow-y-auto">
+                         class="dropdown-content w-full bg-white border border-indigo-200 rounded-lg shadow-lg hidden absolute z-10 mt-1 max-h-60 overflow-y-auto">
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
         <div class="flex justify-evenly items-center mb-4 w-100 space-x-4">
-            <button id="decrease-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 w-[10%]">
+            <button id="decrease-btn" class="px-4 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm w-[10%] flex items-center justify-center">
                 <strong class="text-xl">-</strong>
             </button>
             <button id="compare-btn"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 w-[70%] font-medium">
+                    class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium w-[80%] flex items-center justify-center">
                 <strong>Compare Products</strong>
             </button>
             <button id="increase-btn"
-                    class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 w-[10%]">
+                    class="px-4 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm w-[10%] flex items-center justify-center">
                 <strong class="text-xl">+</strong>
             </button>
         </div>
@@ -123,7 +130,7 @@ EcomVision | Comparison
         console.log(`Updating dropdown ${dropdownId} with products:`, products_detail);
 
         if (!products_detail || products_detail.length === 0) {
-            dropdown.innerHTML = "<p class='text-gray-500 p-3 text-sm'>No products available</p>";
+            dropdown.innerHTML = "<p class='text-indigo-500 p-3 text-sm'>No products available</p>";
             return;
         }
 
@@ -131,7 +138,7 @@ EcomVision | Comparison
             let productOption = document.createElement("a");
             productOption.href = "#";
             productOption.textContent = product.product_name;
-            productOption.className = "block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-150 ease-in-out";
+            productOption.className = "block px-4 py-2 text-sm text-indigo-900 hover:bg-indigo-50 hover:text-indigo-600 transition-colors";
             productOption.onclick = function (event) {
                 event.preventDefault();
                 document.getElementById(inputId).value = product.product_name;
@@ -347,7 +354,7 @@ EcomVision | Comparison
                         <p class="text-gray-700 p-2"><strong>Display Size:</strong> ${extractedDetails.size}</p>
                         <p class="text-gray-700 p-2"><strong>Display Resolution:</strong> ${extractedDetails.reolution}</p>
                         <p class="text-gray-700 p-2"><strong>Weight:</strong> ${extractedDetails.weight}</p>
-                        <a class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 mt-2 whitespace-nowrap" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
+                        <a class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm mt-2 whitespace-nowrap" href="/category/${category_ID}/${productDetails.product_id}">More Details</a>
                     `;
 
                     comparisonContainer.appendChild(productDiv);
@@ -375,5 +382,33 @@ EcomVision | Comparison
         updateProductSelectors();
     });
 </script>
+
+<style>
+    /* Custom select styling */
+    select {
+        padding-right: 2.5rem;
+    }
+
+    /* Remove default select arrow in IE */
+    select::-ms-expand {
+        display: none;
+    }
+
+    /* Focus state for select */
+    select:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+
+    /* Custom dropdown arrow container */
+    .relative {
+        position: relative;
+    }
+
+    /* Ensure consistent button heights */
+    button {
+        min-height: 2.75rem;
+    }
+</style>
 
 {% endblock %}
