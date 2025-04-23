@@ -60,7 +60,7 @@ EcomVision | Product Details
                 </div>
                 <div class=" space-x-4 flex flex-row " style="margin: 25px 0;">
                     <a href="{% url 'product-detail-page-compare' category.category_id product_data.product_id True %}"
-                       class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-blue-500 hover:to-blue-700 transform hover:scale-105 transition-transform duration-300 btn btn-primary"
+                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300"
                        style="border: none;">
                         <i class="fas fa-exchange-alt mr-2">
                         </i>
@@ -70,7 +70,7 @@ EcomVision | Product Details
                     <a href="#" id="priceAlertButton" data-bs-toggle="modal" data-bs-target="#priceAlertModal"
                        data-product-id="{{ product_data.product_id }}"
                        data-product-name="{{ product_data.product_name }}" data-product-price="{{ last_price }}"
-                       class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-yellow-500 hover:to-yellow-700 transform hover:scale-105 transition-transform duration-300 btn btn-primary"
+                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300"
                        style="border: none;">
                         <i class="fa-solid fa-bell mr-2">
                         </i>
@@ -110,24 +110,20 @@ EcomVision | Product Details
                     </div>
                     {% else %}
                     <a href="/signin"
-                       class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-yellow-500 hover:to-yellow-700 transform hover:scale-105 transition-transform duration-300 btn btn-primary"
+                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300"
                        style="border: none;">
                         <i class="fa-solid fa-bell mr-2">
                         </i>
                         Price Alert
                     </a>
                     {% endif %}
-<!--                    <a href="whatsapp://send?text={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
-                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}%0A%0ALatest Price%20:-%20{{ product_data.currency }} {{ last_price }}" target="_blank" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">
-<!--                    <a href="mailto:?subject=Product details from EcomVision&body={{ product_data.product_name }} %0A%0ALink:- {{ product_data.product_url }}" -->
-<!--                       target="_blank"-->
-<!--                       class="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-green-500 hover:to-green-700 transform hover:scale-105 transition-transform duration-300">-->
+                    <a href="https://wa.me/?text={{ product_data.product_name }}%0A%0ALink%20:-%20{{ product_data.product_url }}%0A%0ALatest Price%20:-%20{{ product_data.currency }} {{ last_price }}" target="_blank" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300">
                         <i class="fab fa-whatsapp mr-2" style="font-size: 20px;">
                         </i>
                         Share
                     </a>
                     <a href="{{ product_data.product_url }}" target="_blank"
-                       class="bg-gradient-to-r from-red-400 to-red-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-red-500 hover:to-red-700 transform hover:scale-105 transition-transform duration-300">
+                       class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-8 py-3 rounded-full shadow-lg hover:from-indigo-600 hover:to-indigo-700 transform hover:scale-105 transition-transform duration-300">
                         <i class="fas fa-shopping-cart mr-2">
                         </i>
                         Buy
@@ -169,20 +165,9 @@ EcomVision | Product Details
                 Price History
             </h2>
         </div>
-        <canvas id="priceHistoryChart" class="rounded-lg mt-[10px]" height="150" width="400"></canvas>
-        <!-- <div>
-            <h2 class="text-2xl font-bold text-gray-800">
-                Overall Performance
-            </h2>
-            <canvas id="radarChart" class="mt-[10px]" width="400" height="400"></canvas>
+        <div class="w-full h-[400px] mt-4">
+            <canvas id="priceHistoryChart" class="rounded-lg"></canvas>
         </div>
-        <div>
-            <h2 class="text-2xl font-bold text-gray-800">
-                Ratings
-            </h2>
-            <canvas id="ratings-piechart" class="mt-[10px]"></canvas>
-
-        </div> -->
     </div>
 
     <div class="bg-white p-6 rounded-lg shadow-lg m-[2rem] mb-[4rem] w-[90%]">
@@ -255,22 +240,61 @@ EcomVision | Product Details
             type: 'line',
             data: {
                 labels: [{% for label in chartLabels %}'{{label}}', {% endfor %}],
-    datasets: [{
-        label: 'Price',
-        data: [{% for value in chartValues %}{{ value }}, {% endfor %}],
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                datasets: [{
+                    label: 'Price',
+                    data: [{% for value in chartValues %}{{ value }}, {% endfor %}],
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderColor: 'rgb(99, 102, 241)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgb(99, 102, 241)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: 'rgb(99, 102, 241)',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2,
+                    fill: true
                 }]
             },
-    options: {
-        responsive: true,
-            scales: {
-            y: {
-                beginAtZero: false
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(99, 102, 241, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgb(99, 102, 241)',
+                        borderWidth: 1,
+                        padding: 10,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(99, 102, 241, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgb(99, 102, 241)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(99, 102, 241, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgb(99, 102, 241)'
+                        }
+                    }
+                }
             }
-        }
-    }
         });
     }
 
