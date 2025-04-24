@@ -273,7 +273,7 @@ class ProductDetailsPage(View):
         # Fetching Data to display in the graphs
         labels = sorted(p_price.keys())
         values = (p_price[date] for date in labels)
-        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values],
+        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values if value],
                    "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
 
         return render(request, "product_details.html", context)
