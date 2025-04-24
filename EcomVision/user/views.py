@@ -214,8 +214,11 @@ class ProductListPage(View):
                 last_date = max(product.product_price.keys())
                 latest_price = product.product_price[last_date]
                 # Remove commas and convert to float for price ranges
-                price_float = float(latest_price.replace(',', ''))
-                prices.append(price_float)
+                if latest_price:
+                    price_float = float(latest_price.replace(',', ''))
+                    prices.append(price_float)
+                else:
+                    price_float = 0
             
             processed_products.append({
                 'product': product,

@@ -1,5 +1,5 @@
 import scrapy
-from my_scraper.items import ProductDetails
+from ecom_scraper.items import ProductDetails
 from user.models import products
 from urllib.parse import urlparse, parse_qs
 from asgiref.sync import sync_to_async
