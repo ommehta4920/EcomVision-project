@@ -54,7 +54,7 @@ EcomVision | {{ category.category_name }}
 <section class="product-card-container container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     {% for item in products %}
     <a href="{% url 'product-detail-page' category.category_id item.product.product_id %}"
-       class="text-decoration-none product-link lazy-card hidden"
+       class="text-decoration-none product-link"
        data-name="{{ item.product.product_name|lower }}"
        data-price="{{ item.price_float }}">
         <div class="product-card bg-white shadow-lg rounded-lg overflow-hidden">
@@ -77,7 +77,6 @@ EcomVision | {{ category.category_name }}
         </div>
     </a>
     {% endfor %}
-    <div id="scroll-sentinel" class="h-10 col-span-full"></div>
 </section>
 
 <style>
@@ -109,106 +108,99 @@ EcomVision | {{ category.category_name }}
 .search-bar input::placeholder {
     color: rgba(255, 255, 255, 0.7);
 }
+.visible {
+    display: block !important;
+}
 .hidden {
     display: none !important;
 }
 </style>
 
 <script>
+let allProducts = [];
+let visibleProducts = [];
+const batchSize = 12;
+let currentIndex = 0;
+
+function initializeProducts() {
+    allProducts = Array.from(document.getElementsByClassName("product-link"));
+    visibleProducts = [...allProducts];
+    updateProductDisplay();
+}
+
+function updateProductDisplay() {
+    // Hide all products first
+    allProducts.forEach(product => product.classList.add('hidden'));
+    
+    // Show only the filtered products up to current batch
+    visibleProducts.slice(0, currentIndex + batchSize).forEach(product => {
+        product.classList.remove('hidden');
+    });
+}
+
 function filterProducts() {
     let input = document.getElementById("productSearch").value.toLowerCase();
-    let products = document.getElementsByClassName("product-link");
-
-    Array.from(products).forEach(product => {
+    
+    // Filter from all products
+    visibleProducts = allProducts.filter(product => {
         const productName = product.getAttribute("data-name");
-        if (productName.includes(input)) {
-            product.style.display = "";
-        } else {
-            product.style.display = "none";
-        }
+        return productName.includes(input);
     });
+    
+    // Reset current index and update display
+    currentIndex = 0;
+    updateProductDisplay();
 }
 
 function filterByPrice() {
     const priceFilter = document.getElementById("priceFilter").value;
-    const products = document.getElementsByClassName("product-link");
     
     if (!priceFilter) {
-        Array.from(products).forEach(product => product.style.display = "");
-        return;
+        visibleProducts = [...allProducts];
+    } else {
+        const [minPrice, maxPrice] = priceFilter.split("-").map(Number);
+        visibleProducts = allProducts.filter(product => {
+            const productPrice = parseFloat(product.getAttribute("data-price"));
+            return productPrice >= minPrice && productPrice <= maxPrice;
+        });
     }
-
-    const [minPrice, maxPrice] = priceFilter.split("-").map(Number);
     
-    Array.from(products).forEach(product => {
-        const productPrice = parseFloat(product.getAttribute("data-price"));
-        if (productPrice >= minPrice && productPrice <= maxPrice) {
-            product.style.display = "";
-        } else {
-            product.style.display = "none";
-        }
-    });
+    // Reset current index and update display
+    currentIndex = 0;
+    updateProductDisplay();
 }
 
 function sortProducts() {
     const sortFilter = document.getElementById("sortFilter").value;
-    const container = document.querySelector('.product-card-container');
-    const products = Array.from(document.getElementsByClassName("product-link"));
     
     if (!sortFilter) {
-        products.forEach(product => container.appendChild(product));
-        return;
+        visibleProducts = [...allProducts];
+    } else {
+        visibleProducts.sort((a, b) => {
+            const aPrice = parseFloat(a.getAttribute("data-price"));
+            const bPrice = parseFloat(b.getAttribute("data-price"));
+            const aName = a.getAttribute("data-name");
+            const bName = b.getAttribute("data-name");
+
+            switch(sortFilter) {
+                case 'price_asc': return aPrice - bPrice;
+                case 'price_desc': return bPrice - aPrice;
+                case 'name_asc': return aName.localeCompare(bName);
+                case 'name_desc': return bName.localeCompare(aName);
+                default: return 0;
+            }
+        });
     }
-
-    products.sort((a, b) => {
-        const aPrice = parseFloat(a.getAttribute("data-price"));
-        const bPrice = parseFloat(b.getAttribute("data-price"));
-        const aName = a.getAttribute("data-name");
-        const bName = b.getAttribute("data-name");
-
-        switch(sortFilter) {
-            case 'price_asc': return aPrice - bPrice;
-            case 'price_desc': return bPrice - aPrice;
-            case 'name_asc': return aName.localeCompare(bName);
-            case 'name_desc': return bName.localeCompare(aName);
-            default: return 0;
-        }
-    });
-
-    products.forEach(product => container.appendChild(product));
+    
+    // Reset current index and update display
+    currentIndex = 0;
+    updateProductDisplay();
 }
 
-// Lazy load product cards
+// Initialize everything when the DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-    const lazyCards = Array.from(document.querySelectorAll(".lazy-card"));
-    const batchSize = 12;
-    let currentIndex = 0;
-
-    function showNextBatch() {
-        const nextBatch = lazyCards.slice(currentIndex, currentIndex + batchSize);
-        nextBatch.forEach(card => {
-            card.classList.remove("hidden");
-        });
-        currentIndex += batchSize;
-
-        if (currentIndex >= lazyCards.length) {
-            observer.disconnect();
-        }
-    }
-
-    showNextBatch();
-
-    const sentinel = document.getElementById("scroll-sentinel");
-    const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) {
-            showNextBatch();
-        }
-    }, {
-        rootMargin: "100px",
-    });
-
-    observer.observe(sentinel);
-
+    initializeProducts();
+    
     // Lazy load images
     const lazyImages = document.querySelectorAll("img.lazy");
     const lazyLoadObserver = new IntersectionObserver((entries, observer) => {
@@ -226,6 +218,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     lazyImages.forEach(img => lazyLoadObserver.observe(img));
+
+    // Infinite scroll
+    const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && currentIndex < visibleProducts.length) {
+            currentIndex += batchSize;
+            updateProductDisplay();
+        }
+    }, {
+        rootMargin: "100px",
+    });
+
+    // Create and observe a sentinel element
+    const sentinel = document.createElement('div');
+    sentinel.id = 'scroll-sentinel';
+    sentinel.style.height = '10px';
+    document.querySelector('.product-card-container').appendChild(sentinel);
+    observer.observe(sentinel);
 });
 </script>
 
