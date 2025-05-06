@@ -254,7 +254,7 @@ EcomVision | Product Details
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
                     pointRadius: 4,
-                    pointHoverRadius: 6,
+                    pointHoverRadius: 5,
                     pointHoverBackgroundColor: 'rgb(99, 102, 241)',
                     pointHoverBorderColor: '#fff',
                     pointHoverBorderWidth: 2,
@@ -264,6 +264,10 @@ EcomVision | Product Details
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
                 plugins: {
                     legend: {
                         display: false
@@ -274,29 +278,52 @@ EcomVision | Product Details
                         bodyColor: '#fff',
                         borderColor: 'rgb(99, 102, 241)',
                         borderWidth: 1,
-                        padding: 10,
-                        displayColors: false
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `₹${context.parsed.y.toLocaleString('en-IN')}`;
+                            }
+                        }
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: false,
                         grid: {
-                            color: 'rgba(99, 102, 241, 0.1)'
+                            color: 'rgba(99, 102, 241, 0.1)',
+                            drawBorder: false
                         },
                         ticks: {
-                            color: 'rgb(99, 102, 241)'
+                            color: 'rgb(99, 102, 241)',
+                            padding: 10,
+                            callback: function(value) {
+                                return '₹' + value.toLocaleString('en-IN');
+                            }
+                        },
+                        border: {
+                            display: false
                         }
                     },
                     x: {
                         grid: {
-                            color: 'rgba(99, 102, 241, 0.1)'
+                            display: false
                         },
                         ticks: {
-                            color: 'rgb(99, 102, 241)'
+                            color: 'rgb(99, 102, 241)',
+                            maxRotation: 45,
+                            minRotation: 45,
+                            padding: 10,
+                            maxTicksLimit: 8,
+                            font: {
+                                size: 12,
+                            }
+                        },
+                        border: {
+                            display: false
                         }
                     }
-                }
+                },
             }
         });
     }
