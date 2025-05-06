@@ -271,10 +271,32 @@ class ProductDetailsPage(View):
             last_price = "N/A"
 
         # Fetching Data to display in the graphs
-        labels = sorted(p_price.keys())
-        values = (p_price[date] for date in labels)
-        context = {"chartLabels": labels, "chartValues": [int(value.replace(',', '')) for value in values if value],
-                   "c_name": c_name, "product_data": product_data, "last_price": last_price, "category": category}
+        def is_numeric(value):
+            if not value:
+                return False
+            try:
+                int(str(value).replace(',', ''))
+                return True
+            except ValueError:
+                return False
+
+        # Sort the dates and filter out non-numeric values along with their labels
+        labels = []
+        values = []
+        for date in sorted(p_price.keys()):
+            value = p_price[date]
+            if is_numeric(value):
+                labels.append(date)
+                values.append(int(str(value).replace(',', '')))
+
+        context = {
+            "chartLabels": labels,
+            "chartValues": values,
+            "c_name": c_name,
+            "product_data": product_data,
+            "last_price": last_price,
+            "category": category
+        }
 
         return render(request, "product_details.html", context)
 
