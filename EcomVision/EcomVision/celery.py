@@ -18,12 +18,11 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule = {
     'Category-Scrapper': {
         'task': 'user.tasks.categoryScrapper',
-        'schedule': crontab(hour="11", minute="29"),
-        # 'schedule': crontab(minute="*"),
+        'schedule': crontab(hour="10", minute="23"),
     },
     'Product-Scrapper': {
         'task': 'user.tasks.productScrapper',
-        'schedule': crontab(hour="14", minute="05"),
+        'schedule': crontab(hour="10", minute="52"),
     },
     'Price-Drop-Func': {
         'task': 'user.tasks.check_price_tracking',
@@ -39,4 +38,4 @@ app.autodiscover_tasks()
 
 @app.task(bind=True)
 def debug_task(self):
-    print(f'Request: {self.request!r}')
+    print(f'Request: {self.request!r}') 

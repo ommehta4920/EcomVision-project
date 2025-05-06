@@ -51,6 +51,12 @@ body {
     transition: 0.2s ease-in-out;
 }
 
+// .btn-light:hover{
+//     box-shadow: 0px 2px 8px gray !important;
+//     transform: translateY(-1px) !important;
+//     transition: 0.2s ease-in-out !important;
+// }
+
 .scroll-down {
     position: absolute;
     bottom: 20px;
@@ -77,8 +83,6 @@ body {
     border-radius: 100px;
     padding: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .search-bar input {
@@ -175,10 +179,10 @@ body {
     transition: 0.5s ease-in-out;
 }
 
-.text_sec_btns_hero .category:hover {
-    box-shadow: 4px 4px 15px rgba(255, 255, 255, 0.7);
-    transform: translateY(-1px);
-    transition: 0.5s ease-in-out;
+.text_sec_btns_hero :hover {
+    box-shadow: 0px 3px 13px !important;
+    transform: translateY(-5px) !important;
+    transition: 0.3s ease-in-out !important;
 }
 
 /* ABOUT US PAGE */

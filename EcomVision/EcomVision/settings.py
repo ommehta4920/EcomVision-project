@@ -127,7 +127,7 @@ DATABASES = {
     }
 }
 
-PASSWORDS = ['865625', 'admin']
+PASSWORDS = ['865625', 'admin', 'postgres']
 SUCCESS = False
 
 for password in PASSWORDS:
