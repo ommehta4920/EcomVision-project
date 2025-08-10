@@ -1,6 +1,6 @@
 asgiref==3.8.1
 Django==5.2
-django_allauth==65.7.0
+django_allauth>=65.7.0
 itemadapter==0.11.0
 psycopg2==2.9.10
 psycopg2_binary==2.9.10
