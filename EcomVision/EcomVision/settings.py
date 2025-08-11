@@ -122,7 +122,9 @@ DATABASES = {
         'NAME': 'ecom_vision',
         'USER': 'postgres',
         # 'PASSWORD': '865625',
-        'HOST': 'localhost',
+        #'HOST': 'localhost', for loacldatabase
+        #'PORT': '5432'
+        'HOST': 'postgresql://div:qKNsDSV436QbGLr85mYjJZ4Y9oxQgYPZ@dpg-d2cs3dggjchc739pu3vg-a/ecomvision',
         'PORT': '5432'
     }
 }
